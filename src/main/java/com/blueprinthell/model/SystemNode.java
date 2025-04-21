@@ -10,8 +10,8 @@ public abstract class SystemNode {
     private int id;
     private final Queue<Packet> packetQueue = new LinkedList<>();
     private static final int maxPacketInQueue = 5;
-    // private final Dimension2D position;
-    // private final Dimension2D size;
+    // private final Dimension2D POSITION;
+    // private final Dimension2D SIZE;
     private boolean isActive = false;
 }
 
