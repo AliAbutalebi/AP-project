@@ -1,6 +1,7 @@
 module com.blueprinthell {
     requires javafx.controls;
     requires javafx.fxml;
+    requires com.google.gson;
 
 
     opens com.blueprinthell to javafx.fxml;
