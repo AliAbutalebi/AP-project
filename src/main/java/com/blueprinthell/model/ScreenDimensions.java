@@ -1,19 +1,31 @@
 package com.blueprinthell.model;
 
-public final class ScreenDimensions {
-    private final int width;
-    private final int height;
+import javafx.geometry.Rectangle2D;
+import javafx.stage.Screen;
 
-    public ScreenDimensions(int width, int height) {
-        this.width = width;
-        this.height = height;
+public final class ScreenDimensions {
+    private final double width;
+    private final double height;
+
+    private ScreenDimensions() {
+        Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+        this.width = bounds.getWidth();
+        this.height = bounds.getHeight();
     }
 
-    public int getWidth() {
+    private static class Holder {
+        private static final ScreenDimensions INSTANCE = new ScreenDimensions();
+    }
+
+    public static ScreenDimensions getInstance() {
+        return Holder.INSTANCE;
+    }
+
+    public double getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return height;
     }
 }
