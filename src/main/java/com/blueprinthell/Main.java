@@ -1,5 +1,6 @@
 package com.blueprinthell;
 
+import com.blueprinthell.model.ScreenDimensions;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,8 +12,10 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/blueprinthell/view/MainMenu.fxml"));
         Scene scene = new Scene(loader.load());
         stage.setTitle("Blueprint Hell");
+        stage.setFullScreen(true);
         stage.setScene(scene);
         stage.show();
+        ScreenDimensions screenDimensions = ScreenDimensions.getInstance();
     }
 
     public static void main(String[] args) {
