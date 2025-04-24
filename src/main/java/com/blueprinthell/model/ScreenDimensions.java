@@ -4,7 +4,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 
 public final class ScreenDimensions {
-    private static ScreenDimensions INSTANCE;
+    private static ScreenDimensions instance;
     private final double WIDTH;
     private final double HEIGHT;
 
@@ -15,10 +15,10 @@ public final class ScreenDimensions {
     }
 
     public static ScreenDimensions getInstance() {
-        if(INSTANCE == null) {
-            INSTANCE = new ScreenDimensions();
+        if(instance == null) {
+            instance = new ScreenDimensions();
         }
-        return INSTANCE;
+        return instance;
     }
 
 
