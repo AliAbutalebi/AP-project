@@ -6,4 +6,5 @@ module com.blueprinthell {
 
     opens com.blueprinthell to javafx.fxml;
     exports com.blueprinthell;
+    exports com.blueprinthell.controller to javafx.fxml;
 }
