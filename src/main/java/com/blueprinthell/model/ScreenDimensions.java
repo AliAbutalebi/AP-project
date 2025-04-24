@@ -4,28 +4,29 @@ import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 
 public final class ScreenDimensions {
-    private final double width;
-    private final double height;
+    private static ScreenDimensions INSTANCE;
+    private final double WIDTH;
+    private final double HEIGHT;
 
     private ScreenDimensions() {
         Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-        this.width = bounds.getWidth();
-        this.height = bounds.getHeight();
-    }
-
-    private static class Holder {
-        private static final ScreenDimensions INSTANCE = new ScreenDimensions();
+        this.WIDTH = bounds.getWidth();
+        this.HEIGHT = bounds.getHeight();
     }
 
     public static ScreenDimensions getInstance() {
-        return Holder.INSTANCE;
+        if(INSTANCE == null) {
+            INSTANCE = new ScreenDimensions();
+        }
+        return INSTANCE;
     }
 
+
     public double getWidth() {
-        return width;
+        return WIDTH;
     }
 
     public double getHeight() {
-        return height;
+        return HEIGHT;
     }
 }
