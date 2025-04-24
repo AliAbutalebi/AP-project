@@ -1,4 +1,9 @@
 package com.blueprinthell.controller;
 
-public class GameController {
+import javafx.event.ActionEvent;
+
+import java.io.IOException;
+
+public class GameController extends BaseController {
+
 }
