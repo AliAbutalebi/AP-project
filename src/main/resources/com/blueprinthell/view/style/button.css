@@ -1,0 +1,38 @@
+@font-face {
+    font-family: "Monograf-Bold";
+    src: url("/com/blueprinthell/font/Monograf/monograf-bold.ttf");
+}
+
+@font-face {
+    font-family: "Monograf-Regular";
+    src: url("com/blueprinthell/font/Monograf/monograf-regular.ttf");
+}
+
+.button {
+    -fx-background-color: #dddddd;
+
+    -fx-border-color: #999999;
+    -fx-border-width: 5px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px 14px;
+    -fx-font-family: Monograf-Bold;
+    -fx-text-fill: #333333;
+    -fx-font-size: 18px;
+    -fx-alignment:;
+}
+
+
+
+
+
+.button:hover {
+    -fx-background-color: #cccccc;
+    -fx-cursor: hand;
+}
+
+.button:pressed {
+    -fx-background-color: #bbbbbb;
+    -fx-translate-y: 1;
+    -fx-effect: innershadow(gaussian, #999999, 2, 0.5, 0, 1);
+}
