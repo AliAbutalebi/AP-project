@@ -11,11 +11,12 @@
             fx:controller="com.blueprinthell.controller.MenuController">
     <stylesheets>
         <URL value="@style/global.css"/>
+        <URL value="@style/main-menu.css"/>
     </stylesheets>
     <VBox alignment="CENTER" spacing="20" style="-fx-background-color: transparent" AnchorPane.bottomAnchor="0.0"
           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
-        <Label text="BLUEPRINT HELL"/>
+        <Label text="BLUEPRINT HELL" fx:id="title"/>
 
         <Button text="START GAME"/>
         <Button text="LEVEL SELECT"/>

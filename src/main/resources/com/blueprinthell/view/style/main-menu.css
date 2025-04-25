@@ -1,0 +1,9 @@
+#title {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 50px;
+    -fx-font-weight: bold;
+}
+
+.button {
+    -fx-pref-width: 300px;
+}
