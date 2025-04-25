@@ -18,9 +18,9 @@
 
         <Label text="BLUEPRINT HELL" fx:id="title"/>
 
-        <Button text="START GAME"/>
-        <Button text="LEVEL SELECT"/>
-        <Button text="SETTINGS"/>
-        <Button text="EXIT"/>
+        <Button text="START GAME" onAction="#handleStartGame"/>
+        <Button text="LEVEL SELECT" onAction="#handleSelectLevel"/>
+        <Button text="SETTINGS" onAction="#handleSettings"/>
+        <Button text="EXIT" onAction="#handleExit"/>
     </VBox>
 </AnchorPane>
