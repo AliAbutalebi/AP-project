@@ -2,20 +2,20 @@ package com.blueprinthell.map;
 
 import com.google.gson.Gson;
 import com.blueprinthell.model.GameMap;
+import com.google.gson.GsonBuilder;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Random;
 
 public class MapLoader {
     private static File[] mapFiles = new File("./src/main/resources/map").listFiles();
+    
     public static GameMap loadMap(File mapFile) {
-        Gson gson = new Gson();
-        try {
-            InputStream inputStream = new FileInputStream(mapFile);
-            InputStreamReader reader = new InputStreamReader(inputStream);
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(GameMap.class, new GameMapDeserializer())
+                .create();
+
+        try (Reader reader = new FileReader(mapFile)) {
             return gson.fromJson(reader, GameMap.class);
         } catch (Exception e) {
             e.printStackTrace();
