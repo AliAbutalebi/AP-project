@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class GameMap {
     private ArrayList<SystemNode> systemNodes;
-    private ArrayList<Packet> packets;
     private double maxWireLength; //TODO: double-check for making maxWireLength final
 
     public void setSystemNodes(ArrayList<SystemNode> systemNodes) {
