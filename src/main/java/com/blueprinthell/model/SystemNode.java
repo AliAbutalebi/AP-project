@@ -53,6 +53,3 @@ public abstract class SystemNode {
     }
 }
 
-public class ReferenceSystemNode extends SystemNode {
-
-}

@@ -44,14 +44,3 @@ public abstract class Port {
     }
 }
 
-public class SquarePort extends Port {
-    public SquarePort(boolean isInput, int parentSystemId) {
-        super(isInput, parentSystemId);
-    }
-}
-
-public class TrianglePort extends Port {
-    public TrianglePort(boolean isInput, int parentSystemId) {
-        super(isInput, parentSystemId);
-    }
-}
