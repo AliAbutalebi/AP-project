@@ -1,0 +1,86 @@
+{
+    "systemNodes": [
+        {
+            "id": 0,
+            "packetQueue": [
+                {
+                    "id": 0,
+                    "speed": null,
+                    "noise": 0,
+                    "stateOnWire": null,
+                    "currentWire": null,
+                    "isAlive": true
+                },
+                {
+                    "id": 1,
+                    "speed": null,
+                    "noise": 0,
+                    "stateOnWire": null,
+                    "currentWire": null,
+                    "isAlive": true
+                },
+                {
+                    "id": 2,
+                    "speed": null,
+                    "noise": 0,
+                    "stateOnWire": null,
+                    "currentWire": null,
+                    "isAlive": true
+                },
+                {
+                    "id": 3,
+                    "speed": null,
+                    "noise": 0,
+                    "stateOnWire": null,
+                    "currentWire": null,
+                    "isAlive": true
+                }
+            ],
+            "inputPorts": [
+                {
+                    "id": 0,
+                    "isInput": true,
+                    "occupied": false,
+                    "connectedWire": null,
+                    "parentSystemId": 0
+                },
+                {
+                    "id": 1,
+                    "isInput": true,
+                    "occupied": false,
+                    "connectedWire": null,
+                    "parentSystemId": 0
+                }
+            ],
+            "outputPorts": [
+                {
+                    "id": 2,
+                    "isInput": false,
+                    "occupied": false,
+                    "connectedWire": null,
+                    "parentSystemId": 0
+                },
+                {
+                    "id": 3,
+                    "isInput": false,
+                    "occupied": false,
+                    "connectedWire": null,
+                    "parentSystemId": 0
+                },
+                {
+                    "id": 4,
+                    "isInput": false,
+                    "occupied": false,
+                    "connectedWire": null,
+                    "parentSystemId": 0
+                }
+            ],
+            "position": {
+                "width": 10,
+                "height": 500
+            },
+            "isActive": false
+        }
+    ],
+    "maxWireLength": 1000
+}
