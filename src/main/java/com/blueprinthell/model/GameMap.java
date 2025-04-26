@@ -14,14 +14,6 @@ public class GameMap {
         return systemNodes;
     }
 
-    public void setPackets(ArrayList<Packet> packets) {
-        this.packets = packets;
-    }
-
-    public ArrayList<Packet> getPackets() {
-        return packets;
-    }
-
     public void setMaxWireLength(double maxWireLength) {
         this.maxWireLength = maxWireLength;
     }
