@@ -89,6 +89,8 @@ public class SystemNodeView extends StackPane {
         }
 
         getChildren().addAll(inputPortPane, outputPortPane);
+        inputPortPane.getStyleClass().add("input-port-pane");
+        outputPortPane.getStyleClass().add("output0port-pane");
     }
 
     private Polygon createPortView(Port port) {
