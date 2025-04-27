@@ -1,0 +1,29 @@
+.system-node {
+    -fx-background-color: transparent;
+}
+
+.system-node-background {
+    -fx-background-color: #4D4D4D;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #666666;
+}
+
+.system-node-indicator-panel {
+    -fx-background-color: #3D3D3D;
+    -fx-background-radius: 10px;
+}
+
+.indicator {
+    -fx-border-radius: 5px;
+    -fx-border-color: #666666;
+    -fx-background-radius: 10px;
+}
+
+.input-port-pane {
+    -fx-background-color: #666666;
+}
+
+.output-port-pane {
+    -fx-background-color: #666666;
+}
