@@ -1,9 +1,6 @@
 package com.blueprinthell.view;
 
-import com.blueprinthell.model.Port;
-import com.blueprinthell.model.SquarePort;
-import com.blueprinthell.model.SystemNode;
-import com.blueprinthell.model.TrianglePort;
+import com.blueprinthell.model.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -15,8 +12,8 @@ import java.util.List;
 public class SystemNodeView extends AnchorPane {
 
 
-    private static final double NODE_WIDTH = 120;
-    private static final double NODE_HEIGHT = 180;
+    private static final double NODE_WIDTH = ScreenDimensions.getInstance().getWidth() / 15;
+    private static final double NODE_HEIGHT = ScreenDimensions.getInstance().getHeight() / 5;
     private static final double PORT_SIZE = 6;
     private static final double PORT_SPACING = 20;
     private static final double PORT_PANE_WIDTH = 25;
@@ -52,14 +49,14 @@ public class SystemNodeView extends AnchorPane {
         Rectangle background = new Rectangle(NODE_WIDTH, NODE_HEIGHT);
         background.setFill(Color.web("#4D4D4D"));
         background.setStroke(Color.web("#666666"));
-        background.setStrokeWidth(2);
+        background.setStrokeWidth(5);
         background.setArcWidth(10);
         background.setArcHeight(10);
         indicatorPane = new Pane();
         indicatorPanel = new Rectangle(NODE_WIDTH, INDICATOR_HEIGHT + 10);
         indicatorPanel.setFill(Color.web("#3D3D3D"));
-        indicatorPanel.setArcWidth(5);
-        indicatorPanel.setArcHeight(5);
+        indicatorPanel.setArcWidth(10);
+        indicatorPanel.setArcHeight(10);
         background.getStyleClass().add("system-node-background");
         indicatorPanel.getStyleClass().add("system-node-indicator-panel");
         indicatorPane.getChildren().add(indicatorPanel);
@@ -73,7 +70,7 @@ public class SystemNodeView extends AnchorPane {
         indicator = new Rectangle(INDICATOR_WIDTH, INDICATOR_HEIGHT);
         indicator.setFill(Color.web("#FF0000"));
         indicator.setStroke(Color.web("#666666"));
-        indicator.setStrokeWidth(2);
+        indicator.setStrokeWidth(3);
         indicator.setLayoutX(5);
         indicator.setLayoutY(5);
         indicator.setArcWidth(10);
