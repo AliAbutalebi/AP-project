@@ -89,6 +89,7 @@ public class SystemNodeView extends StackPane {
             double halfSize = PORT_SIZE / 2;
 
             Polygon square = new Polygon();
+            square.setUserData(port);
             square.getPoints().addAll(
                     -halfSize, -halfSize,
                     halfSize, -halfSize,
@@ -103,6 +104,7 @@ public class SystemNodeView extends StackPane {
             double halfBase = PORT_SIZE / 2;
 
             Polygon triangle = new Polygon();
+            triangle.setUserData(port);
             triangle.getPoints().addAll(
                     -halfBase, height / 2,
                     halfBase, height / 2,
