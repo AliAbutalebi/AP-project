@@ -40,6 +40,8 @@ public class SystemNodeView extends StackPane {
         setLayoutX(systemNode.getPosition().getWidth());
         setLayoutY(systemNode.getPosition().getHeight());
 
+        getStyleClass().add("system-node");
+
     }
 
     private void setupBackground() {
@@ -48,6 +50,9 @@ public class SystemNodeView extends StackPane {
         indicatorPanel.setLayoutX(0);
         indicatorPanel.setLayoutY(0);
         getChildren().add(background);
+        background.getStyleClass().add("system-node-background");
+        indicatorPanel.getStyleClass().add("system-node-indicator-panel");
+
     }
 
     private void setupIndicator() {
@@ -55,6 +60,7 @@ public class SystemNodeView extends StackPane {
         indicator.setLayoutX((NODE_WIDTH - INDICATOR_WIDTH) / 2);
         indicator.setLayoutY((NODE_HEIGHT - INDICATOR_HEIGHT - 10) / 2);
         getChildren().add(indicator);
+        indicator.getStyleClass().add("indicator");
     }
 
     private void setupPorts() {
@@ -69,6 +75,7 @@ public class SystemNodeView extends StackPane {
             portView.setLayoutX(-NODE_WIDTH / 2 - PORT_SIZE);
             portView.setLayoutY(startY + i * PORT_SPACING);
             inputPortPane.getChildren().add(portView);
+            portView.getStyleClass().add("port");
         }
 
         startY = -(PORT_SPACING * (outputPorts.size() - 1)) / 2;
