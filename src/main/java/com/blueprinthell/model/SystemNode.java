@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public abstract class SystemNode {
+public class SystemNode {
     private int id;
     private final Queue<Packet> packetQueue = new LinkedList<>();
     private static final int maxPacketInQueue = 5;

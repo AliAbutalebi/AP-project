@@ -20,10 +20,10 @@
     -fx-background-radius: 10px;
 }
 
-.input-port-pane {
+.input-port-panel {
     -fx-background-color: #666666;
 }
 
-.output-port-pane {
+.output-port-panel {
     -fx-background-color: #666666;
 }

@@ -4,28 +4,30 @@ import com.blueprinthell.model.Port;
 import com.blueprinthell.model.SquarePort;
 import com.blueprinthell.model.SystemNode;
 import com.blueprinthell.model.TrianglePort;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Circle;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 
 import java.util.List;
 
-public class SystemNodeView extends StackPane {
+public class SystemNodeView extends AnchorPane {
 
 
-    private static final double NODE_WIDTH = 80;
-    private static final double NODE_HEIGHT = 120;
+    private static final double NODE_WIDTH = 120;
+    private static final double NODE_HEIGHT = 180;
     private static final double PORT_SIZE = 6;
     private static final double PORT_SPACING = 20;
-    private static final double INDICATOR_WIDTH = NODE_WIDTH /2;
-    private static final double INDICATOR_HEIGHT = 20;
+    private static final double PORT_PANE_WIDTH = 25;
+    private static final double INDICATOR_WIDTH = NODE_WIDTH / 3;
+    private static final double INDICATOR_HEIGHT = 10;
 
     private SystemNode systemNode;
     private Pane inputPortPane;
     private Pane outputPortPane;
     private Pane indicatorPane;
+    private Rectangle indicatorPanel;
     private Rectangle indicator;
 
     public SystemNodeView(SystemNode systemNode) {
@@ -34,8 +36,10 @@ public class SystemNodeView extends StackPane {
         this.outputPortPane = new Pane();
 
         setupBackground();
-        setupIndicator();
         setupPorts();
+        setupIndicator();
+        getChildren().add(indicatorPane);
+
 
         setLayoutX(systemNode.getPosition().getWidth());
         setLayoutY(systemNode.getPosition().getHeight());
@@ -46,26 +50,58 @@ public class SystemNodeView extends StackPane {
 
     private void setupBackground() {
         Rectangle background = new Rectangle(NODE_WIDTH, NODE_HEIGHT);
-        Rectangle indicatorPanel = new Rectangle(NODE_WIDTH, INDICATOR_HEIGHT + 10);
-        indicatorPanel.setLayoutX(0);
-        indicatorPanel.setLayoutY(0);
-        getChildren().add(background);
+        background.setFill(Color.web("#4D4D4D"));
+        background.setStroke(Color.web("#666666"));
+        background.setStrokeWidth(2);
+        background.setArcWidth(10);
+        background.setArcHeight(10);
+        indicatorPane = new Pane();
+        indicatorPanel = new Rectangle(NODE_WIDTH, INDICATOR_HEIGHT + 10);
+        indicatorPanel.setFill(Color.web("#3D3D3D"));
+        indicatorPanel.setArcWidth(5);
+        indicatorPanel.setArcHeight(5);
         background.getStyleClass().add("system-node-background");
         indicatorPanel.getStyleClass().add("system-node-indicator-panel");
+        indicatorPane.getChildren().add(indicatorPanel);
+        getChildren().add(background);
+        indicatorPanel.setLayoutX(0);
+        indicatorPanel.setLayoutY(0);
 
     }
 
     private void setupIndicator() {
         indicator = new Rectangle(INDICATOR_WIDTH, INDICATOR_HEIGHT);
-        indicator.setLayoutX((NODE_WIDTH - INDICATOR_WIDTH) / 2);
-        indicator.setLayoutY((NODE_HEIGHT - INDICATOR_HEIGHT - 10) / 2);
-        getChildren().add(indicator);
+        indicator.setFill(Color.web("#FF0000"));
+        indicator.setStroke(Color.web("#666666"));
+        indicator.setStrokeWidth(2);
+        indicator.setLayoutX(5);
+        indicator.setLayoutY(5);
+        indicator.setArcWidth(10);
+        indicator.setArcHeight(10);
         indicator.getStyleClass().add("indicator");
+        indicatorPane.getChildren().add(indicator);
     }
 
     private void setupPorts() {
         List<Port> inputPorts = systemNode.getInputPorts();
         List<Port> outputPorts = systemNode.getOutputPorts();
+
+        Rectangle inportPanel = new Rectangle(PORT_PANE_WIDTH, NODE_HEIGHT);
+        Rectangle outportPanel = new Rectangle(PORT_PANE_WIDTH, NODE_HEIGHT);
+        inportPanel.getStyleClass().add("input-port-panel");
+        outportPanel.getStyleClass().add("output-port-panel");
+        inportPanel.setFill(Color.web("#666666"));
+        outportPanel.setFill(Color.web("#666666"));
+
+        inputPortPane.setMaxWidth(PORT_PANE_WIDTH);
+        inputPortPane.setLayoutX(0);
+        inputPortPane.setLayoutY(0);
+        outputPortPane.setMaxWidth(PORT_PANE_WIDTH);
+        outputPortPane.setLayoutX(NODE_WIDTH - PORT_PANE_WIDTH);
+        outputPortPane.setLayoutY(0);
+
+        inputPortPane.getChildren().addAll(inportPanel);
+        outputPortPane.getChildren().addAll(outportPanel);
 
         double startY = -(PORT_SPACING * (inputPorts.size() - 1)) / 2;
 
@@ -74,8 +110,8 @@ public class SystemNodeView extends StackPane {
             Polygon portView = createPortView(port);
             portView.setLayoutX(-NODE_WIDTH / 2 - PORT_SIZE);
             portView.setLayoutY(startY + i * PORT_SPACING);
-            inputPortPane.getChildren().add(portView);
             portView.getStyleClass().add("port");
+            inputPortPane.getChildren().add(portView);
         }
 
         startY = -(PORT_SPACING * (outputPorts.size() - 1)) / 2;
@@ -89,8 +125,6 @@ public class SystemNodeView extends StackPane {
         }
 
         getChildren().addAll(inputPortPane, outputPortPane);
-        inputPortPane.getStyleClass().add("input-port-pane");
-        outputPortPane.getStyleClass().add("output0port-pane");
     }
 
     private Polygon createPortView(Port port) {
