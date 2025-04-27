@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.Random;
 
 public class MapLoader {
-    private static File[] mapFiles = new File("./src/main/resources/map").listFiles();
+    private static File[] mapFiles = new File("./src/main/resources/com/blueprinthell/map").listFiles();
     
     public static GameMap loadMap(File mapFile) {
         Gson gson = new GsonBuilder()
@@ -23,7 +23,7 @@ public class MapLoader {
         }
     }
 
-    public static GameMap loadRandomMap(String mapFile) {
+    public static GameMap loadRandomMap() {
         Random rand = new Random();
         File randomMapFile = mapFiles[rand.nextInt(mapFiles.length)];
         return loadMap(randomMapFile);
