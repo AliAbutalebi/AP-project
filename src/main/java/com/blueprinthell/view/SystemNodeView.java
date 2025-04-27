@@ -157,4 +157,13 @@ public class SystemNodeView extends AnchorPane {
         }
         return null;
     }
+
+    public void switchIndicator(boolean isActive) {
+        if (isActive) {
+            indicator.setFill(Color.web("#0000FF"));
+        }
+        else {
+            indicator.setFill(Color.web("#FF0000"));
+        }
+    }
 }
