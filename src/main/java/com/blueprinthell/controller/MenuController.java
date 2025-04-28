@@ -2,10 +2,15 @@ package com.blueprinthell.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class MenuController extends BaseController {
+
+    @FXML
+    private AnchorPane rootPane;
 
     public void initialize() {}
 

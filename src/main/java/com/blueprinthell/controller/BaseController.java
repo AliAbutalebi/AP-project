@@ -12,9 +12,18 @@ import java.io.IOException;
 public abstract class BaseController {
 
     protected void switchScene(String fxmlPath, ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+        Parent root = loader.load();
+
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.show();
+        Scene scene = stage.getScene();
+
+        if (scene == null) {
+            scene = new Scene(root);
+            stage.setScene(scene);
+        } else {
+            scene.setRoot(root);
+        }
+
     }
 }
