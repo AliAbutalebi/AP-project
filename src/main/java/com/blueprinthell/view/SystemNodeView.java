@@ -14,11 +14,13 @@ public class SystemNodeView extends AnchorPane {
 
     private static final double NODE_WIDTH = ScreenDimensions.getInstance().getWidth() / 15;
     private static final double NODE_HEIGHT = ScreenDimensions.getInstance().getHeight() / 5;
-    private static final double PORT_SIZE = 6;
-    private static final double PORT_SPACING = 20;
+    private static final double NODE_STROKE = 5;
+    private static final double PORT_SIZE = 15;
+    private static final double PORT_SPACING = PORT_SIZE * 2;
     private static final double PORT_PANE_WIDTH = 25;
     private static final double INDICATOR_WIDTH = NODE_WIDTH / 3;
     private static final double INDICATOR_HEIGHT = 10;
+    private static final double INDICATOR_STROKE = 2;
 
     private SystemNode systemNode;
     private Pane inputPortPane;
@@ -49,12 +51,14 @@ public class SystemNodeView extends AnchorPane {
         Rectangle background = new Rectangle(NODE_WIDTH, NODE_HEIGHT);
         background.setFill(Color.web("#4D4D4D"));
         background.setStroke(Color.web("#666666"));
-        background.setStrokeWidth(5);
+        background.setStrokeWidth(NODE_STROKE);
         background.setArcWidth(10);
         background.setArcHeight(10);
         indicatorPane = new Pane();
         indicatorPanel = new Rectangle(NODE_WIDTH, INDICATOR_HEIGHT + 10);
         indicatorPanel.setFill(Color.web("#3D3D3D"));
+        indicatorPanel.setStroke(Color.web("#666666"));
+        indicatorPanel.setStrokeWidth(1);
         indicatorPanel.setArcWidth(10);
         indicatorPanel.setArcHeight(10);
         background.getStyleClass().add("system-node-background");
@@ -70,7 +74,7 @@ public class SystemNodeView extends AnchorPane {
         indicator = new Rectangle(INDICATOR_WIDTH, INDICATOR_HEIGHT);
         indicator.setFill(Color.web("#FF0000"));
         indicator.setStroke(Color.web("#666666"));
-        indicator.setStrokeWidth(3);
+        indicator.setStrokeWidth(INDICATOR_STROKE);
         indicator.setLayoutX(5);
         indicator.setLayoutY(5);
         indicator.setArcWidth(10);
@@ -97,26 +101,26 @@ public class SystemNodeView extends AnchorPane {
         outputPortPane.setLayoutX(NODE_WIDTH - PORT_PANE_WIDTH);
         outputPortPane.setLayoutY(0);
 
-        inputPortPane.getChildren().addAll(inportPanel);
-        outputPortPane.getChildren().addAll(outportPanel);
+        inputPortPane.getChildren().add(inportPanel);
+        outputPortPane.getChildren().add(outportPanel);
 
-        double startY = -(PORT_SPACING * (inputPorts.size() - 1)) / 2;
+        double startY = INDICATOR_HEIGHT + 30;
 
         for (int i = 0; i < inputPorts.size(); i++) {
             Port port = inputPorts.get(i);
             Polygon portView = createPortView(port);
-            portView.setLayoutX(-NODE_WIDTH / 2 - PORT_SIZE);
+            portView.setStroke(Color.web("#000000"));
+            portView.setLayoutX(-NODE_STROKE / 2);
             portView.setLayoutY(startY + i * PORT_SPACING);
             portView.getStyleClass().add("port");
             inputPortPane.getChildren().add(portView);
         }
 
-        startY = -(PORT_SPACING * (outputPorts.size() - 1)) / 2;
-
         for (int i = 0; i < outputPorts.size(); i++) {
             Port port = outputPorts.get(i);
             Polygon portView = createPortView(port);
-            portView.setLayoutX(NODE_WIDTH / 2 + PORT_SIZE);
+            portView.setStroke(Color.web("#666666"));
+            portView.setLayoutX(PORT_PANE_WIDTH + (NODE_STROKE / 2));
             portView.setLayoutY(startY + i * PORT_SPACING);
             outputPortPane.getChildren().add(portView);
         }
@@ -136,6 +140,8 @@ public class SystemNodeView extends AnchorPane {
                     halfSize, halfSize,
                     -halfSize, halfSize
             );
+            square.setFill(Color.web("#00FF00"));
+            square.setStrokeWidth(2);
             return square;
         }
 
@@ -150,6 +156,8 @@ public class SystemNodeView extends AnchorPane {
                     halfBase, height / 2,
                     0.0, -height / 2
             );
+            triangle.setFill(Color.web("#FFFF00"));
+            triangle.setStrokeWidth(2);
             return triangle;
         }
         return null;
