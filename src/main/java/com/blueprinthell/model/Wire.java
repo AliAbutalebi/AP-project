@@ -10,7 +10,9 @@ public class Wire {
     private Port destinationPort;
     private double length;
     private Packet packetOnWire;
-    private Dimension2D startPoint, endPoint;
+    private double startX, startY, endX, endY;
+
+    public Wire(Dimension2D startPoint,Dimension2D endPoint) {}
 
     public void setId(int id) {
         this.id = id;
@@ -42,17 +44,30 @@ public class Wire {
     public Packet getPacketOnWire() {
         return packetOnWire;
     }
-    public void setStartPoint(Dimension2D startPoint) {
-        this.startPoint = startPoint;
+
+    public void setStartX(double startX) {
+        this.startX = startX;
     }
-    public Dimension2D getStartPoint() {
-        return startPoint;
+    public double getStartX() {
+        return startX;
     }
-    public void setEndPoint(Dimension2D endPoint) {
-        this.endPoint = endPoint;
+    public void setStartY(double startY) {
+        this.startY = startY;
     }
-    public Dimension2D getEndPoint() {
-        return endPoint;
+    public double getStartY() {
+        return startY;
+    }
+    public void setEndX(double endX) {
+        this.endX = endX;
+    }
+    public double getEndX() {
+        return endX;
+    }
+    public void setEndY(double endY) {
+        this.endY = endY;
+    }
+    public double getEndY() {
+        return endY;
     }
 
 }
