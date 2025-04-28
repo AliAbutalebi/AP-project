@@ -69,10 +69,3 @@ public abstract class Packet {
     }
 }
 
-public class SquarePacket extends Packet {
-    private final int SIZE = 2;
-}
-
-public class TrianglePacket extends Packet {
-    private final int SIZE = 3;
-}
