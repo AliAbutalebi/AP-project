@@ -4,13 +4,12 @@ import com.blueprinthell.model.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SystemNodeView extends AnchorPane {
-
 
     private static final double NODE_WIDTH = ScreenDimensions.getInstance().getWidth() / 15;
     private static final double NODE_HEIGHT = ScreenDimensions.getInstance().getHeight() / 5;
@@ -28,23 +27,25 @@ public class SystemNodeView extends AnchorPane {
     private Pane indicatorPane;
     private Rectangle indicatorPanel;
     private Rectangle indicator;
+    private ArrayList<PortView> inputPortViews;
+    private ArrayList<PortView> outputPortViews;
 
     public SystemNodeView(SystemNode systemNode) {
         this.systemNode = systemNode;
         this.inputPortPane = new Pane();
         this.outputPortPane = new Pane();
+        this.inputPortViews = new ArrayList<>();
+        this.outputPortViews = new ArrayList<>();
 
         setupBackground();
         setupPorts();
         setupIndicator();
         getChildren().add(indicatorPane);
 
-
         setLayoutX(systemNode.getPosition().getWidth());
         setLayoutY(systemNode.getPosition().getHeight());
 
         getStyleClass().add("system-node");
-
     }
 
     private void setupBackground() {
@@ -54,6 +55,8 @@ public class SystemNodeView extends AnchorPane {
         background.setStrokeWidth(NODE_STROKE);
         background.setArcWidth(10);
         background.setArcHeight(10);
+        background.getStyleClass().add("system-node-background");
+
         indicatorPane = new Pane();
         indicatorPanel = new Rectangle(NODE_WIDTH, INDICATOR_HEIGHT + 10);
         indicatorPanel.setFill(Color.web("#3D3D3D"));
@@ -61,13 +64,13 @@ public class SystemNodeView extends AnchorPane {
         indicatorPanel.setStrokeWidth(1);
         indicatorPanel.setArcWidth(10);
         indicatorPanel.setArcHeight(10);
-        background.getStyleClass().add("system-node-background");
         indicatorPanel.getStyleClass().add("system-node-indicator-panel");
+
         indicatorPane.getChildren().add(indicatorPanel);
         getChildren().add(background);
+
         indicatorPanel.setLayoutX(0);
         indicatorPanel.setLayoutY(0);
-
     }
 
     private void setupIndicator() {
@@ -80,6 +83,7 @@ public class SystemNodeView extends AnchorPane {
         indicator.setArcWidth(10);
         indicator.setArcHeight(10);
         indicator.getStyleClass().add("indicator");
+
         indicatorPane.getChildren().add(indicator);
     }
 
@@ -97,6 +101,7 @@ public class SystemNodeView extends AnchorPane {
         inputPortPane.setMaxWidth(PORT_PANE_WIDTH);
         inputPortPane.setLayoutX(0);
         inputPortPane.setLayoutY(0);
+
         outputPortPane.setMaxWidth(PORT_PANE_WIDTH);
         outputPortPane.setLayoutX(NODE_WIDTH - PORT_PANE_WIDTH);
         outputPortPane.setLayoutY(0);
@@ -108,67 +113,40 @@ public class SystemNodeView extends AnchorPane {
 
         for (int i = 0; i < inputPorts.size(); i++) {
             Port port = inputPorts.get(i);
-            Polygon portView = createPortView(port);
+            PortView portView = new PortView(port);
             portView.setStroke(Color.web("#000000"));
             portView.setLayoutX(-NODE_STROKE / 2);
             portView.setLayoutY(startY + i * PORT_SPACING);
-            portView.getStyleClass().add("port");
+            inputPortViews.add(portView);
             inputPortPane.getChildren().add(portView);
         }
 
         for (int i = 0; i < outputPorts.size(); i++) {
             Port port = outputPorts.get(i);
-            Polygon portView = createPortView(port);
+            PortView portView = new PortView(port);
             portView.setStroke(Color.web("#666666"));
             portView.setLayoutX(PORT_PANE_WIDTH + (NODE_STROKE / 2));
             portView.setLayoutY(startY + i * PORT_SPACING);
+            outputPortViews.add(portView);
             outputPortPane.getChildren().add(portView);
         }
 
         getChildren().addAll(inputPortPane, outputPortPane);
     }
 
-    private Polygon createPortView(Port port) {
-        if (port instanceof SquarePort) {
-            double halfSize = PORT_SIZE / 2;
-
-            Polygon square = new Polygon();
-            square.setUserData(port);
-            square.getPoints().addAll(
-                    -halfSize, -halfSize,
-                    halfSize, -halfSize,
-                    halfSize, halfSize,
-                    -halfSize, halfSize
-            );
-            square.setFill(Color.web("#00FF00"));
-            square.setStrokeWidth(2);
-            return square;
-        }
-
-        else if (port instanceof TrianglePort) {
-            double height = Math.sqrt(3) / 2 * PORT_SIZE;
-            double halfBase = PORT_SIZE / 2;
-
-            Polygon triangle = new Polygon();
-            triangle.setUserData(port);
-            triangle.getPoints().addAll(
-                    -halfBase, height / 2,
-                    halfBase, height / 2,
-                    0.0, -height / 2
-            );
-            triangle.setFill(Color.web("#FFFF00"));
-            triangle.setStrokeWidth(2);
-            return triangle;
-        }
-        return null;
-    }
-
     public void switchIndicator(boolean isActive) {
         if (isActive) {
             indicator.setFill(Color.web("#0000FF"));
-        }
-        else {
+        } else {
             indicator.setFill(Color.web("#FF0000"));
         }
+    }
+
+    public List<PortView> getInputPortViews() {
+        return inputPortViews;
+    }
+
+    public List<PortView> getOutputPortViews() {
+        return outputPortViews;
     }
 }
