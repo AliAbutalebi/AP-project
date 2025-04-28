@@ -25,8 +25,7 @@ public class PortView extends Polygon {
                     halfSize, halfSize,
                     -halfSize, halfSize
             );
-            setFill(Color.LIGHTGREEN);
-            setStroke(Color.BLACK);
+            setFill(Color.web("#00FF00"));
             setStrokeWidth(2);
         }
         else if (port instanceof TrianglePort) {
@@ -37,8 +36,7 @@ public class PortView extends Polygon {
                     halfBase, height / 2,
                     0.0, -height / 2
             );
-            setFill(Color.LIGHTYELLOW);
-            setStroke(Color.BLACK);
+            setFill(Color.web("#FFFF00"));
             setStrokeWidth(2);
         }
     }
