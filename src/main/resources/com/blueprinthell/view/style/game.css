@@ -1,29 +1,33 @@
-.system-node {
-    -fx-background-color: transparent;
-}
+/*.system-node {*/
+/*    -fx-background-color: transparent;*/
+/*}*/
 
-.system-node-background {
-    -fx-background-color: #4D4D4D;
-    -fx-background-radius: 10px;
-    -fx-border-radius: 5px;
-    -fx-border-color: #666666;
-}
+/*.system-node-background {*/
+/*    -fx-background-color: #4D4D4D;*/
+/*    -fx-background-radius: 10px;*/
+/*    -fx-border-radius: 5px;*/
+/*    -fx-border-color: #666666;*/
+/*}*/
 
-.system-node-indicator-panel {
-    -fx-background-color: #3D3D3D;
-    -fx-background-radius: 10px;
-}
+/*.system-node-indicator-panel {*/
+/*    -fx-background-color: #3D3D3D;*/
+/*    -fx-background-radius: 10px;*/
+/*}*/
 
-.indicator {
-    -fx-border-radius: 5px;
-    -fx-border-color: #666666;
-    -fx-background-radius: 10px;
-}
+/*.indicator {*/
+/*    -fx-border-radius: 5px;*/
+/*    -fx-border-color: #666666;*/
+/*    -fx-background-radius: 10px;*/
+/*}*/
 
-.input-port-panel {
-    -fx-background-color: #666666;
-}
+/*.input-port-panel {*/
+/*    -fx-background-color: #666666;*/
+/*}*/
 
-.output-port-panel {
-    -fx-background-color: #666666;
+/*.output-port-panel {*/
+/*    -fx-background-color: #666666;*/
+/*}*/
+
+#rootPane {
+    -fx-background-color: #222222;
 }
