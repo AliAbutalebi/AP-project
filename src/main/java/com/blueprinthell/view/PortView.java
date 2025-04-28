@@ -1,0 +1,53 @@
+package com.blueprinthell.view;
+
+import com.blueprinthell.model.Port;
+import com.blueprinthell.model.SquarePort;
+import com.blueprinthell.model.TrianglePort;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
+
+public class PortView extends Polygon {
+
+    private Port port;
+    private static final double PORT_SIZE = 15;
+
+    public PortView(Port port) {
+        this.port = port;
+        setupShape();
+    }
+
+    private void setupShape() {
+        if (port instanceof SquarePort) {
+            double halfSize = PORT_SIZE / 2;
+            getPoints().addAll(
+                    -halfSize, -halfSize,
+                    halfSize, -halfSize,
+                    halfSize, halfSize,
+                    -halfSize, halfSize
+            );
+            setFill(Color.LIGHTGREEN);
+            setStroke(Color.BLACK);
+            setStrokeWidth(2);
+        }
+        else if (port instanceof TrianglePort) {
+            double height = Math.sqrt(3) / 2 * PORT_SIZE;
+            double halfBase = PORT_SIZE / 2;
+            getPoints().addAll(
+                    -halfBase, height / 2,
+                    halfBase, height / 2,
+                    0.0, -height / 2
+            );
+            setFill(Color.LIGHTYELLOW);
+            setStroke(Color.BLACK);
+            setStrokeWidth(2);
+        }
+    }
+
+    public void updateView() {
+
+    }
+
+    public Port getPort() {
+        return port;
+    }
+}
