@@ -11,6 +11,7 @@ public abstract class Packet {
     private Dimension2D center;
     private Wire currentWire;
     private boolean isAlive = true;
+    private Dimension2D position;
 
     public void setId(int id) {
         this.id = id;
@@ -66,6 +67,13 @@ public abstract class Packet {
 
     public boolean isAlive() {
         return isAlive;
+    }
+
+    public void setPosition(Dimension2D position) {
+        this.position = position;
+    }
+    public Dimension2D getPosition() {
+        return position;
     }
 }
 
