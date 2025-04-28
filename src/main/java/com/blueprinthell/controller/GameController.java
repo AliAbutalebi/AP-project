@@ -1,25 +1,92 @@
 package com.blueprinthell.controller;
 
-import com.blueprinthell.model.SystemNode;
-import com.blueprinthell.view.SystemNodeView;
-import javafx.event.ActionEvent;
+import com.blueprinthell.map.MapLoader;
+import com.blueprinthell.model.*;
+import com.blueprinthell.view.*;
+import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
-import javafx.geometry.Dimension2D;
 import javafx.scene.layout.AnchorPane;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class GameController extends BaseController {
+public class GameController {
 
     @FXML
-    private AnchorPane rootPane;
+    private AnchorPane rootPane; // From FXML
+
+    private GameMap gameMap; // The model (you load from JSON)
+
+    private List<SystemNodeView> systemNodeViews = new ArrayList<>();
+    private List<WireView> wireViews = new ArrayList<>();
+    private List<PacketView> packetViews = new ArrayList<>();
+
+    // Optional: Fast lookup maps if needed
+    private Map<SystemNode, SystemNodeView> nodeToView = new HashMap<>();
+    private Map<Wire, WireView> wireToView = new HashMap<>();
+    private Map<Packet, PacketView> packetToView = new HashMap<>();
+
+    private AnimationTimer gameLoop;
 
     @FXML
     public void initialize() {
-        // TODO: Fix the disconnection of SystemNodeView and game.css
-        SystemNode systemNode = new SystemNode();
-        systemNode.setPosition(new Dimension2D(100, 100));
-        SystemNodeView systemNodeView = new SystemNodeView(systemNode);
-        rootPane.getChildren().add(systemNodeView);
+        setGameMap(MapLoader.loadRandomMap());
+    }
+
+    public void setGameMap(GameMap gameMap) {
+        this.gameMap = gameMap;
+        renderInitialMap();
+        startGameLoop();
+    }
+
+    private void renderInitialMap() {
+        // 1. Render all SystemNodes
+        for (SystemNode node : gameMap.getSystemNodes()) {
+            SystemNodeView nodeView = new SystemNodeView(node);
+            rootPane.getChildren().add(nodeView);
+
+            systemNodeViews.add(nodeView);
+            nodeToView.put(node, nodeView);
+
+        }
+
+        // 2. Render all Wires
+    }
+
+    private void startGameLoop() {
+        gameLoop = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                update();
+                render();
+            }
+        };
+        gameLoop.start();
+    }
+
+    private void update() {
+        // 1. Update your game models here (e.g., move packets, process collisions, update system nodes)
+
+        // Example (pseudo code):
+        // for (Packet packet : gameMap.getPackets()) {
+        //     packet.updatePosition();
+        // }
+    }
+
+    private void render() {
+        // 1. Update view classes based on models
+//        for (SystemNodeView nodeView : systemNodeViews) {
+//            nodeView.updateView(); // if needed later
+//        }
+
+        for (WireView wireView : wireViews) {
+            wireView.updateView();
+        }
+
+        for (PacketView packetView : packetViews) {
+            packetView.updateView();
+        }
     }
 }
