@@ -1,39 +1,51 @@
 package com.blueprinthell.view;
 
-import com.blueprinthell.model.SquarePort;
-import com.blueprinthell.model.TrianglePort;
 import com.blueprinthell.model.Wire;
-import javafx.geometry.Dimension2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 public class WireView extends Line {
-    private static final double WIRE_WIDTH = 5;
+
     private Wire wire;
-    private boolean onValidPort = false;
+
+    private static final double DEFAULT_STROKE_WIDTH = 2.0;
+    private static final Color DEFAULT_COLOR = Color.GRAY;
+    private static final Color ACTIVE_COLOR = Color.LIMEGREEN;
+    private static final Color INVALID_COLOR = Color.RED;
 
     public WireView(Wire wire) {
-        super(wire.getStartPoint().getWidth(), wire.getStartPoint().getHeight(), wire.getEndPoint().getWidth(), wire.getEndPoint().getHeight());
+        super(wire.getStartX(), wire.getStartY(), wire.getEndX(), wire.getEndY());
+
         this.wire = wire;
-        setUserData(wire);
-
-        setWireStyle();
+        initializeStyle();
     }
 
-    private void setWireStyle() {
-        setStrokeWidth(WIRE_WIDTH);
-        if (onValidPort) {
-            if (wire.getSourcePort() instanceof SquarePort) {
-                setStroke(Color.web("#00FF00"));
-            }
-            else if (wire.getSourcePort() instanceof TrianglePort) {
-                setStroke(Color.web("#FFFF00"));
-            }
-        }
-        else {
-            setStroke(Color.web("#666666"));
-        }
+    private void initializeStyle() {
+        setStroke(DEFAULT_COLOR);
+        setStrokeWidth(DEFAULT_STROKE_WIDTH);
+        setSmooth(true);
     }
 
+    public void updateView() {
+        setStartX(wire.getStartX());
+        setStartY(wire.getStartY());
+        setEndX(wire.getEndX());
+        setEndY(wire.getEndY());
+    }
 
+    public void activate() {
+        setStroke(ACTIVE_COLOR);
+    }
+
+    public void deactivate() {
+        setStroke(DEFAULT_COLOR);
+    }
+
+    public void markInvalid() {
+        setStroke(INVALID_COLOR);
+    }
+
+    public void markValid() {
+        setStroke(DEFAULT_COLOR);
+    }
 }
