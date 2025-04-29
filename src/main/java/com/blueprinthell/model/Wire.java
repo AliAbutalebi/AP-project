@@ -1,8 +1,6 @@
 package com.blueprinthell.model;
 
-import javafx.geometry.Dimension2D;
-
-import java.util.ArrayList;
+import javafx.geometry.Point2D;
 
 public class Wire {
     private int id;
@@ -10,9 +8,13 @@ public class Wire {
     private Port destinationPort;
     private double length;
     private Packet packetOnWire;
-    private double startX, startY, endX, endY;
+    private Point2D startLocation;
+    private Point2D endLocation;
 
-    public Wire(Dimension2D startPoint,Dimension2D endPoint) {}
+    public Wire(Point2D startLocation, Point2D endLocation) {
+        this.startLocation = startLocation;
+        this.endLocation = endLocation;
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -45,29 +47,17 @@ public class Wire {
         return packetOnWire;
     }
 
-    public void setStartX(double startX) {
-        this.startX = startX;
+    public void setStartLocation(Point2D startLocation) {
+        this.startLocation = startLocation;
     }
-    public double getStartX() {
-        return startX;
+    public Point2D getStartLocation() {
+        return startLocation;
     }
-    public void setStartY(double startY) {
-        this.startY = startY;
+    public void setEndLocation(Point2D endLocation) {
+        this.endLocation = endLocation;
     }
-    public double getStartY() {
-        return startY;
-    }
-    public void setEndX(double endX) {
-        this.endX = endX;
-    }
-    public double getEndX() {
-        return endX;
-    }
-    public void setEndY(double endY) {
-        this.endY = endY;
-    }
-    public double getEndY() {
-        return endY;
+    public Point2D getEndLocation() {
+        return endLocation;
     }
 
 }
