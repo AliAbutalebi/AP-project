@@ -1,6 +1,8 @@
 package com.blueprinthell.view;
 
+import com.blueprinthell.model.Port;
 import com.blueprinthell.model.Wire;
+import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
@@ -14,7 +16,7 @@ public class WireView extends Line {
     private static final Color INVALID_COLOR = Color.RED;
 
     public WireView(Wire wire) {
-        super(wire.getStartX(), wire.getStartY(), wire.getEndX(), wire.getEndY());
+        super(wire.getStartLocation().getX(), wire.getStartLocation().getY(), wire.getEndLocation().getX(), wire.getEndLocation().getY());
 
         this.wire = wire;
         initializeStyle();
@@ -27,10 +29,10 @@ public class WireView extends Line {
     }
 
     public void updateView() {
-        setStartX(wire.getStartX());
-        setStartY(wire.getStartY());
-        setEndX(wire.getEndX());
-        setEndY(wire.getEndY());
+        setStartX(wire.getStartLocation().getX());
+        setStartY(wire.getStartLocation().getY());
+        setEndX(wire.getEndLocation().getX());
+        setEndY(wire.getEndLocation().getY());
     }
 
     public void activate() {
@@ -47,5 +49,13 @@ public class WireView extends Line {
 
     public void markValid() {
         setStroke(DEFAULT_COLOR);
+    }
+
+    public void setWire(Wire wire) {
+        this.wire = wire;
+    }
+
+    public Wire getWire() {
+        return wire;
     }
 }

@@ -3,6 +3,7 @@ package com.blueprinthell.view;
 import com.blueprinthell.model.Packet;
 import com.blueprinthell.model.SquarePacket;
 import com.blueprinthell.model.TrianglePacket;
+import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
@@ -46,5 +47,9 @@ public class PacketView extends Polygon {
     public void updateView() {
         setLayoutX(packet.getLocation().getX());
         setLayoutY(packet.getLocation().getY());
+    }
+
+    public void saveLocation() {
+        Point2D location = localToScene(0, 0);
     }
 }

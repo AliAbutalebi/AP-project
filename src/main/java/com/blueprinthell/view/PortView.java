@@ -15,7 +15,6 @@ public class PortView extends Polygon {
     public PortView(Port port) {
         this.port = port;
         setupShape();
-        saveLocation();
     }
 
     private void setupShape() {
