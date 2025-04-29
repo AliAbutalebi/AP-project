@@ -15,9 +15,9 @@ import java.util.Map;
 public class GameController {
 
     @FXML
-    private AnchorPane rootPane; // From FXML
+    private AnchorPane rootPane;
 
-    private GameMap gameMap; // The model (you load from JSON)
+    private GameMap gameMap;
 
     private List<SystemNodeView> systemNodeViews = new ArrayList<>();
     private List<WireView> wireViews = new ArrayList<>();
@@ -71,7 +71,7 @@ public class GameController {
 
         // Example (pseudo code):
         // for (Packet packet : gameMap.getPackets()) {
-        //     packet.updatePosition();
+        //     packet.updateLocation();
         // }
     }
 

@@ -3,9 +3,9 @@
         {
             "type": "ReferenceSystemNode",
             "id": 0,
-            "position": {
-                "width": 500.0,
-                "height": 500.0
+            "location": {
+                "X": 500.0,
+                "Y": 500.0
             },
             "inputPorts": [],
             "outputPorts": [
@@ -29,9 +29,9 @@
         {
             "type": "SystemNode",
             "id": 1,
-            "position": {
-                "width": 100.0,
-                "height": 150.0
+            "location": {
+                "X": 100.0,
+                "Y": 150.0
             },
             "inputPorts": [
                 {
@@ -56,9 +56,9 @@
         {
             "type": "SystemNode",
             "id": 2,
-            "position": {
-                "width": 300.0,
-                "height": 400.0
+            "location": {
+                "X": 300.0,
+                "Y": 400.0
             },
             "inputPorts": [
                 {

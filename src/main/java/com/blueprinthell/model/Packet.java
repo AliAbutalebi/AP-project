@@ -1,6 +1,7 @@
 package com.blueprinthell.model;
 
 import javafx.geometry.Dimension2D;
+import javafx.geometry.Point2D;
 
 public abstract class Packet {
 
@@ -11,7 +12,7 @@ public abstract class Packet {
     private Dimension2D center;
     private Wire currentWire;
     private boolean isAlive = true;
-    private Dimension2D position;
+    private Point2D location;
 
     public void setId(int id) {
         this.id = id;
@@ -69,11 +70,11 @@ public abstract class Packet {
         return isAlive;
     }
 
-    public void setPosition(Dimension2D position) {
-        this.position = position;
+    public void setLocation(Point2D location) {
+        this.location = location;
     }
-    public Dimension2D getPosition() {
-        return position;
+    public Point2D getLocation() {
+        return location;
     }
 }
 

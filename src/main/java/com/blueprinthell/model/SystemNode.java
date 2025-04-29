@@ -1,6 +1,7 @@
 package com.blueprinthell.model;
 
 import javafx.geometry.Dimension2D;
+import javafx.geometry.Point2D;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -12,7 +13,7 @@ public class SystemNode {
     private static final int maxPacketInQueue = 5;
     private ArrayList<Port> inputPorts = new ArrayList<>();
     private ArrayList<Port> outputPorts = new ArrayList<>();
-    private Dimension2D position;
+    private Point2D location;
     private boolean isActive = false;
 
     public void setId(int id) {
@@ -39,11 +40,11 @@ public class SystemNode {
     public ArrayList<Port> getOutputPorts() {
         return outputPorts;
     }
-    public void setPosition(Dimension2D position) {
-        this.position = position;
+    public void setLocation(Point2D location) {
+        this.location = location;
     }
-    public Dimension2D getPosition() {
-        return position;
+    public Point2D getLocation() {
+        return location;
     }
     public void setActive(boolean isActive) {
         this.isActive = isActive;

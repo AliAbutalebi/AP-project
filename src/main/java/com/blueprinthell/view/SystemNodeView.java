@@ -42,8 +42,8 @@ public class SystemNodeView extends AnchorPane {
         setupIndicator();
         getChildren().add(indicatorPane);
 
-        setLayoutX(systemNode.getPosition().getWidth());
-        setLayoutY(systemNode.getPosition().getHeight());
+        setLayoutX(systemNode.getLocation().getX());
+        setLayoutY(systemNode.getLocation().getY());
 
         getStyleClass().add("system-node");
     }

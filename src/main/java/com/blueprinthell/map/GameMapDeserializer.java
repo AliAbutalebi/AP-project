@@ -2,7 +2,7 @@ package com.blueprinthell.map;
 
 import com.blueprinthell.model.*;
 import com.google.gson.*;
-import javafx.geometry.Dimension2D;
+import javafx.geometry.Point2D;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -33,10 +33,10 @@ public class GameMapDeserializer implements JsonDeserializer<GameMap> {
             int id = nodeObject.get("id").getAsInt();
             node.setId(id);
 
-            JsonObject positionObj = nodeObject.getAsJsonObject("position");
-            double width = positionObj.get("width").getAsDouble();
-            double height = positionObj.get("height").getAsDouble();
-            node.setPosition(new Dimension2D(width, height));
+            JsonObject locationObj = nodeObject.getAsJsonObject("location");
+            double width = locationObj.get("X").getAsDouble();
+            double height = locationObj.get("Y").getAsDouble();
+            node.setLocation(new Point2D(width, height));
 
             node.setActive(nodeObject.get("isActive").getAsBoolean());
 
