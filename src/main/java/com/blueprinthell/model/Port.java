@@ -1,11 +1,14 @@
 package com.blueprinthell.model;
 
+import javafx.geometry.Point2D;
+
 public abstract class Port {
     private int id;
     private boolean isInput;
     private boolean occupied = false;
     private Wire connectedWire;
     private int parentSystemId;
+    private Point2D location;
 
     public Port(boolean isInput, int parentSystemId) {
         this.isInput = isInput;
@@ -41,6 +44,12 @@ public abstract class Port {
     }
     public int getParentSystemId() {
         return parentSystemId;
+    }
+    public void setLocation(Point2D location) {
+        this.location = location;
+    }
+    public Point2D getLocation() {
+        return location;
     }
 }
 

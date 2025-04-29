@@ -3,6 +3,7 @@ package com.blueprinthell.view;
 import com.blueprinthell.model.Port;
 import com.blueprinthell.model.SquarePort;
 import com.blueprinthell.model.TrianglePort;
+import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
@@ -14,6 +15,7 @@ public class PortView extends Polygon {
     public PortView(Port port) {
         this.port = port;
         setupShape();
+        saveLocation();
     }
 
     private void setupShape() {
@@ -47,5 +49,10 @@ public class PortView extends Polygon {
 
     public Port getPort() {
         return port;
+    }
+
+    public void saveLocation() {
+        Point2D location = localToScene(0, 0);
+        port.setLocation(location);
     }
 }
