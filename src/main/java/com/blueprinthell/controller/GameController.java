@@ -5,6 +5,8 @@ import com.blueprinthell.model.*;
 import com.blueprinthell.view.*;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.util.ArrayList;
@@ -16,6 +18,10 @@ public class GameController {
 
     @FXML
     private AnchorPane rootPane;
+    @FXML
+    private AnchorPane wirePane;
+    @FXML
+    private AnchorPane systemNodePane;
 
     private GameMap gameMap;
 
@@ -27,6 +33,9 @@ public class GameController {
     private Map<SystemNode, SystemNodeView> nodeToView = new HashMap<>();
     private Map<Wire, WireView> wireToView = new HashMap<>();
     private Map<Packet, PacketView> packetToView = new HashMap<>();
+
+    private PortView startingPortView = null;
+    private WireView draggingWire = null;
 
     private AnimationTimer gameLoop;
 
@@ -45,7 +54,7 @@ public class GameController {
         // 1. Render all SystemNodes
         for (SystemNode node : gameMap.getSystemNodes()) {
             SystemNodeView nodeView = new SystemNodeView(node);
-            rootPane.getChildren().add(nodeView);
+            systemNodePane.getChildren().add(nodeView);
 
             systemNodeViews.add(nodeView);
             nodeToView.put(node, nodeView);
@@ -67,19 +76,10 @@ public class GameController {
     }
 
     private void update() {
-        // 1. Update your game models here (e.g., move packets, process collisions, update system nodes)
 
-        // Example (pseudo code):
-        // for (Packet packet : gameMap.getPackets()) {
-        //     packet.updateLocation();
-        // }
     }
 
     private void render() {
-        // 1. Update view classes based on models
-//        for (SystemNodeView nodeView : systemNodeViews) {
-//            nodeView.updateView(); // if needed later
-//        }
 
         for (WireView wireView : wireViews) {
             wireView.updateView();

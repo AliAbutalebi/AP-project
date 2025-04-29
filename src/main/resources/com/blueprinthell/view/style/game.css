@@ -31,3 +31,11 @@
 #rootPane {
     -fx-background-color: #222222;
 }
+
+#wirePane {
+    -fx-background-color: transparent;
+}
+
+#systemNodePane {
+    -fx-background-color: transparent;
+}
