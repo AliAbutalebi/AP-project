@@ -42,6 +42,8 @@ public class GameController {
     @FXML
     public void initialize() {
         setGameMap(MapLoader.loadRandomMap());
+        wirePane.setOnMouseDragged(this::onWireDragged);
+        wirePane.setOnMouseReleased(this::onWireReleased);
     }
 
     public void setGameMap(GameMap gameMap) {
@@ -59,11 +61,10 @@ public class GameController {
 
             for (PortView portView : nodeView.getInputPortViews()) {
                 savePortLocation(portView);
-                System.out.println(portView.getPort().getLocation());
             }
             for (PortView portView : nodeView.getOutputPortViews()) {
                 savePortLocation(portView);
-                System.out.println(portView.getPort().getLocation());
+                portView.setOnMousePressed(event -> onWireStart(portView, event));
             }
         }
 
@@ -101,4 +102,17 @@ public class GameController {
     private void savePortLocation(PortView portView) {
         portView.getPort().setLocation(portView.localToScene(0, 0));
     }
+
+    private void onWireStart(PortView portView, MouseEvent event) {
+
+    }
+
+    private void onWireReleased(WireView wireView, MouseEvent event) {
+
+    }
+
+    private void onWireDragged(WireView wireView, MouseEvent event) {
+
+    }
 }
+
