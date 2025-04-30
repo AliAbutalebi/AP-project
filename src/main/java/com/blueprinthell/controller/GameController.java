@@ -117,26 +117,40 @@ public class GameController {
     }
 
     private void onWireReleased(MouseEvent event) {
-        PortView hoveredInputPort = findHoveredInputPort(event.getX(), event.getY());
-        if (hoveredInputPort == null) {
+        PortView targetPortView = findHoveredInputPort(event.getX(), event.getY());
+
+        if (draggingWire == null || startingPortView == null || targetPortView == null) {
             clearDraggingWire();
-        } else if (!isValidConnection(draggingWire.getWire().getSourcePort(), hoveredInputPort.getPort())) {
-            clearDraggingWire();
-        } else {
-            draggingWire.getWire().setEndLocation(hoveredInputPort.getPort().getLocation());
-            draggingWire.getWire().setDestinationPort(hoveredInputPort.getPort());
-            wireViews.add(draggingWire);
-            wireToView.put(draggingWire.getWire(), draggingWire);
-            startingPortView.getPort().setConnectedWire(wireViews.get(wireViews.size() - 1).getWire());
-            startingPortView.getPort().setOccupied(true);
-            hoveredInputPort.getPort().setConnectedWire(wireViews.get(wireViews.size() - 1).getWire());
-            hoveredInputPort.getPort().setOccupied(true);
-            clearDraggingWire();
-            wirePane.getChildren().add(wireViews.get(wireViews.size() - 1));
+            return;
         }
+
+        if (!isValidConnection(draggingWire.getWire().getSourcePort(), targetPortView.getPort())) {
+            clearDraggingWire();
+            return;
+        }
+
+        finalizeWireConnection(draggingWire, startingPortView, targetPortView);
+        clearDraggingWire();
     }
 
+    private void finalizeWireConnection(WireView wireView, PortView from, PortView to) {
+        Wire wire = wireView.getWire();
+
+        wire.setEndLocation(to.getPort().getLocation());
+        wire.setDestinationPort(to.getPort());
+        from.getPort().setConnectedWire(wire);
+        from.getPort().setOccupied(true);
+        to.getPort().setConnectedWire(wire);
+        to.getPort().setOccupied(true);
+
+        wireView.setWire(wire);
+
         wireView.setColor();
+        wireViews.add(wireView);
+        wirePane.getChildren().add(wireView);
+    }
+
+
     private PortView findHoveredInputPort(double x, double y) {
         final double radius = 10;
         for (SystemNodeView nodeView : systemNodeViews) {
