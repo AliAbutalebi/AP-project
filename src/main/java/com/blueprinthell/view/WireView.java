@@ -10,7 +10,7 @@ public class WireView extends Line {
 
     private Wire wire;
 
-    private static final double DEFAULT_STROKE_WIDTH = 2.0;
+    private static final double DEFAULT_STROKE_WIDTH = 3;
     private static final Color DEFAULT_COLOR = Color.GRAY;
     private static final Color ACTIVE_COLOR = Color.LIMEGREEN;
     private static final Color INVALID_COLOR = Color.RED;

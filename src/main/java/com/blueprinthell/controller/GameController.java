@@ -42,8 +42,8 @@ public class GameController {
     @FXML
     public void initialize() {
         setGameMap(MapLoader.loadRandomMap());
-        wirePane.setOnMouseDragged(this::onWireDragged);
-        wirePane.setOnMouseReleased(this::onWireReleased);
+        rootPane.setOnMouseDragged(this::onWireDragged);
+        rootPane.setOnMouseReleased(this::onWireReleased);
     }
 
     public void setGameMap(GameMap gameMap) {
@@ -67,7 +67,6 @@ public class GameController {
                 portView.setOnMousePressed(event -> onWireStart(portView, event));
             }
         }
-
 
 
         // 2. Render all Wires
@@ -104,14 +103,25 @@ public class GameController {
     }
 
     private void onWireStart(PortView portView, MouseEvent event) {
-
+        if (portView.getPort().isInput()) {
+            return;
+        }
+        else {
+            startingPortView = portView;
+            Wire wire = new Wire(startingPortView.getPort().getLocation(), startingPortView.getPort().getLocation());
+           draggingWire = new WireView(wire);
+           wirePane.getChildren().add(draggingWire);
+           System.out.println("Wire created");
+        }
     }
 
-    private void onWireReleased(WireView wireView, MouseEvent event) {
-
+    private void onWireDragged(MouseEvent event) {
+        draggingWire.getWire().setEndLocation(new Point2D(event.getX(), event.getY()));
+        draggingWire.updateView();
+        System.out.println("Wire dragged");
     }
 
-    private void onWireDragged(WireView wireView, MouseEvent event) {
+    private void onWireReleased(MouseEvent event) {
 
     }
 }
