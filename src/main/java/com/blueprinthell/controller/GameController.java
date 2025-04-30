@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +39,10 @@ public class GameController {
     private WireView draggingWire = null;
 
     private AnimationTimer gameLoop;
+
+    private static final Color DRAGGING_COLOR = Color.web("#888888");
+    private static final Color SQUARE_COLOR = Color.web("#00FF00");
+    private static final Color TRIANGLE_COLOR = Color.web("#FFFF00");
 
     @FXML
     public void initialize() {
@@ -113,6 +118,7 @@ public class GameController {
             draggingWire = new WireView(wire);
             draggingWire.getWire().setSourcePort(portView.getPort());
             wirePane.getChildren().add(draggingWire);
+            setColor(draggingWire);
         }
     }
 
@@ -146,7 +152,8 @@ public class GameController {
         to.getPort().setConnectedWire(draggingWire.getWire());
         to.getPort().setOccupied(true);
 
-        draggingWire.setColor();
+        setColor(draggingWire);
+
         wireViews.add(draggingWire);
         clearDraggingWire();
         wirePane.getChildren().add(wireViews.get(wireViews.size() - 1));
@@ -188,6 +195,19 @@ public class GameController {
             }
         }
 
+    }
+
+    public void setColor(WireView wireView) {
+        if (wireView.getWire().getDestinationPort() == null) {
+            wireView.setStroke(DRAGGING_COLOR);
+        }
+        if (wireView.getWire().getSourcePort() instanceof SquarePort && wireView.getWire().getDestinationPort() instanceof SquarePort) {
+            wireView.setStroke(SQUARE_COLOR);
+        }
+        else if (wireView.getWire().getSourcePort() instanceof TrianglePort && wireView.getWire().getDestinationPort() instanceof TrianglePort) {
+            wireView.setStroke(TRIANGLE_COLOR);
+
+        }
     }
 }
 
