@@ -1,6 +1,8 @@
 package com.blueprinthell.view;
 
 import com.blueprinthell.model.Port;
+import com.blueprinthell.model.SquarePort;
+import com.blueprinthell.model.TrianglePort;
 import com.blueprinthell.model.Wire;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
@@ -49,6 +51,16 @@ public class WireView extends Line {
 
     public void markValid() {
         setStroke(DEFAULT_COLOR);
+    }
+
+    public void setColor() {
+        if (getWire().getSourcePort() instanceof SquarePort && getWire().getDestinationPort() instanceof SquarePort) {
+            setStroke(Color.web("#00FF00"));
+        }
+        else if (getWire().getSourcePort() instanceof TrianglePort && getWire().getDestinationPort() instanceof TrianglePort) {
+            setStroke(Color.web("#FFFF00"));
+
+        }
     }
 
     public void setWire(Wire wire) {

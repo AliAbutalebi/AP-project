@@ -136,6 +136,7 @@ public class GameController {
         }
     }
 
+        wireView.setColor();
     private PortView findHoveredInputPort(double x, double y) {
         final double radius = 10;
         for (SystemNodeView nodeView : systemNodeViews) {
