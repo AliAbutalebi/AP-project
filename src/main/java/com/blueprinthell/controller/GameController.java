@@ -51,15 +51,23 @@ public class GameController {
     }
 
     private void renderInitialMap() {
-        // 1. Render all SystemNodes
         for (SystemNode node : gameMap.getSystemNodes()) {
             SystemNodeView nodeView = new SystemNodeView(node);
             systemNodePane.getChildren().add(nodeView);
-
             systemNodeViews.add(nodeView);
             nodeToView.put(node, nodeView);
 
+            for (PortView portView : nodeView.getInputPortViews()) {
+                savePortLocation(portView);
+                System.out.println(portView.getPort().getLocation());
+            }
+            for (PortView portView : nodeView.getOutputPortViews()) {
+                savePortLocation(portView);
+                System.out.println(portView.getPort().getLocation());
+            }
         }
+
+
 
         // 2. Render all Wires
     }
@@ -88,5 +96,9 @@ public class GameController {
         for (PacketView packetView : packetViews) {
             packetView.updateView();
         }
+    }
+
+    private void savePortLocation(PortView portView) {
+        portView.getPort().setLocation(portView.localToScene(0, 0));
     }
 }
