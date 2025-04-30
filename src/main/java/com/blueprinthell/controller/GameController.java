@@ -100,7 +100,7 @@ public class GameController {
     }
 
     private void onWireStart(PortView portView, MouseEvent event) {
-        if (portView.getPort().isInput()) {
+        if (portView.getPort().isInput() || portView.getPort().isOccupied()) {
             return;
         } else {
             startingPortView = portView;
@@ -108,14 +108,12 @@ public class GameController {
             draggingWire = new WireView(wire);
             draggingWire.getWire().setSourcePort(portView.getPort());
             wirePane.getChildren().add(draggingWire);
-            System.out.println("Wire created");
         }
     }
 
     private void onWireDragged(MouseEvent event) {
         draggingWire.getWire().setEndLocation(new Point2D(event.getX(), event.getY()));
         draggingWire.updateView();
-        System.out.println("Wire dragged");
     }
 
     private void onWireReleased(MouseEvent event) {
@@ -158,7 +156,7 @@ public class GameController {
     }
 
     private boolean isValidConnection(Port from, Port to) {
-        return from != to && !from.isInput() && to.isInput() && from.getClass().equals(to.getClass()) && from.isOccupied() && to.isOccupied();
+        return from != to && !from.isInput() && to.isInput() && from.getClass().equals(to.getClass());
     }
 }
 
