@@ -19,45 +19,63 @@ public class Wire {
     public void setId(int id) {
         this.id = id;
     }
+
     public int getId() {
         return id;
     }
+
     public void setSourcePort(Port sourcePort) {
         this.sourcePort = sourcePort;
     }
+
     public Port getSourcePort() {
         return sourcePort;
     }
+
     public void setDestinationPort(Port destinationPort) {
         this.destinationPort = destinationPort;
     }
+
     public Port getDestinationPort() {
         return destinationPort;
     }
+
     public void setLength(double length) {
         this.length = length;
     }
+
     public double getLength() {
         return length;
     }
+
     public void setPacketOnWire(Packet packetOnWire) {
         this.packetOnWire = packetOnWire;
     }
+
     public Packet getPacketOnWire() {
         return packetOnWire;
     }
 
     public void setStartLocation(Point2D startLocation) {
         this.startLocation = startLocation;
+        updateLength();
     }
+
     public Point2D getStartLocation() {
         return startLocation;
     }
+
     public void setEndLocation(Point2D endLocation) {
         this.endLocation = endLocation;
+        updateLength();
     }
+
     public Point2D getEndLocation() {
         return endLocation;
+    }
+
+    private void updateLength() {
+        length = startLocation.distance(endLocation);
     }
 
 }
