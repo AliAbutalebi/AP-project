@@ -49,7 +49,7 @@ public class GameController {
     public void setGameMap(GameMap gameMap) {
         this.gameMap = gameMap;
         renderInitialMap();
-        startGameLoop();
+        // startGameLoop();
     }
 
     private void renderInitialMap() {
@@ -64,7 +64,7 @@ public class GameController {
             }
             for (PortView portView : nodeView.getOutputPortViews()) {
                 savePortLocation(portView);
-                portView.setOnMousePressed(event -> onWireStart(portView, event));
+                portView.setOnMousePressed(event -> onPortClicked(portView, event));
             }
         }
     }
@@ -99,10 +99,15 @@ public class GameController {
         portView.getPort().setLocation(portView.localToScene(0, 0));
     }
 
-    private void onWireStart(PortView portView, MouseEvent event) {
-        if (portView.getPort().isInput() || portView.getPort().isOccupied()) {
+    private void onPortClicked(PortView portView, MouseEvent event) {
+        if (portView.getPort().isInput()) {
             return;
-        } else {
+        }
+        else if (portView.getPort().isOccupied()) {
+            removeWire(portView.getPort().getConnectedWire());
+            return;
+        }
+        else {
             startingPortView = portView;
             Wire wire = new Wire(startingPortView.getPort().getLocation(), startingPortView.getPort().getLocation());
             draggingWire = new WireView(wire);
@@ -129,25 +134,22 @@ public class GameController {
             return;
         }
 
-        finalizeWireConnection(draggingWire, startingPortView, targetPortView);
-        clearDraggingWire();
+        finalizeWireConnection(startingPortView, targetPortView);
     }
 
-    private void finalizeWireConnection(WireView wireView, PortView from, PortView to) {
-        Wire wire = wireView.getWire();
+    private void finalizeWireConnection(PortView from, PortView to) {
 
-        wire.setEndLocation(to.getPort().getLocation());
-        wire.setDestinationPort(to.getPort());
-        from.getPort().setConnectedWire(wire);
+        draggingWire.getWire().setEndLocation(to.getPort().getLocation());
+        draggingWire.getWire().setDestinationPort(to.getPort());
+        from.getPort().setConnectedWire(draggingWire.getWire());
         from.getPort().setOccupied(true);
-        to.getPort().setConnectedWire(wire);
+        to.getPort().setConnectedWire(draggingWire.getWire());
         to.getPort().setOccupied(true);
 
-        wireView.setWire(wire);
-
-        wireView.setColor();
-        wireViews.add(wireView);
-        wirePane.getChildren().add(wireView);
+        draggingWire.setColor();
+        wireViews.add(draggingWire);
+        clearDraggingWire();
+        wirePane.getChildren().add(wireViews.get(wireViews.size() - 1));
     }
 
 
@@ -172,6 +174,20 @@ public class GameController {
 
     private boolean isValidConnection(Port from, Port to) {
         return from != to && !from.isInput() && to.isInput() && from.getClass().equals(to.getClass());
+    }
+
+    private void removeWire(Wire wire) {
+        wire.getSourcePort().setConnectedWire(null);
+        wire.getDestinationPort().setConnectedWire(null);
+        wire.getSourcePort().setOccupied(false);
+        wire.getDestinationPort().setOccupied(false);
+        for (WireView wireView : wireViews) {
+            if (wireView.getWire().equals(wire)) {
+                wirePane.getChildren().remove(wireView);
+                wireViews.remove(wireView);
+            }
+        }
+
     }
 }
 
