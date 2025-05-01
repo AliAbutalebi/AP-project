@@ -2,6 +2,7 @@ package com.blueprinthell.view;
 
 import com.blueprinthell.model.*;
 import javafx.application.Platform;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -31,6 +32,7 @@ public class SystemNodeView extends AnchorPane {
     private Pane indicatorPane;
     private Rectangle indicatorPanel;
     private Rectangle indicator;
+    private Button runButton;
     private final ArrayList<PortView> inputPortViews;
     private final ArrayList<PortView> outputPortViews;
 
@@ -145,6 +147,15 @@ public class SystemNodeView extends AnchorPane {
             reference.setLayoutX(indicatorPane.getWidth() - reference.getWidth() - 10);
             reference.setLayoutY(indicatorPanel.getHeight() / 2 - reference.getHeight() / 2);
         });
+    }
+
+    public void setupRunButton() {
+        runButton = new Button("Run");
+        runButton.setPrefWidth(NODE_WIDTH - PORT_PANE_WIDTH * 2);
+        runButton.setPrefHeight(NODE_HEIGHT / 5);
+        getChildren().add(runButton);
+        runButton.setLayoutX(PORT_PANE_WIDTH);
+        runButton.setLayoutY(INDICATOR_PANEL_HEIGHT);
     }
 
     public void switchIndicator(boolean isActive) {

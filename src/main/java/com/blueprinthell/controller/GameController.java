@@ -61,6 +61,7 @@ public class GameController {
             SystemNodeView nodeView = new SystemNodeView(node);
             if (nodeView.getSystemNode() instanceof ReferenceSystemNode) {
                 nodeView.setupReferenceLabel();
+                nodeView.setupRunButton();
             }
             systemNodePane.getChildren().add(nodeView);
             systemNodeViews.add(nodeView);
