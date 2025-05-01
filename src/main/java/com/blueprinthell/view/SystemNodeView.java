@@ -75,7 +75,7 @@ public class SystemNodeView extends AnchorPane {
 
     private void setupIndicator() {
         indicator = new Rectangle(INDICATOR_WIDTH, INDICATOR_HEIGHT);
-        indicator.setFill(Color.web("#FF0000"));
+        indicator.setFill(Color.web("#111111"));
         indicator.setStroke(Color.web("#666666"));
         indicator.setStrokeWidth(INDICATOR_STROKE);
         indicator.setLayoutX(5);
@@ -136,9 +136,9 @@ public class SystemNodeView extends AnchorPane {
 
     public void switchIndicator(boolean isActive) {
         if (isActive) {
-            indicator.setFill(Color.web("#0000FF"));
+            indicator.setFill(Color.web("#00FEFE"));
         } else {
-            indicator.setFill(Color.web("#FF0000"));
+            indicator.setFill(Color.web("#222222"));
         }
     }
 
@@ -148,5 +148,13 @@ public class SystemNodeView extends AnchorPane {
 
     public List<PortView> getOutputPortViews() {
         return outputPortViews;
+    }
+
+    public void setSystemNode(SystemNode systemNode) {
+        this.systemNode = systemNode;
+    }
+
+    public SystemNode getSystemNode() {
+        return systemNode;
     }
 }
