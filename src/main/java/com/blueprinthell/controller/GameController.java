@@ -183,18 +183,15 @@ public class GameController {
         return from != to && !from.isInput() && to.isInput() && from.getClass().equals(to.getClass());
     }
 
-    private void removeWire(Wire wire) {
-        wire.getSourcePort().setConnectedWire(null);
-        wire.getDestinationPort().setConnectedWire(null);
-        wire.getSourcePort().setOccupied(false);
-        wire.getDestinationPort().setOccupied(false);
-        for (WireView wireView : wireViews) {
-            if (wireView.getWire().equals(wire)) {
-                wirePane.getChildren().remove(wireView);
-                wireViews.remove(wireView);
-            }
-        }
-
+    private void removeWire(WireView wireView) {
+        wireView.getWire().getSourcePort().setConnectedWire(null);
+        wireView.getWire().getDestinationPort().setConnectedWire(null);
+        wireView.getWire().getSourcePort().setOccupied(false);
+        wireView.getWire().getDestinationPort().setOccupied(false);
+        wirePane.getChildren().remove(wireView);
+        wireViews.remove(wireView);
+        wireToView.remove(wireView.getWire());
+        checkActiveNode();
     }
 
     public void checkActiveNode() {
