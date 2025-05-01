@@ -83,4 +83,11 @@ public class Wire {
         return getSourcePort().getShapeType();
     }
 
+    public Point2D interpolate(double percent) {
+        double newX = getStartLocation().getX() + (getEndLocation().getX() - getStartLocation().getX()) * percent;
+        double newY = getStartLocation().getY() + (getEndLocation().getY() - getStartLocation().getY()) * percent;
+
+        return new Point2D(newX, newY);
+    }
+
 }

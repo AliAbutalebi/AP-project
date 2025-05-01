@@ -1,6 +1,5 @@
 package com.blueprinthell.model;
 
-import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 
 public class Packet {
@@ -8,12 +7,17 @@ public class Packet {
     private int id;
     private double speed;
     private double noise;
-    private double stateOnWire;
+    private double progressOnWire;
     private ShapeType shapeType;
-    private Dimension2D center;
+    private boolean onWire;
     private Wire currentWire;
     private boolean isAlive = true;
+    private Point2D center;
     private Point2D location;
+    private double currentSpeed = SPEED;
+
+    private static final double SPEED = 1;
+    private static final double ACCELERATION = 1;
 
     public void setId(int id) {
         this.id = id;
@@ -21,14 +25,6 @@ public class Packet {
 
     public int getId() {
         return id;
-    }
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
-
-    public double getSpeed() {
-        return speed;
     }
 
     public void setNoise(double noise) {
@@ -39,20 +35,28 @@ public class Packet {
         return noise;
     }
 
-    public void setStateOnWire(double stateOnWire) {
-        this.stateOnWire = stateOnWire;
+    public void setProgressOnWire(double progressOnWire) {
+        this.progressOnWire = progressOnWire;
     }
 
-    public double getStateOnWire() {
-        return stateOnWire;
+    public double getProgressOnWire() {
+        return progressOnWire;
     }
 
-    public void setCenter(Dimension2D center) {
+    public void setCenter(Point2D center) {
         this.center = center;
     }
 
-    public Dimension2D getCenter() {
+    public Point2D getCenter() {
         return center;
+    }
+
+    public void setOnWire(boolean onWire) {
+        this.onWire = onWire;
+    }
+
+    public boolean isOnWire() {
+        return onWire;
     }
 
     public void setCurrentWire(Wire currentWire) {
@@ -77,6 +81,14 @@ public class Packet {
 
     public Point2D getLocation() {
         return location;
+    }
+
+    public double getSpeed() {
+        return SPEED;
+    }
+
+    public double getAcceleration() {
+        return ACCELERATION;
     }
 
     public void setShapeType(ShapeType shapeType) {
