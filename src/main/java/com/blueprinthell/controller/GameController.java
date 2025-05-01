@@ -198,20 +198,17 @@ public class GameController {
         for (SystemNodeView nodeView : systemNodeViews) {
             for (PortView portView : nodeView.getInputPortViews()) {
                 if (portView.getPort().getConnectedWire() == null) {
-                    nodeView.getSystemNode().setActive(false);
-                    nodeView.switchIndicator(false);
+                    setSystemNodeActive(nodeView, false);
                     continue outer;
                 }
             }
             for (PortView portView : nodeView.getOutputPortViews()) {
                 if (portView.getPort().getConnectedWire() == null) {
-                    nodeView.getSystemNode().setActive(false);
-                    nodeView.switchIndicator(false);
+                    setSystemNodeActive(nodeView, false);
                     continue outer;
                 }
             }
-            nodeView.getSystemNode().setActive(true);
-            nodeView.switchIndicator(true);
+            setSystemNodeActive(nodeView, true);
         }
     }
 
@@ -220,6 +217,11 @@ public class GameController {
         if (wire.getSourcePort() instanceof SquarePort) return SQUARE_COLOR;
         if (wire.getSourcePort() instanceof TrianglePort) return TRIANGLE_COLOR;
         return Color.GRAY;
+    }
+
+    private void setSystemNodeActive(SystemNodeView view, boolean active) {
+        view.getSystemNode().setActive(active);
+        view.switchIndicator(active);
     }
 }
 
