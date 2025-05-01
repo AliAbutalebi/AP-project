@@ -174,12 +174,13 @@ public class GameController {
 
     private void clearDraggingWire() {
         wirePane.getChildren().remove(draggingWire);
+        draggingWire.updateView();
         draggingWire = null;
         startingPortView = null;
     }
 
     private boolean isValidConnection(Port from, Port to) {
-        return from != to && !from.isInput() && to.isInput() && from.getClass().equals(to.getClass());
+        return from != to && !from.isInput() && to.isInput() && from.getShapeType() == to.getShapeType();
     }
 
     private void removeWire(WireView wireView) {
