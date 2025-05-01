@@ -128,7 +128,6 @@ public class GameController {
         PortView targetPortView = findHoveredInputPort(event.getX(), event.getY());
 
         if (draggingWire == null || startingPortView == null || targetPortView == null) {
-            clearDraggingWire();
             return;
         }
 
@@ -173,8 +172,8 @@ public class GameController {
     }
 
     private void clearDraggingWire() {
-        wirePane.getChildren().remove(draggingWire);
         draggingWire.updateView();
+        wirePane.getChildren().remove(draggingWire);
         draggingWire = null;
         startingPortView = null;
     }
