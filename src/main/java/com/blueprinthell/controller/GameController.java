@@ -197,15 +197,27 @@ public class GameController {
 
     }
 
-    public void setColor(WireView wireView) {
-        if (wireView.getWire().getDestinationPort() == null) {
-            wireView.setStroke(DRAGGING_COLOR);
+    public void checkActiveNode() {
+        outer:
+        for (SystemNodeView nodeView : systemNodeViews) {
+            for (PortView portView : nodeView.getInputPortViews()) {
+                if (portView.getPort().getConnectedWire() == null) {
+                    nodeView.getSystemNode().setActive(false);
+                    nodeView.switchIndicator(false);
+                    continue outer;
+                }
+            }
+            for (PortView portView : nodeView.getOutputPortViews()) {
+                if (portView.getPort().getConnectedWire() == null) {
+                    nodeView.getSystemNode().setActive(false);
+                    nodeView.switchIndicator(false);
+                    continue outer;
+                }
+            }
+            nodeView.getSystemNode().setActive(true);
+            nodeView.switchIndicator(true);
         }
-        if (wireView.getWire().getSourcePort() instanceof SquarePort && wireView.getWire().getDestinationPort() instanceof SquarePort) {
-            wireView.setStroke(SQUARE_COLOR);
-        }
-        else if (wireView.getWire().getSourcePort() instanceof TrianglePort && wireView.getWire().getDestinationPort() instanceof TrianglePort) {
-            wireView.setStroke(TRIANGLE_COLOR);
+    }
 
     private Color getWireColor(Wire wire) {
         if (wire.getDestinationPort() == null) return DRAGGING_COLOR;
