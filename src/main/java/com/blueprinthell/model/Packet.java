@@ -5,7 +5,9 @@ import javafx.geometry.Point2D;
 public class Packet {
 
     private int id;
-    private double speed;
+    private static final double BASE_SPEED = 1;
+    private static final double ACCELERATION = 1;
+    private double currentSpeed;
     private double noise;
     private double progressOnWire;
     private ShapeType shapeType;
@@ -14,10 +16,10 @@ public class Packet {
     private boolean isAlive = true;
     private Point2D center;
     private Point2D location;
-    private double currentSpeed = SPEED;
 
-    private static final double SPEED = 1;
-    private static final double ACCELERATION = 1;
+    private static final int SQUARE_COINS = 1;
+    private static final int TRIANGLE_COINS = 2;
+
 
     public void setId(int id) {
         this.id = id;
@@ -83,8 +85,16 @@ public class Packet {
         return location;
     }
 
-    public double getSpeed() {
-        return SPEED;
+    public double getBaseSpeed() {
+        return BASE_SPEED;
+    }
+
+    public void setCurrentSpeed(double baseSpeed) {
+        this.currentSpeed = baseSpeed;
+    }
+
+    public double getCurrentSpeed() {
+        return currentSpeed;
     }
 
     public double getAcceleration() {
@@ -97,6 +107,14 @@ public class Packet {
 
     public ShapeType getShapeType() {
         return shapeType;
+    }
+
+    public int getSquareCoins() {
+        return SQUARE_COINS;
+    }
+
+    public int getTriangleCoins() {
+        return TRIANGLE_COINS;
     }
 }
 
