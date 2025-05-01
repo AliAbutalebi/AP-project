@@ -123,6 +123,9 @@ public class GameController {
     }
 
     private void onWireDragged(MouseEvent event) {
+        if (draggingWire == null) {
+            return;
+        }
         draggingWire.getWire().setEndLocation(new Point2D(event.getX(), event.getY()));
         draggingWire.updateView();
     }
@@ -131,6 +134,7 @@ public class GameController {
         PortView targetPortView = findHoveredInputPort(event.getX(), event.getY());
 
         if (draggingWire == null || startingPortView == null || targetPortView == null) {
+            clearDraggingWire();
             return;
         }
 
@@ -175,10 +179,12 @@ public class GameController {
     }
 
     private void clearDraggingWire() {
-        draggingWire.updateView();
-        wirePane.getChildren().remove(draggingWire);
-        draggingWire = null;
-        startingPortView = null;
+        if (draggingWire != null) {
+            draggingWire.updateView();
+            wirePane.getChildren().remove(draggingWire);
+            draggingWire = null;
+            startingPortView = null;
+        }
     }
 
     private boolean isValidConnection(Port from, Port to) {
