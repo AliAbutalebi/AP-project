@@ -26,14 +26,13 @@ public class GameController {
 
     private GameMap gameMap;
 
-    private List<SystemNodeView> systemNodeViews = new ArrayList<>();
-    private List<WireView> wireViews = new ArrayList<>();
-    private List<PacketView> packetViews = new ArrayList<>();
+    private final List<SystemNodeView> systemNodeViews = new ArrayList<>();
+    private final List<WireView> wireViews = new ArrayList<>();
+    private final List<PacketView> packetViews = new ArrayList<>();
 
-    // Optional: Fast lookup maps if needed
-    private Map<SystemNode, SystemNodeView> nodeToView = new HashMap<>();
-    private Map<Wire, WireView> wireToView = new HashMap<>();
-    private Map<Packet, PacketView> packetToView = new HashMap<>();
+    private final Map<SystemNode, SystemNodeView> nodeToView = new HashMap<>();
+    private final Map<Wire, WireView> wireToView = new HashMap<>();
+    private final Map<Packet, PacketView> packetToView = new HashMap<>();
 
     private PortView startingPortView = null;
     private WireView draggingWire = null;
@@ -107,18 +106,16 @@ public class GameController {
     private void onPortClicked(PortView portView, MouseEvent event) {
         if (portView.getPort().isInput()) {
             return;
-        }
-        else if (portView.getPort().isOccupied()) {
-            removeWire(portView.getPort().getConnectedWire());
+        } else if (portView.getPort().isOccupied()) {
+            removeWire(wireToView.get(portView.getPort().getConnectedWire()));
             return;
-        }
-        else {
+        } else {
             startingPortView = portView;
             Wire wire = new Wire(startingPortView.getPort().getLocation(), startingPortView.getPort().getLocation());
             draggingWire = new WireView(wire);
             draggingWire.getWire().setSourcePort(portView.getPort());
             wirePane.getChildren().add(draggingWire);
-            setColor(draggingWire);
+            draggingWire.setStroke(getWireColor(draggingWire.getWire()));
         }
     }
 
@@ -141,6 +138,7 @@ public class GameController {
         }
 
         finalizeWireConnection(startingPortView, targetPortView);
+        checkActiveNode();
     }
 
     private void finalizeWireConnection(PortView from, PortView to) {
@@ -152,9 +150,10 @@ public class GameController {
         to.getPort().setConnectedWire(draggingWire.getWire());
         to.getPort().setOccupied(true);
 
-        setColor(draggingWire);
+        draggingWire.setStroke(getWireColor(draggingWire.getWire()));
 
         wireViews.add(draggingWire);
+        wireToView.put(draggingWire.getWire(), draggingWire);
         clearDraggingWire();
         wirePane.getChildren().add(wireViews.get(wireViews.size() - 1));
     }
