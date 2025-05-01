@@ -14,11 +14,13 @@ public class SystemNodeView extends AnchorPane {
     private static final double NODE_WIDTH = ScreenDimensions.getInstance().getWidth() / 15;
     private static final double NODE_HEIGHT = ScreenDimensions.getInstance().getHeight() / 5;
     private static final double NODE_STROKE = 5;
+    private static final double NODE_RADIUS = 10;
     private static final double PORT_SIZE = 15;
     private static final double PORT_SPACING = PORT_SIZE * 2;
     private static final double PORT_PANE_WIDTH = 25;
     private static final double INDICATOR_WIDTH = NODE_WIDTH / 3;
     private static final double INDICATOR_HEIGHT = 10;
+    private static final double INDICATOR_PANEL_HEIGHT = INDICATOR_HEIGHT + 15;
     private static final double INDICATOR_STROKE = 2;
 
     private SystemNode systemNode;
@@ -27,8 +29,8 @@ public class SystemNodeView extends AnchorPane {
     private Pane indicatorPane;
     private Rectangle indicatorPanel;
     private Rectangle indicator;
-    private ArrayList<PortView> inputPortViews;
-    private ArrayList<PortView> outputPortViews;
+    private final ArrayList<PortView> inputPortViews;
+    private final ArrayList<PortView> outputPortViews;
 
     public SystemNodeView(SystemNode systemNode) {
         this.systemNode = systemNode;
@@ -53,18 +55,17 @@ public class SystemNodeView extends AnchorPane {
         background.setFill(Color.web("#4D4D4D"));
         background.setStroke(Color.web("#666666"));
         background.setStrokeWidth(NODE_STROKE);
-        background.setArcWidth(10);
-        background.setArcHeight(10);
+        background.setArcWidth(NODE_RADIUS);
+        background.setArcHeight(NODE_RADIUS);
         background.getStyleClass().add("system-node-background");
 
         indicatorPane = new Pane();
-        indicatorPanel = new Rectangle(NODE_WIDTH, INDICATOR_HEIGHT + 10);
+        indicatorPanel = new Rectangle(NODE_WIDTH, INDICATOR_PANEL_HEIGHT);
         indicatorPanel.setFill(Color.web("#3D3D3D"));
         indicatorPanel.setStroke(Color.web("#666666"));
-        indicatorPanel.setStrokeWidth(1);
-        indicatorPanel.setArcWidth(10);
-        indicatorPanel.setArcHeight(10);
-        indicatorPanel.getStyleClass().add("system-node-indicator-panel");
+        indicatorPanel.setArcWidth(NODE_RADIUS);
+        indicatorPanel.setArcHeight(NODE_RADIUS);
+        indicatorPanel.getStyleClass().add("indicator-panel");
 
         indicatorPane.getChildren().add(indicatorPanel);
         getChildren().add(background);
@@ -78,8 +79,8 @@ public class SystemNodeView extends AnchorPane {
         indicator.setFill(Color.web("#111111"));
         indicator.setStroke(Color.web("#666666"));
         indicator.setStrokeWidth(INDICATOR_STROKE);
-        indicator.setLayoutX(5);
-        indicator.setLayoutY(5);
+        indicator.setLayoutX(10);
+        indicator.setLayoutY((INDICATOR_PANEL_HEIGHT - INDICATOR_HEIGHT) / 2);
         indicator.setArcWidth(10);
         indicator.setArcHeight(10);
         indicator.getStyleClass().add("indicator");
