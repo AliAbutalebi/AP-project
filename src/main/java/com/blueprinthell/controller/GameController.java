@@ -59,6 +59,9 @@ public class GameController {
     private void renderInitialMap() {
         for (SystemNode node : gameMap.getSystemNodes()) {
             SystemNodeView nodeView = new SystemNodeView(node);
+            if (nodeView.getSystemNode() instanceof ReferenceSystemNode) {
+                nodeView.setupReferenceLabel();
+            }
             systemNodePane.getChildren().add(nodeView);
             systemNodeViews.add(nodeView);
             nodeToView.put(node, nodeView);

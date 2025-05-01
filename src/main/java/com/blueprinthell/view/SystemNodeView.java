@@ -1,6 +1,8 @@
 package com.blueprinthell.view;
 
 import com.blueprinthell.model.*;
+import javafx.application.Platform;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -11,14 +13,14 @@ import java.util.List;
 
 public class SystemNodeView extends AnchorPane {
 
-    private static final double NODE_WIDTH = ScreenDimensions.getInstance().getWidth() / 15;
+    private static final double NODE_WIDTH = ScreenDimensions.getInstance().getWidth() / 12;
     private static final double NODE_HEIGHT = ScreenDimensions.getInstance().getHeight() / 5;
     private static final double NODE_STROKE = 5;
     private static final double NODE_RADIUS = 10;
     private static final double PORT_SIZE = 15;
     private static final double PORT_SPACING = PORT_SIZE * 2;
     private static final double PORT_PANE_WIDTH = 25;
-    private static final double INDICATOR_WIDTH = NODE_WIDTH / 3;
+    private static final double INDICATOR_WIDTH = NODE_WIDTH / 4;
     private static final double INDICATOR_HEIGHT = 10;
     private static final double INDICATOR_PANEL_HEIGHT = INDICATOR_HEIGHT + 15;
     private static final double INDICATOR_STROKE = 2;
@@ -133,6 +135,16 @@ public class SystemNodeView extends AnchorPane {
         }
 
         getChildren().addAll(inputPortPane, outputPortPane);
+    }
+
+    public void setupReferenceLabel() {
+        Label reference = new Label("Reference");
+        reference.setTextFill(Color.WHITE);
+        indicatorPane.getChildren().add(reference);
+        Platform.runLater(() -> {
+            reference.setLayoutX(indicatorPane.getWidth() - reference.getWidth() - 10);
+            reference.setLayoutY(indicatorPanel.getHeight() / 2 - reference.getHeight() / 2);
+        });
     }
 
     public void switchIndicator(boolean isActive) {
