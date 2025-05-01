@@ -3,12 +3,13 @@ package com.blueprinthell.model;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 
-public abstract class Packet {
+public class Packet {
 
     private int id;
     private double speed;
     private double noise;
     private double stateOnWire;
+    private ShapeType shapeType;
     private Dimension2D center;
     private Wire currentWire;
     private boolean isAlive = true;
@@ -73,8 +74,17 @@ public abstract class Packet {
     public void setLocation(Point2D location) {
         this.location = location;
     }
+
     public Point2D getLocation() {
         return location;
+    }
+
+    public void setShapeType(ShapeType shapeType) {
+        this.shapeType = shapeType;
+    }
+
+    public ShapeType getShapeType() {
+        return shapeType;
     }
 }
 

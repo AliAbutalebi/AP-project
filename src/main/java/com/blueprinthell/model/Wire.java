@@ -6,6 +6,7 @@ public class Wire {
     private int id;
     private Port sourcePort;
     private Port destinationPort;
+    private ShapeType shapeType;
     private double length;
     private Packet packetOnWire;
     private Point2D startLocation;
@@ -76,6 +77,10 @@ public class Wire {
 
     private void updateLength() {
         length = startLocation.distance(endLocation);
+    }
+
+    public ShapeType getShapeType() {
+        return getSourcePort().getShapeType();
     }
 
 }

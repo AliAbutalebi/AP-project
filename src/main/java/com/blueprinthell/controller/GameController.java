@@ -214,8 +214,8 @@ public class GameController {
 
     private Color getWireColor(Wire wire) {
         if (wire.getDestinationPort() == null) return DRAGGING_COLOR;
-        if (wire.getSourcePort() instanceof SquarePort) return SQUARE_COLOR;
-        if (wire.getSourcePort() instanceof TrianglePort) return TRIANGLE_COLOR;
+        if (wire.getShapeType() == ShapeType.SQUARE) return SQUARE_COLOR;
+        if (wire.getShapeType() == ShapeType.TRIANGLE) return TRIANGLE_COLOR;
         return Color.GRAY;
     }
 

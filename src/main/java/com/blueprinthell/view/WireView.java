@@ -1,7 +1,5 @@
 package com.blueprinthell.view;
 
-import com.blueprinthell.model.SquarePort;
-import com.blueprinthell.model.TrianglePort;
 import com.blueprinthell.model.Wire;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;

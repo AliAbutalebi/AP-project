@@ -1,8 +1,7 @@
 package com.blueprinthell.view;
 
 import com.blueprinthell.model.Port;
-import com.blueprinthell.model.SquarePort;
-import com.blueprinthell.model.TrianglePort;
+import com.blueprinthell.model.ShapeType;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -18,7 +17,7 @@ public class PortView extends Polygon {
     }
 
     private void setupShape() {
-        if (port instanceof SquarePort) {
+        if (port.getShapeType() == ShapeType.SQUARE) {
             double halfSize = PORT_SIZE / 2;
             getPoints().addAll(
                     -halfSize, -halfSize,
@@ -29,7 +28,7 @@ public class PortView extends Polygon {
             setFill(Color.web("#00FF00"));
             setStrokeWidth(2);
         }
-        else if (port instanceof TrianglePort) {
+        else if (port.getShapeType() == ShapeType.TRIANGLE) {
             double height = Math.sqrt(3) / 2 * PORT_SIZE;
             double halfBase = PORT_SIZE / 2;
             getPoints().addAll(

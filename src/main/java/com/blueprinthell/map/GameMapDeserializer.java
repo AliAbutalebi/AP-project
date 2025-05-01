@@ -27,7 +27,8 @@ public class GameMapDeserializer implements JsonDeserializer<GameMap> {
             if (nodeType.equals("ReferenceSystemNode")) {
                 node = new ReferenceSystemNode();
             } else {
-                node = new SystemNode() {};
+                node = new SystemNode() {
+                };
             }
 
             int id = nodeObject.get("id").getAsInt();
@@ -68,9 +69,9 @@ public class GameMapDeserializer implements JsonDeserializer<GameMap> {
 
         Port port;
         if (portType.equals("SquarePort")) {
-            port = new SquarePort(isInput, parentSystemId);
+            port = new Port(isInput, ShapeType.SQUARE, parentSystemId);
         } else if (portType.equals("TrianglePort")) {
-            port = new TrianglePort(isInput, parentSystemId);
+            port = new Port(isInput, ShapeType.TRIANGLE, parentSystemId);
         } else {
             throw new JsonParseException("Unknown port type: " + portType);
         }

@@ -1,8 +1,7 @@
 package com.blueprinthell.view;
 
 import com.blueprinthell.model.Packet;
-import com.blueprinthell.model.SquarePacket;
-import com.blueprinthell.model.TrianglePacket;
+import com.blueprinthell.model.ShapeType;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -18,7 +17,7 @@ public class PacketView extends Polygon {
     }
 
     private void setupShape() {
-        if (packet instanceof SquarePacket) {
+        if (packet.getShapeType() == ShapeType.SQUARE) {
             double halfSize = PACKET_SIZE / 2;
             getPoints().addAll(
                     -halfSize, -halfSize,
@@ -30,7 +29,7 @@ public class PacketView extends Polygon {
             setStroke(Color.web("#00FF00"));
             setStrokeWidth(2);
         }
-        else if (packet instanceof TrianglePacket) {
+        else if (packet.getShapeType() == ShapeType.TRIANGLE) {
             double height = Math.sqrt(3) / 2 * PACKET_SIZE;
             double halfBase = PACKET_SIZE / 2;
             getPoints().addAll(
