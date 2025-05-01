@@ -4,11 +4,14 @@ import com.blueprinthell.model.ScreenDimensions;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
+        Font.loadFont(getClass().getResourceAsStream("/com/blueprinthell/font/Monograf/monograf-bold.ttf"), 12);
+        Font.loadFont(getClass().getResourceAsStream("/com/blueprinthell/font/Monograf/monograf-regular.ttf"), 12);
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/blueprinthell/view/MainMenu.fxml"));
         Scene scene = new Scene(loader.load());
         stage.setTitle("Blueprint Hell");
