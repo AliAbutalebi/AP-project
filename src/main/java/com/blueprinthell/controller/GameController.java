@@ -207,7 +207,11 @@ public class GameController {
         else if (wireView.getWire().getSourcePort() instanceof TrianglePort && wireView.getWire().getDestinationPort() instanceof TrianglePort) {
             wireView.setStroke(TRIANGLE_COLOR);
 
-        }
+    private Color getWireColor(Wire wire) {
+        if (wire.getDestinationPort() == null) return DRAGGING_COLOR;
+        if (wire.getSourcePort() instanceof SquarePort) return SQUARE_COLOR;
+        if (wire.getSourcePort() instanceof TrianglePort) return TRIANGLE_COLOR;
+        return Color.GRAY;
     }
 }
 
