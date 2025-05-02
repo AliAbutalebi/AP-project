@@ -9,6 +9,7 @@ public class Port {
     private boolean occupied = false;
     private Wire connectedWire;
     private int parentSystemId;
+    private SystemNode parentSystemNode;
     private Point2D location;
 
     public Port(boolean isInput, ShapeType shapeType, int parentSystemId) {
@@ -57,6 +58,14 @@ public class Port {
         return parentSystemId;
     }
 
+    public void setParentSystemNode(SystemNode parentSystemNode) {
+        this.parentSystemNode = parentSystemNode;
+    }
+
+    public SystemNode getParentSystemNode() {
+        return parentSystemNode;
+    }
+
     public void setLocation(Point2D location) {
         this.location = location;
     }
@@ -71,6 +80,16 @@ public class Port {
 
     public ShapeType getShapeType() {
         return shapeType;
+    }
+
+    public void sendPacket(Packet packet) {
+        getParentSystemNode().getPacketQueue().remove(packet);
+        getConnectedWire().setPacketOnWire(packet);
+    }
+
+    public void receivePacket(Packet packet) {
+        getParentSystemNode().getPacketQueue().add(packet);
+        getConnectedWire().setPacketOnWire(null);
     }
 }
 

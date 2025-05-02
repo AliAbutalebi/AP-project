@@ -76,6 +76,7 @@ public class GameController {
 
             for (PortView portView : nodeView.getInputPortViews()) {
                 savePortLocation(portView);
+                portView.getPort().setParentSystemNode(node);
             }
             for (PortView portView : nodeView.getOutputPortViews()) {
                 savePortLocation(portView);
