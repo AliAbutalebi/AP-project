@@ -189,7 +189,7 @@ public class GameController {
     }
 
     private boolean isValidConnection(Port from, Port to) {
-        return from != to && !from.isInput() && to.isInput() && from.getShapeType() == to.getShapeType();
+        return from != to && !from.isInput() && to.isInput() && from.getShapeType() == to.getShapeType() && from.getParentSystemId() != to.getParentSystemId();
     }
 
     private void removeWire(WireView wireView) {
