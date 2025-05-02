@@ -2,7 +2,10 @@ package com.blueprinthell.controller;
 
 import com.blueprinthell.map.MapLoader;
 import com.blueprinthell.model.*;
-import com.blueprinthell.view.*;
+import com.blueprinthell.view.PacketView;
+import com.blueprinthell.view.PortView;
+import com.blueprinthell.view.SystemNodeView;
+import com.blueprinthell.view.WireView;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -10,10 +13,22 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GameController {
 
+    private static final Color DRAGGING_COLOR = Color.web("#888888");
+    private static final Color SQUARE_COLOR = Color.web("#00FF00");
+    private static final Color TRIANGLE_COLOR = Color.web("#FFFF00");
+    private final List<SystemNodeView> systemNodeViews = new ArrayList<>();
+    private final List<WireView> wireViews = new ArrayList<>();
+    private final List<PacketView> packetViews = new ArrayList<>();
+    private final Map<SystemNode, SystemNodeView> nodeToView = new HashMap<>();
+    private final Map<Wire, WireView> wireToView = new HashMap<>();
+    private final Map<Packet, PacketView> packetToView = new HashMap<>();
     @FXML
     private AnchorPane rootPane;
     @FXML
@@ -22,25 +37,10 @@ public class GameController {
     private AnchorPane packetPane;
     @FXML
     private AnchorPane systemNodePane;
-
     private GameMap gameMap;
-
-    private final List<SystemNodeView> systemNodeViews = new ArrayList<>();
-    private final List<WireView> wireViews = new ArrayList<>();
-    private final List<PacketView> packetViews = new ArrayList<>();
-
-    private final Map<SystemNode, SystemNodeView> nodeToView = new HashMap<>();
-    private final Map<Wire, WireView> wireToView = new HashMap<>();
-    private final Map<Packet, PacketView> packetToView = new HashMap<>();
-
     private PortView startingPortView = null;
     private WireView draggingWire = null;
-
     private AnimationTimer gameLoop;
-
-    private static final Color DRAGGING_COLOR = Color.web("#888888");
-    private static final Color SQUARE_COLOR = Color.web("#00FF00");
-    private static final Color TRIANGLE_COLOR = Color.web("#FFFF00");
 
     @FXML
     public void initialize() {
@@ -52,7 +52,6 @@ public class GameController {
     public void setGameMap(GameMap gameMap) {
         this.gameMap = gameMap;
         renderInitialMap();
-        // startGameLoop();
     }
 
     private void renderInitialMap() {
@@ -115,7 +114,7 @@ public class GameController {
         }
 
         for (PacketView packetView : packetViews) {
-            packetView.updateView();
+            packetView.update();
         }
     }
 
@@ -125,10 +124,8 @@ public class GameController {
 
     private void onPortClicked(PortView portView, MouseEvent event) {
         if (portView.getPort().isInput()) {
-            return;
         } else if (portView.getPort().isOccupied()) {
             removeWire(wireToView.get(portView.getPort().getConnectedWire()));
-            return;
         } else {
             startingPortView = portView;
             Wire wire = new Wire(startingPortView.getPort().getLocation(), startingPortView.getPort().getLocation());
@@ -254,6 +251,49 @@ public class GameController {
         for (PacketView packetView : packetViews) {
             refNode.getPacketQueue().add(packetView.getPacket());
         }
+    }
+
+    private void packetThroughWire(PacketView packetView, WireView wireView) {
+        if (!packetView.getPacket().isOnWire()) {
+            wireView.getWire().getSourcePort().sendPacket(packetView.getPacket());
+            packetView.getPacket().setOnWire(true);
+            packetView.getPacket().setCurrentWire(wireView.getWire());
+            systemNodePane.getChildren().remove(packetView);
+            packetPane.getChildren().add(packetView);
+        }
+        else if (packetView.getPacket().isOnWire() && packetView.getPacket().getProgressOnWire() < 1) {
+            double progressOnWire = calculateProgressOnWire(packetView, wireView);
+            packetView.getPacket().setProgressOnWire(progressOnWire);
+            packetView.getPacket().setLocation(wireView.getWire().interpolate(progressOnWire));
+            packetView.update();
+        }
+        else if (packetView.getPacket().isOnWire() && packetView.getPacket().getProgressOnWire() >= 1) {
+            wireView.getWire().getDestinationPort().receivePacket(packetView.getPacket());
+            packetView.getPacket().setOnWire(false);
+            packetView.getPacket().setCurrentWire(null);
+            systemNodePane.getChildren().add(packetView);
+            packetPane.getChildren().remove(packetView);
+        }
+
+
+    }
+
+    private double calculateProgressOnWire(PacketView packetView, WireView wireView) {
+        double progress = packetView.getPacket().getProgressOnWire();
+        if (packetView.getPacket().getShapeType() == wireView.getWire().getShapeType()) {
+            progress += packetView.getPacket().getBaseSpeed();
+        } else {
+            switch (packetView.getPacket().getShapeType()) {
+                case SQUARE:
+                    progress += packetView.getPacket().getBaseSpeed() / 2;
+                    break;
+                case TRIANGLE:
+                    progress += packetView.getPacket().getCurrentSpeed();
+                    packetView.getPacket().setCurrentSpeed(packetView.getPacket().getCurrentSpeed() + packetView.getPacket().getAcceleration());
+                    break;
+            }
+        }
+        return progress;
     }
 }
 

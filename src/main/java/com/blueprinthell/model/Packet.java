@@ -8,7 +8,7 @@ public class Packet {
     private int id;
     private static final double BASE_SPEED = 1;
     private static final double ACCELERATION = 1;
-    private double currentSpeed;
+    private double currentSpeed = BASE_SPEED;
     private double noise;
     private double progressOnWire;
     private ShapeType shapeType;
@@ -120,5 +120,6 @@ public class Packet {
     public int getTriangleCoins() {
         return TRIANGLE_COINS;
     }
+
 }
 
