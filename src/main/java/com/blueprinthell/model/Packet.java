@@ -1,6 +1,7 @@
 package com.blueprinthell.model;
 
 import javafx.geometry.Point2D;
+import javafx.scene.shape.Shape;
 
 public class Packet {
 
@@ -20,6 +21,9 @@ public class Packet {
     private static final int SQUARE_COINS = 1;
     private static final int TRIANGLE_COINS = 2;
 
+    public Packet(ShapeType shapeType) {
+        this.shapeType = shapeType;
+    }
 
     public void setId(int id) {
         this.id = id;

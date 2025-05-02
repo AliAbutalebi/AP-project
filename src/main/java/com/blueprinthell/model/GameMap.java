@@ -33,11 +33,11 @@ public class GameMap {
         return wires;
     }
 
-    public void setPackets(ArrayList<Packet> packets) {
-        this.activePackets = packets;
+    public void setActivePackets(ArrayList<Packet> activePackets) {
+        this.activePackets = activePackets;
     }
 
-    public ArrayList<Packet> getPackets() {
+    public ArrayList<Packet> getActivePackets() {
         return activePackets;
     }
 

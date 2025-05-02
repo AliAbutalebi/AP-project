@@ -59,7 +59,7 @@
                     "parentSystemId": 1
                 }
             ],
-            "isActive": false
+            "isActive": true
         },
         {
             "type": "SystemNode",
@@ -108,6 +108,32 @@
             "outputPorts": [],
             "isActive": false
         }
+    ],
+    "packets": [
+        {
+            "id": 0,
+            "shapeType": "SQUARE",
+            "alive": true,
+            "noise": 0,
+            "currentSpeed": 0,
+            "onWire": false,
+            "progressOnWire": 0,
+            "currentWire": null,
+            "locationSystemNodeId": 0
+        },
+        {
+            "id": 1,
+            "shapeType": "TRIANGLE",
+            "alive": true,
+            "noise": 0,
+            "currentSpeed": 0,
+            "onWire": false,
+            "progressOnWire": 0,
+            "currentWire": null,
+            "locationSystemNodeId": 0
+        }
+    ],
+    "wires": [
     ],
     "maxWireLength": 800.0
 }

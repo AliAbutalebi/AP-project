@@ -51,4 +51,11 @@ public class PacketView extends Polygon {
     public void saveLocation() {
         Point2D location = localToScene(0, 0);
     }
+
+    public void setPacket(Packet packet) {
+        this.packet = packet;
+    }
+    public Packet getPacket() {
+        return packet;
+    }
 }

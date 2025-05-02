@@ -10,10 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GameController {
 
@@ -21,6 +18,8 @@ public class GameController {
     private AnchorPane rootPane;
     @FXML
     private AnchorPane wirePane;
+    @FXML
+    private AnchorPane packetPane;
     @FXML
     private AnchorPane systemNodePane;
 
@@ -57,12 +56,22 @@ public class GameController {
     }
 
     private void renderInitialMap() {
+        for (Packet packet : gameMap.getActivePackets()) {
+            PacketView packetView = new PacketView(packet);
+            packetViews.add(packetView);
+            packetToView.put(packet, packetView);
+        }
+
         for (SystemNode node : gameMap.getSystemNodes()) {
             SystemNodeView nodeView = new SystemNodeView(node);
             if (nodeView.getSystemNode() instanceof ReferenceSystemNode) {
                 nodeView.setupReferenceLabel();
                 nodeView.setupRunButton();
+                setReferenceSystemNodeQueue((ReferenceSystemNode) node);
+                for (Packet packet : node.getPacketQueue()) {
+                }
             }
+
             systemNodePane.getChildren().add(nodeView);
             systemNodeViews.add(nodeView);
             nodeToView.put(node, nodeView);
@@ -75,6 +84,14 @@ public class GameController {
                 portView.setOnMousePressed(event -> onPortClicked(portView, event));
             }
         }
+
+        for (Wire wire : gameMap.getWires()) {
+            WireView wireView = new WireView(wire);
+            wirePane.getChildren().add(wireView);
+            wireViews.add(wireView);
+            wireToView.put(wire, wireView);
+        }
+
     }
 
     private void startGameLoop() {
@@ -232,6 +249,12 @@ public class GameController {
     private void setSystemNodeActive(SystemNodeView view, boolean active) {
         view.getSystemNode().setActive(active);
         view.switchIndicator(active);
+    }
+
+    private void setReferenceSystemNodeQueue(ReferenceSystemNode refNode) {
+        for (PacketView packetView : packetViews) {
+            refNode.getPacketQueue().add(packetView.getPacket());
+        }
     }
 }
 
