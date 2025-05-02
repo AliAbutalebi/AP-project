@@ -80,7 +80,7 @@ public class SystemNodeView extends AnchorPane {
 
     private void setupIndicator() {
         indicator = new Rectangle(INDICATOR_WIDTH, INDICATOR_HEIGHT);
-        indicator.setFill(Color.web("#111111"));
+        indicator.setFill(Color.web("#222222"));
         indicator.setStroke(Color.web("#666666"));
         indicator.setStrokeWidth(INDICATOR_STROKE);
         indicator.setLayoutX(10);
