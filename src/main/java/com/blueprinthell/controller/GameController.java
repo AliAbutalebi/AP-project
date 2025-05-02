@@ -68,8 +68,6 @@ public class GameController {
                 nodeView.setupReferenceLabel();
                 nodeView.setupRunButton();
                 setReferenceSystemNodeQueue((ReferenceSystemNode) node);
-                for (Packet packet : node.getPacketQueue()) {
-                }
             }
 
             systemNodePane.getChildren().add(nodeView);

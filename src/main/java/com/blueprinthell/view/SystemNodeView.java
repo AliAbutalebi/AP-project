@@ -18,23 +18,27 @@ public class SystemNodeView extends AnchorPane {
     private static final double NODE_HEIGHT = ScreenDimensions.getInstance().getHeight() / 5;
     private static final double NODE_STROKE = 5;
     private static final double NODE_RADIUS = 10;
-    private static final double PORT_SIZE = 15;
-    private static final double PORT_SPACING = PORT_SIZE * 2;
+    private static final double PORT_SPACING = 30;
+    private static final double PACKET_SPACING = 20;
     private static final double PORT_PANE_WIDTH = 25;
     private static final double INDICATOR_WIDTH = NODE_WIDTH / 4;
     private static final double INDICATOR_HEIGHT = 10;
     private static final double INDICATOR_PANEL_HEIGHT = INDICATOR_HEIGHT + 15;
     private static final double INDICATOR_STROKE = 2;
+    private static final double RUN_BUTTON_WIDTH = NODE_WIDTH - 2 * PORT_PANE_WIDTH;
+    private static final double RUN_BUTTON_HEIGHT = NODE_HEIGHT / 5;
 
     private SystemNode systemNode;
     private Pane inputPortPane;
     private Pane outputPortPane;
     private Pane indicatorPane;
+    private Pane queuePane;
     private Rectangle indicatorPanel;
     private Rectangle indicator;
     private Button runButton;
     private final ArrayList<PortView> inputPortViews;
     private final ArrayList<PortView> outputPortViews;
+    private final ArrayList<PacketView> packetViews;
 
     public SystemNodeView(SystemNode systemNode) {
         this.systemNode = systemNode;
@@ -42,11 +46,13 @@ public class SystemNodeView extends AnchorPane {
         this.outputPortPane = new Pane();
         this.inputPortViews = new ArrayList<>();
         this.outputPortViews = new ArrayList<>();
+        this.packetViews = new ArrayList<>();
 
         setupBackground();
         setupPorts();
         setupIndicator();
         getChildren().add(indicatorPane);
+        setupPackets();
 
         setLayoutX(systemNode.getLocation().getX());
         setLayoutY(systemNode.getLocation().getY());
@@ -93,8 +99,8 @@ public class SystemNodeView extends AnchorPane {
     }
 
     private void setupPorts() {
-        List<Port> inputPorts = systemNode.getInputPorts();
-        List<Port> outputPorts = systemNode.getOutputPorts();
+        ArrayList<Port> inputPorts = systemNode.getInputPorts();
+        ArrayList<Port> outputPorts = systemNode.getOutputPorts();
 
         Rectangle inportPanel = new Rectangle(PORT_PANE_WIDTH, NODE_HEIGHT);
         Rectangle outportPanel = new Rectangle(PORT_PANE_WIDTH, NODE_HEIGHT);
@@ -139,6 +145,32 @@ public class SystemNodeView extends AnchorPane {
         getChildren().addAll(inputPortPane, outputPortPane);
     }
 
+    private void setupPackets() {
+        ArrayList<Packet> packets = new ArrayList(systemNode.getPacketQueue());
+
+        queuePane = new Pane();
+        getChildren().add(queuePane);
+        queuePane.setLayoutX(PORT_PANE_WIDTH);
+        queuePane.setPrefWidth(RUN_BUTTON_WIDTH);
+        if (systemNode instanceof ReferenceSystemNode) {
+            queuePane.setLayoutY(INDICATOR_HEIGHT + RUN_BUTTON_HEIGHT);
+            queuePane.setPrefHeight(NODE_HEIGHT - INDICATOR_HEIGHT - RUN_BUTTON_HEIGHT);
+        } else {
+            queuePane.setLayoutY(INDICATOR_HEIGHT);
+            queuePane.setPrefHeight(NODE_HEIGHT - INDICATOR_HEIGHT);
+
+        }
+
+        for (int i = 0; i < packets.size(); i++) {
+            Packet packet = packets.get(i);
+            PacketView packetView = new PacketView(packet);
+            packetView.setLayoutX(queuePane.getPrefWidth() / 2);
+            packetView.setLayoutY((i + 2) * PORT_SPACING);
+            packetViews.add(packetView);
+            queuePane.getChildren().add(packetView);
+        }
+    }
+
     public void setupReferenceLabel() {
         Label reference = new Label("Reference");
         reference.setTextFill(Color.WHITE);
@@ -151,8 +183,8 @@ public class SystemNodeView extends AnchorPane {
 
     public void setupRunButton() {
         runButton = new Button("Run");
-        runButton.setPrefWidth(NODE_WIDTH - PORT_PANE_WIDTH * 2);
-        runButton.setPrefHeight(NODE_HEIGHT / 5);
+        runButton.setPrefWidth(RUN_BUTTON_WIDTH);
+        runButton.setPrefHeight(RUN_BUTTON_HEIGHT);
         getChildren().add(runButton);
         runButton.setLayoutX(PORT_PANE_WIDTH);
         runButton.setLayoutY(INDICATOR_PANEL_HEIGHT);
@@ -180,5 +212,9 @@ public class SystemNodeView extends AnchorPane {
 
     public SystemNode getSystemNode() {
         return systemNode;
+    }
+
+    public void update() {
+        setupPackets();
     }
 }
