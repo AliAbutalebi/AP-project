@@ -261,13 +261,13 @@ public class GameController {
             systemNodePane.getChildren().remove(packetView);
             packetPane.getChildren().add(packetView);
         }
-        else if (packetView.getPacket().isOnWire() && packetView.getPacket().getProgressOnWire() < 1) {
+        else if (packetView.getPacket().isOnWire() && packetView.getPacket().getDistanceOnWire() < 1) {
             double progressOnWire = calculateProgressOnWire(packetView, wireView);
-            packetView.getPacket().setProgressOnWire(progressOnWire);
+            packetView.getPacket().setDistanceOnWire(progressOnWire);
             packetView.getPacket().setLocation(wireView.getWire().interpolate(progressOnWire));
             packetView.update();
         }
-        else if (packetView.getPacket().isOnWire() && packetView.getPacket().getProgressOnWire() >= 1) {
+        else if (packetView.getPacket().isOnWire() && packetView.getPacket().getDistanceOnWire() >= 1) {
             wireView.getWire().getDestinationPort().receivePacket(packetView.getPacket());
             packetView.getPacket().setOnWire(false);
             packetView.getPacket().setCurrentWire(null);
@@ -279,7 +279,7 @@ public class GameController {
     }
 
     private double calculateProgressOnWire(PacketView packetView, WireView wireView) {
-        double progress = packetView.getPacket().getProgressOnWire();
+        double progress = packetView.getPacket().getDistanceOnWire();
         if (packetView.getPacket().getShapeType() == wireView.getWire().getShapeType()) {
             progress += packetView.getPacket().getBaseSpeed();
         } else {

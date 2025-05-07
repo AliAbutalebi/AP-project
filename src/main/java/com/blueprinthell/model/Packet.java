@@ -1,7 +1,6 @@
 package com.blueprinthell.model;
 
 import javafx.geometry.Point2D;
-import javafx.scene.shape.Shape;
 
 public class Packet {
 
@@ -10,7 +9,7 @@ public class Packet {
     private static final double ACCELERATION = 1;
     private double currentSpeed = BASE_SPEED;
     private double noise;
-    private double progressOnWire;
+    private double distanceOnWire;
     private ShapeType shapeType;
     private boolean onWire;
     private Wire currentWire;
@@ -41,12 +40,12 @@ public class Packet {
         return noise;
     }
 
-    public void setProgressOnWire(double progressOnWire) {
-        this.progressOnWire = progressOnWire;
+    public void setDistanceOnWire(double distanceOnWire) {
+        this.distanceOnWire = distanceOnWire;
     }
 
-    public double getProgressOnWire() {
-        return progressOnWire;
+    public double getDistanceOnWire() {
+        return distanceOnWire;
     }
 
     public void setCenter(Point2D center) {

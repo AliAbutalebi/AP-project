@@ -66,7 +66,7 @@ public class GameMapDeserializer implements JsonDeserializer<GameMap> {
                 packet.setAlive(p.get("alive").getAsBoolean());
                 packet.setNoise(p.get("noise").getAsDouble());
                 packet.setCurrentSpeed(p.get("currentSpeed").getAsDouble());
-                packet.setProgressOnWire(p.get("progressOnWire").getAsDouble());
+                packet.setDistanceOnWire(p.get("progressOnWire").getAsDouble());
 
                 boolean onWire = p.get("onWire").getAsBoolean();
                 packet.setOnWire(onWire);
