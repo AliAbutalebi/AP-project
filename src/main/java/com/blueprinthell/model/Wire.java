@@ -41,12 +41,12 @@ public class Wire {
         return destinationPort;
     }
 
-    public void setLength(double length) {
-        this.length = length;
+    public double getLength() {
+        return startLocation.distance(endLocation);
     }
 
-    public double getLength() {
-        return length;
+    public double getSlope() {
+        return (getEndLocation().getY() - getStartLocation().getY()) / (getEndLocation().getX() - getStartLocation().getX());
     }
 
     public void setPacketOnWire(Packet packetOnWire) {
@@ -59,7 +59,6 @@ public class Wire {
 
     public void setStartLocation(Point2D startLocation) {
         this.startLocation = startLocation;
-        updateLength();
     }
 
     public Point2D getStartLocation() {
@@ -68,15 +67,10 @@ public class Wire {
 
     public void setEndLocation(Point2D endLocation) {
         this.endLocation = endLocation;
-        updateLength();
     }
 
     public Point2D getEndLocation() {
         return endLocation;
-    }
-
-    private void updateLength() {
-        length = startLocation.distance(endLocation);
     }
 
     public ShapeType getShapeType() {
