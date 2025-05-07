@@ -4,8 +4,8 @@ import javafx.geometry.Point2D;
 
 public class Packet {
 
-    private static final double BASE_SPEED = 1;
-    private static final double ACCELERATION = 1;
+    private static final double BASE_SPEED = 0.01;
+    private static final double ACCELERATION = 0.01;
     private static final int SQUARE_COINS = 1;
     private static final int TRIANGLE_COINS = 2;
     private int id;
@@ -18,7 +18,8 @@ public class Packet {
     private boolean isAlive = true;
     private boolean readyToDeliver = false;
     private Point2D center;
-    private Point2D location;
+    private Point2D location = new Point2D(0, 0);
+    private SystemNode parentSystemNode;
 
     public Packet(ShapeType shapeType) {
         this.shapeType = shapeType;
@@ -120,6 +121,14 @@ public class Packet {
         return TRIANGLE_COINS;
     }
 
+    public SystemNode getParentSystemNode() {
+        return parentSystemNode;
+    }
+
+    public void setParentSystemNode(SystemNode parentSystemNode) {
+        this.parentSystemNode = parentSystemNode;
+    }
+
     public boolean isReadyToDeliver() {
         return readyToDeliver;
     }
@@ -158,11 +167,16 @@ public class Packet {
         return getBaseSpeed();
     }
 
+    public void enterWire(Wire wire) {
+     setCurrentWire(wire);
+     setOnWire(true);
+    }
+
     public void exitWire() {
-        this.onWire = false;
-        this.currentWire = null;
-        this.distanceOnWire = 0;
-        this.setReadyToDeliver(false);
+        setOnWire(false);
+        setCurrentWire(null);
+        setDistanceOnWire(0);
+        setReadyToDeliver(false);
     }
 
 }

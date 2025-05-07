@@ -209,6 +209,10 @@ public class SystemNodeView extends AnchorPane {
         return systemNode;
     }
 
+    public Button getRunButton() {
+        return runButton;
+    }
+
     public void update() {
         setupPackets();
     }

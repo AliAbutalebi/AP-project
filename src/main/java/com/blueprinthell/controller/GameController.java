@@ -1,5 +1,6 @@
 package com.blueprinthell.controller;
 
+import com.blueprinthell.log.Logger;
 import com.blueprinthell.map.MapLoader;
 import com.blueprinthell.model.*;
 import com.blueprinthell.view.PacketView;
@@ -7,6 +8,7 @@ import com.blueprinthell.view.PortView;
 import com.blueprinthell.view.SystemNodeView;
 import com.blueprinthell.view.WireView;
 import javafx.animation.AnimationTimer;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
@@ -40,6 +42,8 @@ public class GameController {
 
     private GameMap gameMap;
 
+    private final Logger logger = Logger.getInstance();
+
     private PortView startingPortView = null;
     private WireView draggingWire = null;
 
@@ -55,11 +59,13 @@ public class GameController {
     }
 
     public void setGameMap(GameMap gameMap) {
+        logger.info("setGameMap");
         this.gameMap = gameMap;
         renderInitialMap();
     }
 
     private void renderInitialMap() {
+        logger.info("renderInitialMap");
         for (Packet packet : gameMap.getActivePackets()) {
             PacketView packetView = new PacketView(packet);
             packetViews.add(packetView);
@@ -71,6 +77,7 @@ public class GameController {
             if (nodeView.getSystemNode() instanceof ReferenceSystemNode) {
                 nodeView.setupReferenceLabel();
                 nodeView.setupRunButton();
+                nodeView.getRunButton().setOnAction(this::startGameLoop);
                 setReferenceSystemNodeQueue((ReferenceSystemNode) node);
             }
 
@@ -97,7 +104,8 @@ public class GameController {
 
     }
 
-    private void startGameLoop() {
+    private void startGameLoop(ActionEvent event) {
+        logger.info("startGameLoop");
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -113,18 +121,6 @@ public class GameController {
     }
 
     private void update(double deltaTime) {
-        for (PacketView packetView : packetViews) {
-            Packet packet = packetView.getPacket();
-
-            if (packet.isOnWire()) {
-                packet.updateOnWire(deltaTime);
-
-                if (packet.isReadyToDeliver()) {
-                    packet.getCurrentWire().getDestinationPort().receivePacket(packet);
-                    packet.exitWire();
-                }
-            }
-        }
 
     }
 
@@ -144,6 +140,7 @@ public class GameController {
     }
 
     private void onPortClicked(PortView portView, MouseEvent event) {
+        logger.info("onPortClicked");
         if (portView.getPort().isInput()) {
         } else if (portView.getPort().isOccupied()) {
             removeWire(wireToView.get(portView.getPort().getConnectedWire()));
@@ -166,6 +163,7 @@ public class GameController {
     }
 
     private void onWireReleased(MouseEvent event) {
+        logger.info("onWireReleased");
         PortView targetPortView = findHoveredInputPort(event.getX(), event.getY());
 
         if (draggingWire == null || startingPortView == null || targetPortView == null) {
@@ -183,7 +181,7 @@ public class GameController {
     }
 
     private void finalizeWireConnection(PortView from, PortView to) {
-
+        logger.info("finilizeWireConnection");
         draggingWire.getWire().setEndLocation(to.getPort().getLocation());
         draggingWire.getWire().setDestinationPort(to.getPort());
         from.getPort().setConnectedWire(draggingWire.getWire());
@@ -273,6 +271,5 @@ public class GameController {
             refNode.getPacketQueue().add(packetView.getPacket());
         }
     }
-    
 }
 
