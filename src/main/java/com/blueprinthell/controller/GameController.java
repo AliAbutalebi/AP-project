@@ -37,10 +37,15 @@ public class GameController {
     private AnchorPane packetPane;
     @FXML
     private AnchorPane systemNodePane;
+
     private GameMap gameMap;
+
     private PortView startingPortView = null;
     private WireView draggingWire = null;
+
     private AnimationTimer gameLoop;
+    private long lastUpdateTime = 0;
+
 
     @FXML
     public void initialize() {
@@ -96,14 +101,30 @@ public class GameController {
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                update();
-                render();
+                if (lastUpdateTime > 0) {
+                    double deltaTime = (now - lastUpdateTime) / 1_000_000_000.0; // convert nanoseconds to seconds
+                    update(deltaTime);
+                    render();
+                }
+                lastUpdateTime = now;
             }
         };
         gameLoop.start();
     }
 
-    private void update() {
+    private void update(double deltaTime) {
+        for (PacketView packetView : packetViews) {
+            Packet packet = packetView.getPacket();
+
+            if (packet.isOnWire()) {
+                packet.updateOnWire(deltaTime);
+
+                if (packet.isReadyToDeliver()) {
+                    packet.getCurrentWire().getDestinationPort().receivePacket(packet);
+                    packet.exitWire();
+                }
+            }
+        }
 
     }
 
@@ -251,49 +272,6 @@ public class GameController {
         for (PacketView packetView : packetViews) {
             refNode.getPacketQueue().add(packetView.getPacket());
         }
-    }
-
-    private void packetThroughWire(PacketView packetView, WireView wireView) {
-        if (!packetView.getPacket().isOnWire()) {
-            wireView.getWire().getSourcePort().sendPacket(packetView.getPacket());
-            packetView.getPacket().setOnWire(true);
-            packetView.getPacket().setCurrentWire(wireView.getWire());
-            systemNodePane.getChildren().remove(packetView);
-            packetPane.getChildren().add(packetView);
-        }
-        else if (packetView.getPacket().isOnWire() && packetView.getPacket().getDistanceOnWire() < 1) {
-            double progressOnWire = calculateProgressOnWire(packetView, wireView);
-            packetView.getPacket().setDistanceOnWire(progressOnWire);
-            packetView.getPacket().setLocation(wireView.getWire().interpolate(progressOnWire));
-            packetView.update();
-        }
-        else if (packetView.getPacket().isOnWire() && packetView.getPacket().getDistanceOnWire() >= 1) {
-            wireView.getWire().getDestinationPort().receivePacket(packetView.getPacket());
-            packetView.getPacket().setOnWire(false);
-            packetView.getPacket().setCurrentWire(null);
-            systemNodePane.getChildren().add(packetView);
-            packetPane.getChildren().remove(packetView);
-        }
-
-
-    }
-
-    private double calculateProgressOnWire(PacketView packetView, WireView wireView) {
-        double progress = packetView.getPacket().getDistanceOnWire();
-        if (packetView.getPacket().getShapeType() == wireView.getWire().getShapeType()) {
-            progress += packetView.getPacket().getBaseSpeed();
-        } else {
-            switch (packetView.getPacket().getShapeType()) {
-                case SQUARE:
-                    progress += packetView.getPacket().getBaseSpeed() / 2;
-                    break;
-                case TRIANGLE:
-                    progress += packetView.getPacket().getCurrentSpeed();
-                    packetView.getPacket().setCurrentSpeed(packetView.getPacket().getCurrentSpeed() + packetView.getPacket().getAcceleration());
-                    break;
-            }
-        }
-        return progress;
     }
 }
 

@@ -4,9 +4,11 @@ import javafx.geometry.Point2D;
 
 public class Packet {
 
-    private int id;
     private static final double BASE_SPEED = 1;
     private static final double ACCELERATION = 1;
+    private static final int SQUARE_COINS = 1;
+    private static final int TRIANGLE_COINS = 2;
+    private int id;
     private double currentSpeed = BASE_SPEED;
     private double noise;
     private double distanceOnWire;
@@ -14,102 +16,100 @@ public class Packet {
     private boolean onWire;
     private Wire currentWire;
     private boolean isAlive = true;
+    private boolean readyToDeliver = false;
     private Point2D center;
     private Point2D location;
 
-    private static final int SQUARE_COINS = 1;
-    private static final int TRIANGLE_COINS = 2;
-
     public Packet(ShapeType shapeType) {
         this.shapeType = shapeType;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setNoise(double noise) {
-        this.noise = noise;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public double getNoise() {
         return noise;
     }
 
-    public void setDistanceOnWire(double distanceOnWire) {
-        this.distanceOnWire = distanceOnWire;
+    public void setNoise(double noise) {
+        this.noise = noise;
     }
 
     public double getDistanceOnWire() {
         return distanceOnWire;
     }
 
-    public void setCenter(Point2D center) {
-        this.center = center;
+    public void setDistanceOnWire(double distanceOnWire) {
+        this.distanceOnWire = distanceOnWire;
     }
 
     public Point2D getCenter() {
         return center;
     }
 
-    public void setOnWire(boolean onWire) {
-        this.onWire = onWire;
+    public void setCenter(Point2D center) {
+        this.center = center;
     }
 
     public boolean isOnWire() {
         return onWire;
     }
 
-    public void setCurrentWire(Wire currentWire) {
-        this.currentWire = currentWire;
+    public void setOnWire(boolean onWire) {
+        this.onWire = onWire;
     }
 
     public Wire getCurrentWire() {
         return currentWire;
     }
 
-    public void setAlive(boolean isAlive) {
-        this.isAlive = isAlive;
+    public void setCurrentWire(Wire currentWire) {
+        this.currentWire = currentWire;
     }
 
     public boolean isAlive() {
         return isAlive;
     }
 
-    public void setLocation(Point2D location) {
-        this.location = location;
+    public void setAlive(boolean isAlive) {
+        this.isAlive = isAlive;
     }
 
     public Point2D getLocation() {
         return location;
     }
 
-    public double getBaseSpeed() {
-        return BASE_SPEED;
+    public void setLocation(Point2D location) {
+        this.location = location;
     }
 
-    public void setCurrentSpeed(double baseSpeed) {
-        this.currentSpeed = baseSpeed;
+    public double getBaseSpeed() {
+        return BASE_SPEED;
     }
 
     public double getCurrentSpeed() {
         return currentSpeed;
     }
 
+    public void setCurrentSpeed(double baseSpeed) {
+        this.currentSpeed = baseSpeed;
+    }
+
     public double getAcceleration() {
         return ACCELERATION;
     }
 
-    public void setShapeType(ShapeType shapeType) {
-        this.shapeType = shapeType;
-    }
-
     public ShapeType getShapeType() {
         return shapeType;
+    }
+
+    public void setShapeType(ShapeType shapeType) {
+        this.shapeType = shapeType;
     }
 
     public int getSquareCoins() {
@@ -118,6 +118,51 @@ public class Packet {
 
     public int getTriangleCoins() {
         return TRIANGLE_COINS;
+    }
+
+    public boolean isReadyToDeliver() {
+        return readyToDeliver;
+    }
+
+    public void setReadyToDeliver(boolean readyToDeliver) {
+        this.readyToDeliver = readyToDeliver;
+    }
+
+    public void updateOnWire(double deltaTime) {
+        if (currentWire == null) return;
+
+        double speed = getEffectiveSpeed();
+        this.distanceOnWire += speed * deltaTime;
+
+        if (distanceOnWire >= currentWire.getLength()) {
+            distanceOnWire = currentWire.getLength();
+            setReadyToDeliver(true);
+        }
+
+        double t = distanceOnWire / currentWire.getLength();
+        this.location = currentWire.interpolate(t);
+    }
+
+    public double getEffectiveSpeed() {
+        if (currentWire == null) return 0;
+
+        if (shapeType == currentWire.getShapeType()) return getBaseSpeed();
+
+        if (shapeType == ShapeType.SQUARE) return getBaseSpeed() / 2;
+
+        if (shapeType == ShapeType.TRIANGLE) {
+            currentSpeed += getAcceleration();
+            return currentSpeed;
+        }
+
+        return getBaseSpeed();
+    }
+
+    public void exitWire() {
+        this.onWire = false;
+        this.currentWire = null;
+        this.distanceOnWire = 0;
+        this.setReadyToDeliver(false);
     }
 
 }
