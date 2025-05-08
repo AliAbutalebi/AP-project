@@ -30,21 +30,9 @@ public class WireView extends Line {
         setEndY(wire.getEndLocation().getY());
     }
 
-//    public void activate() {
-//        setStroke(SQUARE_COLOR);
-//    }
-
-//    public void deactivate() {
-//        setStroke(DRAGGING_COLOR);
-//    }
-
     public void markInvalid() {
         setStroke(INVALID_COLOR);
     }
-
-//    public void markValid() {
-//        setStroke(DRAGGING_COLOR);
-//    }
 
     public void setWire(Wire wire) {
         this.wire = wire;

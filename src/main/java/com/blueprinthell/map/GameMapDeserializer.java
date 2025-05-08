@@ -45,6 +45,12 @@ public class GameMapDeserializer implements JsonDeserializer<GameMap> {
 
             ArrayList<Port> inputPorts = deserializePorts(nodeObject.getAsJsonArray("inputPorts"), portIdMap);
             ArrayList<Port> outputPorts = deserializePorts(nodeObject.getAsJsonArray("outputPorts"), portIdMap);
+            for (Port inputPort : inputPorts) {
+                inputPort.setParentSystemNode(node);
+            }
+            for (Port outputPort : outputPorts) {
+                outputPort.setParentSystemNode(node);
+            }
             node.setInputPorts(inputPorts);
             node.setOutputPorts(outputPorts);
 

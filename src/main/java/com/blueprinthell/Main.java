@@ -1,5 +1,6 @@
 package com.blueprinthell;
 
+import com.blueprinthell.log.Logger;
 import com.blueprinthell.model.ScreenDimensions;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +11,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
+        Logger.getInstance().run();
         Font.loadFont(getClass().getResourceAsStream("/com/blueprinthell/font/Monograf/monograf-bold.ttf"), 12);
         Font.loadFont(getClass().getResourceAsStream("/com/blueprinthell/font/Monograf/monograf-regular.ttf"), 12);
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/blueprinthell/view/MainMenu.fxml"));

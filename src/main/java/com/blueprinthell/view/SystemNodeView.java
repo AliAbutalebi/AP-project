@@ -216,4 +216,8 @@ public class SystemNodeView extends AnchorPane {
     public void update() {
         setupPackets();
     }
+
+    public Pane getQueuePane() {
+        return queuePane;
+    }
 }

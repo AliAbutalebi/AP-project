@@ -35,6 +35,7 @@ public class Logger {
     public void warn(String message) { log("WARN", message); }
     public void error(String message) { log("ERROR", message); }
     public void debug(String message) { log("DEBUG", message); }
+    public void run() {log("RUN", ""); }
 
     public void close() {
         if (writer != null) {
