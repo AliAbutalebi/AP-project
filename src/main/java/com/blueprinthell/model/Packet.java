@@ -4,8 +4,8 @@ import javafx.geometry.Point2D;
 
 public class Packet {
 
-    private static final double BASE_SPEED = 10;
-    private static final double ACCELERATION = 10;
+    private static final double BASE_SPEED = 20;
+    private static final double ACCELERATION = 20;
     private static final int SQUARE_COINS = 1;
     private static final int TRIANGLE_COINS = 2;
     private int id;
@@ -126,35 +126,6 @@ public class Packet {
 
     public void setParentSystemNode(SystemNode parentSystemNode) {
         this.parentSystemNode = parentSystemNode;
-    }
-
-    public void updateOnWire(double deltaTime) {
-        if (currentWire == null) return;
-
-        double speed = getEffectiveSpeed();
-        this.distanceOnWire += speed * deltaTime;
-
-        if (distanceOnWire >= currentWire.getLength()) {
-            distanceOnWire = currentWire.getLength();
-        }
-
-        double t = distanceOnWire / currentWire.getLength();
-        this.location = currentWire.interpolate(t);
-    }
-
-    public double getEffectiveSpeed() {
-        if (currentWire == null) return 0;
-
-        if (shapeType == currentWire.getShapeType()) return getBaseSpeed();
-
-        if (shapeType == ShapeType.SQUARE) return getBaseSpeed() / 2;
-
-        if (shapeType == ShapeType.TRIANGLE) {
-            currentSpeed += getAcceleration();
-            return currentSpeed;
-        }
-
-        return getBaseSpeed();
     }
 }
 

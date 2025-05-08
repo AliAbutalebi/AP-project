@@ -151,9 +151,8 @@ public class SystemNodeView extends AnchorPane {
             queuePane.setLayoutY(INDICATOR_HEIGHT + RUN_BUTTON_HEIGHT);
             queuePane.setPrefHeight(NODE_HEIGHT - INDICATOR_HEIGHT - RUN_BUTTON_HEIGHT);
         } else {
-            queuePane.setLayoutY(INDICATOR_HEIGHT);
-            queuePane.setPrefHeight(NODE_HEIGHT - INDICATOR_HEIGHT);
-
+            queuePane.setLayoutY(INDICATOR_PANEL_HEIGHT);
+            queuePane.setPrefHeight(NODE_HEIGHT - INDICATOR_PANEL_HEIGHT);
         }
 
         for (int i = 0; i < packets.size(); i++) {
@@ -214,10 +213,19 @@ public class SystemNodeView extends AnchorPane {
     }
 
     public void update() {
+        queuePane.getChildren().clear();
         setupPackets();
     }
 
     public Pane getQueuePane() {
         return queuePane;
+    }
+
+    public void removeFromQueuPane(PacketView packetView) {
+        queuePane.getChildren().remove(packetView);
+    }
+
+    public void addToQueuPane(PacketView packetView) {
+        queuePane.getChildren().add(packetView);
     }
 }

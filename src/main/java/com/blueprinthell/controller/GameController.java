@@ -78,7 +78,6 @@ public class GameController {
                 nodeView.setupReferenceLabel();
                 nodeView.setupRunButton();
                 nodeView.getRunButton().setOnAction(this::startGameLoop);
-                setReferenceSystemNodeQueue((ReferenceSystemNode) node);
             }
 
             systemNodePane.getChildren().add(nodeView);
@@ -122,24 +121,17 @@ public class GameController {
 
     private void update(double deltaTime) {
         System.out.println(movingPackets.size());
-        for (PacketView view : packetViews) {
-            if (view.getPacket().isOnWire()) {
-                movePacketOnWire(view.getPacket(), deltaTime);
-                if (view.getPacket().getDistanceOnWire() >= view.getPacket().getCurrentWire().getLength()) {
-                    checkArrival(view.getPacket());
-                }
-            }
-            else {
-                for (SystemNodeView nodeView : systemNodeViews) {
-                    if (nodeView.getSystemNode().getPacketQueue().peek().equals(view.getPacket())) {
-                        packetFromSystemToWires(nodeView.getSystemNode());
-                    }
-                }
-            }
+        packetFromSystemsToWires();
+        for (Packet packet : movingPackets) {
+            movePacketOnWire(packet, deltaTime);
         }
+        checkArrivals();
     }
 
     private void render() {
+//        for (SystemNodeView view : systemNodeViews) {
+//            view.update();
+//        }
 
         for (WireView wireView : wireViews) {
             wireView.updateView();
@@ -155,6 +147,7 @@ public class GameController {
     }
 
     private void onPortClicked(PortView portView, MouseEvent event) {
+        logger.info("onPortClicked");
         if (portView.getPort().isInput()) {
         } else if (portView.getPort().isOccupied()) {
             removeWire(wireToView.get(portView.getPort().getConnectedWire()));
@@ -195,6 +188,7 @@ public class GameController {
     }
 
     private void finalizeWireConnection(PortView from, PortView to) {
+        logger.info("finilizeWireConnection");
         draggingWire.getWire().setEndLocation(to.getPort().getLocation());
         draggingWire.getWire().setDestinationPort(to.getPort());
         from.getPort().setConnectedWire(draggingWire.getWire());
@@ -279,34 +273,30 @@ public class GameController {
         view.switchIndicator(active);
     }
 
-    private void setReferenceSystemNodeQueue(ReferenceSystemNode refNode) {
-        for (PacketView packetView : packetViews) {
-            refNode.getPacketQueue().add(packetView.getPacket());
-        }
-    }
+    private void packetFromSystemsToWires() {
+        for (SystemNodeView nodeView : systemNodeViews) {
+            SystemNode node = nodeView.getSystemNode();
+            Packet packet = node.getPacketQueue().peek();
+            if (packet != null) {
+                Port selectedOutputPort = findPort(node, packet);
+                if (selectedOutputPort != null) {
+                    packet.getParentSystemNode().getPacketQueue().remove(packet);
+                    packet.setParentSystemNode(null);
 
-    private void packetFromSystemToWires(SystemNode node) {
-        Packet packet = node.getPacketQueue().peek();
-        if (packet != null) {
-            Port selectedOutputPort = findPort(node, packet);
-            if (selectedOutputPort != null) {
-                node.getPacketQueue().remove(packet);
+                    packet.setOnWire(true);
+                    packet.setCurrentWire(selectedOutputPort.getConnectedWire());
+                    packet.setDistanceOnWire(0);
 
-                packet.setOnWire(true);
-                packet.setCurrentWire(selectedOutputPort.getConnectedWire());
-                packet.setDistanceOnWire(0);
+                    selectedOutputPort.getConnectedWire().setPacketOnWire(packet);
 
-                selectedOutputPort.getConnectedWire().setPacketOnWire(packet);
+                    selectedOutputPort.sendPacket(packet);
 
-                selectedOutputPort.sendPacket(packet);
-
-                SystemNodeView nodeView = nodeToView.get(node);
-                PacketView packetView = packetToView.get(packet);
-                nodeView.getQueuePane().getChildren().remove(packetView);
-                packet.setLocation(selectedOutputPort.getLocation());
-                packetPane.getChildren().add(packetView);
-                movingPackets.add(packet);
-                nodeView.update();
+                    PacketView packetView = packetToView.get(packet);
+                    packet.setLocation(selectedOutputPort.getLocation());
+                    packetPane.getChildren().add(packetView);
+                    movingPackets.add(packet);
+                    nodeView.update();
+                }
             }
         }
     }
@@ -348,24 +338,29 @@ public class GameController {
         packet.setDistanceOnWire(packet.getDistanceOnWire() + deltaDistance);
     }
 
-    private void checkArrival(Packet packet) {
-        movingPackets.remove(packet);
+    private void checkArrivals() {
+        ArrayList<Packet> arrived = new ArrayList<>();
+        for (Packet packet : movingPackets) {
+            if (packet.getDistanceOnWire() >= packet.getCurrentWire().getLength()) {
+                arrived.add(packet);
 
-        packet.getCurrentWire().getDestinationPort().getParentSystemNode().getPacketQueue().add(packet);
-        System.out.println("moving packet " + packet.getId() + " to queue");
+                packet.setParentSystemNode(packet.getCurrentWire().getDestinationPort().getParentSystemNode());
+                packet.getCurrentWire().getDestinationPort().getParentSystemNode().getPacketQueue().add(packet);
 
-        packet.setOnWire(false);
-        packet.setCurrentWire(null);
-        packet.setDistanceOnWire(0);
+                packet.getCurrentWire().getDestinationPort().receivePacket(packet);
 
-        packet.getCurrentWire().setPacketOnWire(null);
+                SystemNodeView nodeView = nodeToView.get(packet.getCurrentWire().getDestinationPort().getParentSystemNode());
+                PacketView packetView = packetToView.get(packet);
+                packetPane.getChildren().remove(packetView);
+                nodeView.update();
 
-        packet.getCurrentWire().getDestinationPort().receivePacket(packet);
-
-        SystemNodeView nodeView = nodeToView.get(packet.getCurrentWire().getDestinationPort().getParentSystemNode());
-        PacketView packetView = packetToView.get(packet);
-        packetPane.getChildren().remove(packetView);
-        nodeView.getQueuePane().getChildren().add(packetView);
+                packet.setOnWire(false);
+                packet.getCurrentWire().setPacketOnWire(null);
+                packet.setCurrentWire(null);
+                packet.setDistanceOnWire(0);
+            }
+        }
+        movingPackets.removeAll(arrived);
     }
 }
 

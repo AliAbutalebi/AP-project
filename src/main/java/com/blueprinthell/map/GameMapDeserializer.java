@@ -85,6 +85,7 @@ public class GameMapDeserializer implements JsonDeserializer<GameMap> {
                 ReferenceSystemNode node = referenceNodesById.get(systemNodeId);
                 if (node != null) {
                     node.getPacketQueue().add(packet);
+                    packet.setParentSystemNode(node);
                 }
 
                 activePackets.add(packet);
