@@ -3,10 +3,7 @@ package com.blueprinthell.controller;
 import com.blueprinthell.log.Logger;
 import com.blueprinthell.map.MapLoader;
 import com.blueprinthell.model.*;
-import com.blueprinthell.view.PacketView;
-import com.blueprinthell.view.PortView;
-import com.blueprinthell.view.SystemNodeView;
-import com.blueprinthell.view.WireView;
+import com.blueprinthell.view.*;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -56,6 +53,8 @@ public class GameController {
         setGameMap(MapLoader.loadRandomMap());
         rootPane.setOnMouseDragged(this::onWireDragged);
         rootPane.setOnMouseReleased(this::onWireReleased);
+        HUDView hudView = HUDView.getInstance();
+        rootPane.getChildren().add(hudView);
     }
 
     public void setGameMap(GameMap gameMap) {
