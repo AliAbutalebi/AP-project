@@ -190,6 +190,7 @@ public class GameController {
         }
         finalizeWireConnection(startingPortView, targetPortView);
         hud.setRemainingWireLength(hud.getRemainingWireLength() - targetPortView.getPort().getConnectedWire().getLength());
+        hudView.update();
         checkActiveNode();
     }
 
@@ -379,6 +380,7 @@ public class GameController {
         rootPane.setOnKeyPressed(this::handleHUDEvent);
         hud.setRemainingWireLength(gameMap.getMaxWireLength());
         hudView.setVisible(false);
+        hudPane.setMouseTransparent(true);
     }
     private void handleHUDEvent(KeyEvent event) {
         if (event.getCode() == KeyCode.CAPS) {
