@@ -1,6 +1,5 @@
 package com.blueprinthell.view;
 
-import com.blueprinthell.Main;
 import com.blueprinthell.model.HUD;
 import com.blueprinthell.model.ScreenDimensions;
 import javafx.application.Platform;
@@ -10,7 +9,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 
 public class HUDView extends AnchorPane {
     private static final double WIDTH = ScreenDimensions.getInstance().getWidth() / 3;
@@ -23,12 +21,13 @@ public class HUDView extends AnchorPane {
     private HUD hud;
     private Rectangle background;
     private Pane titlePane;
-    private Pane contentPane;
+    private Pane contentPane = new Pane();
 
     private HUDView() {
         hud = HUD.getInstance();
         setupBackground();
         setupTitle();
+        getChildren().add(contentPane);
         setupContent();
     }
 
@@ -76,9 +75,8 @@ public class HUDView extends AnchorPane {
     }
 
     private void setupContent() {
-        contentPane = new Pane();
+        HUD.update();
         contentPane.setPrefSize(WIDTH, HEIGHT - TITLE_PANE_HEIGHT);
-        getChildren().add(contentPane);
         contentPane.setLayoutX(0);
         contentPane.setLayoutY(TITLE_PANE_HEIGHT);
         for (int i = 0; i < hud.getContents().size(); i++) {
@@ -94,9 +92,25 @@ public class HUDView extends AnchorPane {
             content.setTextFill(Color.web("#4D4D4D"));
             contentPane.getChildren().add(content);
             content.setLayoutY(TITLE_PANE_HEIGHT + i * CONTENT_SPACING);
-            Platform.runLater(() -> {
-                content.setLayoutX(title.getWidth() + 50);
-            });
+            content.setLayoutX(WIDTH / 2);
         }
+    }
+
+    public void showHUD() {
+        setupContent();
+        setVisible(true);
+    }
+
+    public void hideHUD() {
+        contentPane.getChildren().clear();
+        setVisible(false);
+    }
+
+    public double getHUDWidth() {
+        return WIDTH;
+    }
+
+    public double getHUDHeight() {
+        return HEIGHT;
     }
 }

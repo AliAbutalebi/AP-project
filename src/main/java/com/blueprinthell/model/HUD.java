@@ -11,6 +11,8 @@ public class HUD {
     private static double packetLoss;
     private static int coins;
 
+    private static boolean isVisible = false;
+
     private HUD() {
     }
 
@@ -63,6 +65,14 @@ public class HUD {
 
     public Map<String, Object> getContents() {
         return contents;
+    }
+
+    public void toggleVisibility() {
+        isVisible = !isVisible;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
     }
 
 }

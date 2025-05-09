@@ -167,6 +167,7 @@ public class SystemNodeView extends AnchorPane {
 
     public void setupReferenceLabel() {
         Label reference = new Label("Reference");
+        reference.getStyleClass().add("reference");
         reference.setTextFill(Color.WHITE);
         indicatorPane.getChildren().add(reference);
         Platform.runLater(() -> {

@@ -8,6 +8,8 @@ import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -31,6 +33,9 @@ public class GameController {
     private final ArrayList<Packet> movingPackets = new ArrayList<>();
 
     private final Logger logger = Logger.getInstance();
+    private static final ScreenDimensions screenDimensions = ScreenDimensions.getInstance();
+    private HUD hud;
+    private HUDView hudView;
 
     @FXML
     private AnchorPane rootPane;
@@ -40,6 +45,8 @@ public class GameController {
     private AnchorPane packetPane;
     @FXML
     private AnchorPane systemNodePane;
+    @FXML
+    private AnchorPane hudPane;
     private GameMap gameMap;
     private PortView startingPortView = null;
     private WireView draggingWire = null;
@@ -53,8 +60,8 @@ public class GameController {
         setGameMap(MapLoader.loadRandomMap());
         rootPane.setOnMouseDragged(this::onWireDragged);
         rootPane.setOnMouseReleased(this::onWireReleased);
-        HUDView hudView = HUDView.getInstance();
-        rootPane.getChildren().add(hudView);
+        setupHUD();
+
     }
 
     public void setGameMap(GameMap gameMap) {
@@ -181,8 +188,8 @@ public class GameController {
             clearDraggingWire();
             return;
         }
-
         finalizeWireConnection(startingPortView, targetPortView);
+        hud.setRemainingWireLength(hud.getRemainingWireLength() - targetPortView.getPort().getConnectedWire().getLength());
         checkActiveNode();
     }
 
@@ -360,6 +367,29 @@ public class GameController {
             }
         }
         movingPackets.removeAll(arrived);
+    }
+
+
+    private void setupHUD() {
+        hud = HUD.getInstance();
+        hudView = HUDView.getInstance();
+        hudPane.getChildren().add(hudView);
+        hudView.setLayoutX(screenDimensions.getWidth() - hudView.getHUDWidth() - 20);
+        hudView.setLayoutY(screenDimensions.getHeight() - hudView.getHUDHeight() - 20);
+        rootPane.setOnKeyPressed(this::handleHUDEvent);
+        hud.setRemainingWireLength(gameMap.getMaxWireLength());
+        hudView.setVisible(false);
+    }
+    private void handleHUDEvent(KeyEvent event) {
+        if (event.getCode() == KeyCode.CAPS) {
+            hud.toggleVisibility();
+            if (hud.isVisible()) {
+                HUD.update();
+                hudView.showHUD();
+            } else {
+                hudView.hideHUD();
+            }
+        }
     }
 }
 
