@@ -39,3 +39,18 @@
 #systemNodePane {
     -fx-background-color: transparent;
 }
+
+.hud-title {
+    -fx-font-family: "Monograf Bold";
+    -fx-font-size: 20;
+}
+
+.hud-content-title {
+    -fx-font-family: "Space Mono";
+    -fx-font-size: 15;
+}
+
+.hud-content {
+    -fx-font-family: "Monograf Regular";
+    -fx-font-size: 15;
+}

@@ -1,5 +1,6 @@
 package com.blueprinthell.view;
 
+import com.blueprinthell.Main;
 import com.blueprinthell.model.HUD;
 import com.blueprinthell.model.ScreenDimensions;
 import javafx.application.Platform;
@@ -17,15 +18,23 @@ public class HUDView extends AnchorPane {
     private static final double TITLE_PANE_HEIGHT = HEIGHT / 5;
     private static final Color BACKGROUND_COLOR = Color.web("#E6E6E6");
     private static final Color BORDER_COLOR = Color.web("#B3B3B3");
+    private static final double CONTENT_SPACING = 35;
     private static HUDView instance;
     private HUD hud;
     private Rectangle background;
     private Pane titlePane;
+    private Pane contentPane;
 
     private HUDView() {
         hud = HUD.getInstance();
         setupBackground();
         setupTitle();
+        setupContent();
+    }
+
+    public static HUDView getInstance() {
+        HUDView instance = new HUDView();
+        return instance;
     }
 
     private void setupBackground() {
@@ -47,17 +56,18 @@ public class HUDView extends AnchorPane {
         setLeftAnchor(titlePane, 0.0);
         setRightAnchor(titlePane, 0.0);
 
-        Label title = new Label("HUD");
-        title.setFont(Font.loadFont(getClass().getResourceAsStream("/com/blueprinthell/font/Monograf/monograf-bold.ttf"), 16));
-        titlePane.getChildren().add(title);
-        title.setLayoutX(20);
+        Label hudTitle = new Label("HUD");
+        hudTitle.getStyleClass().add("hud-title");
+        hudTitle.setTextFill(Color.web("#333333"));
+        titlePane.getChildren().add(hudTitle);
+        hudTitle.setLayoutX(20);
         Platform.runLater(() -> {
-            title.setLayoutY(titlePane.getHeight() / 2 - title.getHeight() / 2);
+            hudTitle.setLayoutY(titlePane.getHeight() / 2 - hudTitle.getHeight() / 2);
         });
 
         Line line = new Line();
         line.setStroke(BORDER_COLOR);
-        line.setStrokeWidth(5);
+        line.setStrokeWidth(3);
         titlePane.getChildren().add(line);
         line.setStartX(0);
         line.setStartY(TITLE_PANE_HEIGHT);
@@ -65,8 +75,28 @@ public class HUDView extends AnchorPane {
         line.setEndY(TITLE_PANE_HEIGHT);
     }
 
-    public static HUDView getInstance() {
-        HUDView instance = new HUDView();
-        return instance;
+    private void setupContent() {
+        contentPane = new Pane();
+        contentPane.setPrefSize(WIDTH, HEIGHT - TITLE_PANE_HEIGHT);
+        getChildren().add(contentPane);
+        contentPane.setLayoutX(0);
+        contentPane.setLayoutY(TITLE_PANE_HEIGHT);
+        for (int i = 0; i < hud.getContents().size(); i++) {
+            Label title = new Label(hud.getContents().keySet().toArray()[i] + ":");
+            title.getStyleClass().add("hud-content-title");
+            title.setTextFill(Color.web("#333333"));
+            contentPane.getChildren().add(title);
+            title.setLayoutX(40);
+            title.setLayoutY(TITLE_PANE_HEIGHT + i * CONTENT_SPACING);
+
+            Label content = new Label(hud.getContents().values().toArray()[i].toString());
+            content.getStyleClass().add("hud-content");
+            content.setTextFill(Color.web("#4D4D4D"));
+            contentPane.getChildren().add(content);
+            content.setLayoutY(TITLE_PANE_HEIGHT + i * CONTENT_SPACING);
+            Platform.runLater(() -> {
+                content.setLayoutX(title.getWidth() + 50);
+            });
+        }
     }
 }
