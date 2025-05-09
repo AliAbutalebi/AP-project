@@ -75,4 +75,12 @@ public class HUD {
         return isVisible;
     }
 
+    public void addCoins(int amount) {
+        coins += amount;
+    }
+
+    public void removeCoins(int amount) {
+        coins -= amount;
+    }
+
 }

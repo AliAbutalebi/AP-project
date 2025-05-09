@@ -126,7 +126,6 @@ public class GameController {
     }
 
     private void update(double deltaTime) {
-        System.out.println(movingPackets.size());
         packetFromSystemsToWires();
         for (Packet packet : movingPackets) {
             movePacketOnWire(packet, deltaTime);
@@ -135,10 +134,6 @@ public class GameController {
     }
 
     private void render() {
-//        for (SystemNodeView view : systemNodeViews) {
-//            view.update();
-//        }
-
         for (WireView wireView : wireViews) {
             wireView.updateView();
         }
@@ -365,6 +360,14 @@ public class GameController {
                 packet.getCurrentWire().setPacketOnWire(null);
                 packet.setCurrentWire(null);
                 packet.setDistanceOnWire(0);
+                if (packet.getShapeType() == ShapeType.SQUARE) {
+                    hud.addCoins(2);
+                    hudView.update();
+                }
+                else if (packet.getShapeType() == ShapeType.TRIANGLE) {
+                    hud.addCoins(3);
+                    hudView.update();
+                }
             }
         }
         movingPackets.removeAll(arrived);
