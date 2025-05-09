@@ -87,9 +87,20 @@ public class HUDView extends AnchorPane {
             title.setLayoutX(40);
             title.setLayoutY(TITLE_PANE_HEIGHT + i * CONTENT_SPACING);
 
-            Label content = new Label(hud.getContents().values().toArray()[i].toString());
-            content.getStyleClass().add("hud-content");
+            Object contentObject = hud.getContents().values().toArray()[i];
+            Label content = new Label(contentObject.toString());
             content.setTextFill(Color.web("#4D4D4D"));
+            if (contentObject instanceof Double) {
+                Double d = (Double) contentObject;
+                content = new Label(Math.round(d) + "");
+                if (d < 0) {
+                    content.setTextFill(Color.web("#FF0000"));
+                }
+            }
+            if (contentObject instanceof Integer) {
+                content = new Label(contentObject.toString());
+            }
+            content.getStyleClass().add("hud-content");
             contentPane.getChildren().add(content);
             content.setLayoutY(TITLE_PANE_HEIGHT + i * CONTENT_SPACING);
             content.setLayoutX(WIDTH / 2);
@@ -112,5 +123,11 @@ public class HUDView extends AnchorPane {
 
     public double getHUDHeight() {
         return HEIGHT;
+    }
+
+    public void update() {
+        hud.update();
+        contentPane.getChildren().clear();
+        setupContent();
     }
 }
