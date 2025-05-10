@@ -3,6 +3,8 @@ module com.blueprinthell {
     requires javafx.fxml;
     requires com.google.gson;
     requires jdk.jshell;
+    requires java.desktop;
+    requires javafx.media;
 
 
     opens com.blueprinthell to javafx.fxml;
