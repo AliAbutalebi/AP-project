@@ -52,7 +52,7 @@ public class SettingsController extends BaseController {
         volumeSlider.setMaxWidth(SLIDER_WIDTH);
         volumeSlider.setMin(0);
         volumeSlider.setMax(100);
-        volumeSlider.setValue(50);
+        volumeSlider.setValue(10);
         volumeSlider.setMajorTickUnit(10);
         volumeSlider.setMinorTickCount(10);
         volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
