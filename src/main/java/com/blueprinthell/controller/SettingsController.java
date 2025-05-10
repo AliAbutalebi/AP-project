@@ -1,15 +1,19 @@
 package com.blueprinthell.controller;
 
+import com.blueprinthell.audio.MusicPlayer;
 import com.blueprinthell.model.ScreenDimensions;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-public class SettingsController {
+import java.io.IOException;
+
+public class SettingsController extends BaseController {
 
     @FXML
     private AnchorPane rootPane;
@@ -25,12 +29,15 @@ public class SettingsController {
     private static final double SLIDER_WIDTH = screenDimensions.getWidth() / 4;
     private static final double SPACING = 10;
 
+    MusicPlayer musicPlayer = MusicPlayer.getInstance();
+
     @FXML
     public void initialize() {
         setupVolumePane();
+        setupReturnButton();
     }
 
-    public void setupVolumePane() {
+    private void setupVolumePane() {
         AnchorPane.setTopAnchor(volumePane, 0.0);
         AnchorPane.setLeftAnchor(volumePane, 0.0);
         AnchorPane.setRightAnchor(volumePane, 0.0);
@@ -47,5 +54,23 @@ public class SettingsController {
         volumeSlider.setValue(0);
         volumeSlider.setMajorTickUnit(4);
         volumeSlider.setMinorTickCount(10);
+        volumeSlider.setOnDragDetected(event -> {
+            musicPlayer.setVolume(volumeSlider.getValue());
+        });
+    }
+
+    private void setupReturnButton () {
+        Button returnButton = new Button("Return");
+        rootPane.getChildren().add(returnButton);
+        returnButton.setLayoutX(0);
+        returnButton.setLayoutY(0);
+        returnButton.setPrefWidth(SLIDER_WIDTH);
+        returnButton.setOnAction(event -> {
+            try {
+                super.switchScene("/com/blueprinthell/view/MainMenu.fxml", event);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }

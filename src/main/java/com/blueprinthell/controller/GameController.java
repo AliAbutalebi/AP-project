@@ -1,5 +1,6 @@
 package com.blueprinthell.controller;
 
+import com.blueprinthell.audio.MusicPlayer;
 import com.blueprinthell.log.Logger;
 import com.blueprinthell.map.MapLoader;
 import com.blueprinthell.model.*;
@@ -37,6 +38,8 @@ public class GameController {
     private HUD hud;
     private HUDView hudView;
 
+    private static final MusicPlayer musicPlayer = MusicPlayer.getInstance();
+
     @FXML
     private AnchorPane rootPane;
     @FXML
@@ -57,6 +60,7 @@ public class GameController {
 
     @FXML
     public void initialize() {
+        musicPlayer.play();
         setGameMap(MapLoader.loadRandomMap());
         rootPane.setOnMouseDragged(this::onWireDragged);
         rootPane.setOnMouseReleased(this::onWireReleased);
