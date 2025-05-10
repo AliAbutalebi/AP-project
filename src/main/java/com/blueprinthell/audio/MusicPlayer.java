@@ -16,6 +16,7 @@ public class MusicPlayer {
         mediaPlayer = new MediaPlayer(selectMusic());
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         mediaPlayer.setAutoPlay(false);
+        mediaPlayer.setVolume(0.5);
     }
 
     public void play() {
