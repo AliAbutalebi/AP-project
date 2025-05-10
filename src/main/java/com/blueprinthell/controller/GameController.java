@@ -365,11 +365,11 @@ public class GameController {
                 packet.setCurrentWire(null);
                 packet.setDistanceOnWire(0);
                 if (packet.getShapeType() == ShapeType.SQUARE) {
-                    hud.addCoins(2);
+                    hud.addCoins(1);
                     hudView.update();
                 }
                 else if (packet.getShapeType() == ShapeType.TRIANGLE) {
-                    hud.addCoins(3);
+                    hud.addCoins(2);
                     hudView.update();
                 }
             }
