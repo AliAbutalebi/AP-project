@@ -377,6 +377,7 @@ public class GameController {
                     hud.addCoins(2);
                     hudView.update();
                 }
+                soundEffectManager.play("packet-arrival");
             }
         }
         movingPackets.removeAll(arrived);

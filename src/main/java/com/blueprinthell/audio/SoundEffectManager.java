@@ -25,6 +25,9 @@ public class SoundEffectManager {
         AudioClip clip = soundEffects.get(soundName);
         if (clip != null) {
             clip.play();
+            if (soundName.equals("packet-arrival")) {
+                clip.setRate(clip.getRate() + 0.2);
+            }
         }
     }
 
