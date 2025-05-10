@@ -1,6 +1,7 @@
 package com.blueprinthell.controller;
 
 import com.blueprinthell.audio.MusicPlayer;
+import com.blueprinthell.audio.SoundEffectManager;
 import com.blueprinthell.log.Logger;
 import com.blueprinthell.map.MapLoader;
 import com.blueprinthell.model.*;
@@ -39,6 +40,7 @@ public class GameController {
     private HUDView hudView;
 
     private static final MusicPlayer musicPlayer = MusicPlayer.getInstance();
+    private static final SoundEffectManager soundEffectManager = SoundEffectManager.getInstance();
 
     @FXML
     private AnchorPane rootPane;
@@ -154,6 +156,7 @@ public class GameController {
     private void onPortClicked(PortView portView, MouseEvent event) {
         logger.info("onPortClicked");
         if (portView.getPort().isInput()) {
+            return;
         } else if (portView.getPort().isOccupied()) {
             removeWire(wireToView.get(portView.getPort().getConnectedWire()));
         } else {
@@ -163,6 +166,7 @@ public class GameController {
             draggingWire.getWire().setSourcePort(portView.getPort());
             wirePane.getChildren().add(draggingWire);
             draggingWire.setStroke(getWireColor(draggingWire.getWire()));
+            soundEffectManager.play("wire");
         }
     }
 
@@ -191,6 +195,7 @@ public class GameController {
         hud.setRemainingWireLength(hud.getRemainingWireLength() - targetPortView.getPort().getConnectedWire().getLength());
         hudView.update();
         checkActiveNode();
+        soundEffectManager.play("wire");
     }
 
     private void finalizeWireConnection(PortView from, PortView to) {
