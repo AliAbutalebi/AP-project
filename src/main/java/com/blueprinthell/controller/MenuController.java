@@ -24,7 +24,7 @@ public class MenuController extends BaseController {
     }
     @FXML
     private void handleSettings(ActionEvent event) throws IOException {
-        //TODO: create "Settings" scene and write the SwitchScene
+        super.switchScene("/com/blueprinthell/view/SettingsView.fxml", event);
     }
     @FXML
     private void handleExit(ActionEvent event) throws IOException {
