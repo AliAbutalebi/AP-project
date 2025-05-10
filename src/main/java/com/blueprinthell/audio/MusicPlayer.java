@@ -9,13 +9,13 @@ import java.util.Random;
 public class MusicPlayer {
     private static MusicPlayer instance;
 
-    private MediaPlayer mediaPlayer;
+    private static MediaPlayer mediaPlayer;
     private File[] soundtrack = new File("./src/main/resources/com/blueprinthell/audio/soundtrack").listFiles();
 
     private MusicPlayer() {
         mediaPlayer = new MediaPlayer(selectMusic());
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-
+        mediaPlayer.setAutoPlay(false);
     }
 
     public void play() {

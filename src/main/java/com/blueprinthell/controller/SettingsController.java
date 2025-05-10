@@ -35,6 +35,7 @@ public class SettingsController extends BaseController {
     public void initialize() {
         setupVolumePane();
         setupReturnButton();
+        musicPlayer.play();
     }
 
     private void setupVolumePane() {
@@ -49,13 +50,13 @@ public class SettingsController extends BaseController {
 
         volumeSlider.setPrefWidth(SLIDER_WIDTH);
         volumeSlider.setMaxWidth(SLIDER_WIDTH);
-        volumeSlider.setMin(-20);
-        volumeSlider.setMax(20);
-        volumeSlider.setValue(0);
-        volumeSlider.setMajorTickUnit(4);
+        volumeSlider.setMin(0);
+        volumeSlider.setMax(100);
+        volumeSlider.setValue(50);
+        volumeSlider.setMajorTickUnit(10);
         volumeSlider.setMinorTickCount(10);
-        volumeSlider.setOnDragDetected(event -> {
-            musicPlayer.setVolume(volumeSlider.getValue());
+        volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            musicPlayer.setVolume(newValue.doubleValue() / 100);
         });
     }
 
