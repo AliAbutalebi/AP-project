@@ -16,6 +16,7 @@ public class PacketView extends Polygon {
     public PacketView(Packet packet) {
         this.packet = packet;
         setupShape();
+        setupNoiseOpacity();
     }
 
     private void setupShape() {
@@ -67,7 +68,10 @@ public class PacketView extends Polygon {
         shake.setCycleCount(10);
         shake.setAutoReverse(true);
         shake.play();
+        setupNoiseOpacity();
+    }
 
+    public void setupNoiseOpacity() {
         setOpacity(1 - (double) packet.getNoise() / (packet.getMaxNoise() + 1));
     }
 }

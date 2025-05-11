@@ -11,7 +11,7 @@ public class Packet {
     private static final int MAX_NOISE= 2;
     private int id;
     private double currentSpeed = BASE_SPEED;
-    private int noise;
+    private int noise = 0;
     private double distanceOnWire;
     private ShapeType shapeType;
     private boolean onWire;
