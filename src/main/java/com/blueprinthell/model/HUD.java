@@ -57,7 +57,7 @@ public class HUD {
     }
 
     public static double getPacketLoss() {
-        return (double) lostPackets / packetsCount;
+        return (double) lostPackets / packetsCount * 100;
     }
 
     public int getCoins() {

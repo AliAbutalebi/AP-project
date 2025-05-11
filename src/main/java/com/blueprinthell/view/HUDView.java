@@ -96,8 +96,11 @@ public class HUDView extends AnchorPane {
                 if (d < 0) {
                     content.setTextFill(Color.web("#FF0000"));
                 }
+                if (hud.getContents().keySet().toArray()[i].equals("Packet Loss")) {
+                 content.setText(content.getText() + "%");
+                }
             }
-            if (contentObject instanceof Integer) {
+            else if (contentObject instanceof Integer) {
                 content = new Label(contentObject.toString());
             }
             content.getStyleClass().add("hud-content");
