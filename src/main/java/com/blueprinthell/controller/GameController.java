@@ -448,6 +448,8 @@ public class GameController {
                 entry.getValue().applyCollision();
                 packetToView.get(entry.getValue()).applyCollision();
 
+                soundEffectManager.play("packet-collision");
+
                 handlePacketLoss(packet1);
                 handlePacketLoss(packet2);
             } else if (!collided && (packet1.isColliding() || packet2.isColliding())) {
