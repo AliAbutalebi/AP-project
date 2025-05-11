@@ -8,7 +8,8 @@ public class HUD {
     private static final Map<String, Object> contents = new HashMap<>();
     private static double remainingWireLength;
     private static double temporalProgress;
-    private static double packetLoss;
+    private static int lostPackets = 0;
+    private static int packetsCount = 0;
     private static int coins;
 
     private static boolean isVisible = false;
@@ -40,12 +41,23 @@ public class HUD {
         this.temporalProgress = temporalProgress;
     }
 
-    public double getPacketLoss() {
-        return packetLoss;
+    public int getLostPackets() {
+        return lostPackets;
     }
 
-    public void setPacketLoss(double packetLoss) {
-        this.packetLoss = packetLoss;
+    public void setLostPackets(int lostPackets) {
+        this.lostPackets = lostPackets;
+    }
+
+    public int getPacketsCount() {
+        return packetsCount;
+    }
+    public void setPacketsCount(int packetsCount) {
+        this.packetsCount = packetsCount;
+    }
+
+    public static double getPacketLoss() {
+        return (double) lostPackets / packetsCount;
     }
 
     public int getCoins() {
@@ -59,7 +71,7 @@ public class HUD {
     public static void update() {
         contents.put("Remaining Wire Length", remainingWireLength);
         contents.put("Temporal Progress", temporalProgress);
-        contents.put("Packet Loss", packetLoss);
+        contents.put("Packet Loss", getPacketLoss());
         contents.put("Coins", coins);
     }
 

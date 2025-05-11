@@ -70,7 +70,7 @@ public class GameController {
         rootPane.setOnMouseDragged(this::onWireDragged);
         rootPane.setOnMouseReleased(this::onWireReleased);
         setupHUD();
-
+        hud.setPacketsCount(packetViews.size());
     }
 
     public void setGameMap(GameMap gameMap) {
@@ -476,7 +476,8 @@ public class GameController {
         packetPane.getChildren().remove(packetToView.get(packet));
         movingPackets.remove(packet);
 
-        hud.setPacketLoss(hud.getPacketLoss() + 1);
+        hud.setLostPackets(hud.getLostPackets() + 1);
+        hudView.update();
     }
 
 }
