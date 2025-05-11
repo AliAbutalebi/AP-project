@@ -7,14 +7,14 @@
             "inputPorts": [],
             "outputPorts": [
                 {
-                    "type": "SquarePort",
+                    "type": "TrianglePort",
                     "id": 1,
                     "isInput": false,
                     "occupied": false,
                     "parentSystemId": 0
                 },
                 {
-                    "type": "TrianglePort",
+                    "type": "SquarePort",
                     "id": 2,
                     "isInput": false,
                     "occupied": false,

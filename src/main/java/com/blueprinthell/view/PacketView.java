@@ -2,9 +2,11 @@ package com.blueprinthell.view;
 
 import com.blueprinthell.model.Packet;
 import com.blueprinthell.model.ShapeType;
+import javafx.animation.TranslateTransition;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import javafx.util.Duration;
 
 public class PacketView extends Polygon {
 
@@ -28,8 +30,7 @@ public class PacketView extends Polygon {
             setFill(Color.TRANSPARENT);
             setStroke(Color.web("#00FF00"));
             setStrokeWidth(3);
-        }
-        else if (packet.getShapeType() == ShapeType.TRIANGLE) {
+        } else if (packet.getShapeType() == ShapeType.TRIANGLE) {
             double height = Math.sqrt(3) / 2 * PACKET_SIZE;
             double halfBase = PACKET_SIZE / 2;
             getPoints().addAll(
@@ -55,7 +56,18 @@ public class PacketView extends Polygon {
     public void setPacket(Packet packet) {
         this.packet = packet;
     }
+
     public Packet getPacket() {
         return packet;
+    }
+
+    public void applyCollision() {
+        TranslateTransition shake = new TranslateTransition(Duration.millis(50), this);
+        shake.setByX(5);
+        shake.setCycleCount(10);
+        shake.setAutoReverse(true);
+        shake.play();
+
+        setOpacity(1 - (double) packet.getNoise() / (packet.getMaxNoise() + 1));
     }
 }

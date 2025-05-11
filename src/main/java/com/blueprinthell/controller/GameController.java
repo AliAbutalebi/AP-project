@@ -32,7 +32,10 @@ public class GameController {
     private final Map<SystemNode, SystemNodeView> nodeToView = new HashMap<>();
     private final Map<Wire, WireView> wireToView = new HashMap<>();
     private final Map<Packet, PacketView> packetToView = new HashMap<>();
+
     private final ArrayList<Packet> movingPackets = new ArrayList<>();
+    private final Map<Packet, Packet> potentialCollisions = new HashMap<>();
+    private final double PACKET_PROXIMITY = 20;
 
     private final Logger logger = Logger.getInstance();
     private static final ScreenDimensions screenDimensions = ScreenDimensions.getInstance();
@@ -136,6 +139,7 @@ public class GameController {
         for (Packet packet : movingPackets) {
             movePacketOnWire(packet, deltaTime);
         }
+        handleCollisions();
         checkArrivals();
     }
 
@@ -372,8 +376,7 @@ public class GameController {
                 if (packet.getShapeType() == ShapeType.SQUARE) {
                     hud.addCoins(1);
                     hudView.update();
-                }
-                else if (packet.getShapeType() == ShapeType.TRIANGLE) {
+                } else if (packet.getShapeType() == ShapeType.TRIANGLE) {
                     hud.addCoins(2);
                     hudView.update();
                 }
@@ -395,6 +398,7 @@ public class GameController {
         hudView.setVisible(false);
         hudPane.setMouseTransparent(true);
     }
+
     private void handleHUDEvent(KeyEvent event) {
         if (event.getCode() == KeyCode.CAPS) {
             hud.toggleVisibility();
@@ -406,5 +410,50 @@ public class GameController {
             }
         }
     }
+
+    private void setPotentialCollisions() {
+        potentialCollisions.clear();
+        for (Packet packet1 : movingPackets) {
+            for (Packet packet2 : movingPackets) {
+                if (packet1.equals(packet2)) continue;
+                else if (potentialCollisions.containsKey(packet2) && potentialCollisions.get(packet2).equals(packet1))
+                    continue;
+                else {
+                    if (packet1.getLocation().distance(packet2.getLocation()) < PACKET_PROXIMITY) {
+                        potentialCollisions.put(packet1, packet2);
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean checkCollision(Packet packet1, Packet packet2) {
+        return packetToView.get(packet1).getBoundsInParent().intersects(packetToView.get(packet2).getBoundsInParent());
+    }
+
+    private void handleCollisions() {
+        setPotentialCollisions();
+
+        for (Map.Entry<Packet, Packet> entry : potentialCollisions.entrySet()) {
+            Packet packet1 = entry.getKey();
+            Packet packet2 = entry.getValue();
+            boolean collided = checkCollision(packet1, packet2);
+            if (collided && (!packet1.isColliding() || !packet2.isColliding())) {
+                packet1.setColliding(true);
+                packet2.setColliding(true);
+
+                entry.getKey().applyCollision();
+                packetToView.get(entry.getKey()).applyCollision();
+
+                entry.getValue().applyCollision();
+                packetToView.get(entry.getValue()).applyCollision();
+            } else if (!collided && (packet1.isColliding() || packet2.isColliding())) {
+                packet1.setColliding(false);
+                packet2.setColliding(false);
+            }
+
+        }
+    }
+
 }
 

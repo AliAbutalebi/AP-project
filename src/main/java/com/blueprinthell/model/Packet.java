@@ -8,9 +8,10 @@ public class Packet {
     private static final double ACCELERATION = 20;
     private static final int SQUARE_COINS = 1;
     private static final int TRIANGLE_COINS = 2;
+    private static final int MAX_NOISE= 2;
     private int id;
     private double currentSpeed = BASE_SPEED;
-    private double noise;
+    private int noise;
     private double distanceOnWire;
     private ShapeType shapeType;
     private boolean onWire;
@@ -19,6 +20,7 @@ public class Packet {
     private Point2D center;
     private Point2D location = new Point2D(0, 0);
     private SystemNode parentSystemNode;
+    private boolean colliding = false;
 
     public Packet(ShapeType shapeType) {
         this.shapeType = shapeType;
@@ -32,12 +34,16 @@ public class Packet {
         this.id = id;
     }
 
-    public double getNoise() {
+    public int getNoise() {
         return noise;
     }
 
-    public void setNoise(double noise) {
+    public void setNoise(int noise) {
         this.noise = noise;
+    }
+
+    public int getMaxNoise() {
+        return MAX_NOISE;
     }
 
     public double getDistanceOnWire() {
@@ -126,6 +132,18 @@ public class Packet {
 
     public void setParentSystemNode(SystemNode parentSystemNode) {
         this.parentSystemNode = parentSystemNode;
+    }
+
+    public boolean isColliding() {
+        return colliding;
+    }
+
+    public void setColliding(boolean colliding) {
+        this.colliding = colliding;
+    }
+
+    public void applyCollision() {
+        noise++;
     }
 }
 
