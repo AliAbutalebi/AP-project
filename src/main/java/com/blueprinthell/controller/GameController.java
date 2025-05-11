@@ -447,12 +447,34 @@ public class GameController {
 
                 entry.getValue().applyCollision();
                 packetToView.get(entry.getValue()).applyCollision();
+
+                handlePacketLoss(packet1);
+                handlePacketLoss(packet2);
             } else if (!collided && (packet1.isColliding() || packet2.isColliding())) {
                 packet1.setColliding(false);
                 packet2.setColliding(false);
             }
 
         }
+    }
+
+    private void handlePacketLoss(Packet packet) {
+        if (checkPacketLoss(packet)) {
+            packetLoss(packet);
+        }
+    }
+
+    private boolean checkPacketLoss(Packet packet) {
+        return packet.getNoise() > packet.getMaxNoise();
+    }
+
+    private void packetLoss(Packet packet) {
+        packet.setAlive(false);
+
+        packetPane.getChildren().remove(packetToView.get(packet));
+        movingPackets.remove(packet);
+
+        hud.setPacketLoss(hud.getPacketLoss() + 1);
     }
 
 }
