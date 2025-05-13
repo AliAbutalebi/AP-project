@@ -369,6 +369,7 @@ public class GameController {
                 packetPane.getChildren().remove(packetView);
                 nodeView.update();
 
+                packet.setCurrentSpeed(packet.getBaseSpeed());
                 packet.setOnWire(false);
                 packet.getCurrentWire().setPacketOnWire(null);
                 packet.setCurrentWire(null);
