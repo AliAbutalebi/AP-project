@@ -31,3 +31,7 @@
 .space-mono {
     -fx-font-family: "Space Mono";
 }
+
+.text-white {
+    -fx-text-fill: #FFFFFF;
+}

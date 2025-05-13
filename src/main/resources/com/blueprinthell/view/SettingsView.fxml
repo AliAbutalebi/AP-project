@@ -2,25 +2,39 @@
 
 <?import java.net.URL?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.blueprinthell.controller.SettingsController">
-   <stylesheets>
-      <URL value="@style/global.css" />
-      <URL value="@style/settings.css" />
-   </stylesheets>
-   <children>
-      <VBox fx:id="volumePane" prefHeight="200.0" prefWidth="100.0">
-         <children>
-            <Label fx:id="volumeLabel" styleClass="monograf-bold" text="Music Volume:">
-               <font>
-                  <Font size="30.0" />
-               </font></Label>
-            <Slider fx:id="volumeSlider" />
-         </children>
-      </VBox>
-   </children>
-</AnchorPane>
+<?import javafx.scene.layout.Region?>
+<ScrollPane fx:id="scrollPane" fitToWidth="true" xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.blueprinthell.controller.SettingsController">
+    <content>
+        <VBox fx:id="rootPane" spacing="30">
+            <stylesheets>
+                <URL value="@style/global.css"/>
+                <URL value="@style/settings.css"/>
+            </stylesheets>
+            <HBox fx:id="musicVolumePane" alignment="CENTER_LEFT">
+                <Label styleClass="text-white, monograf-regular" text="Music Volume:">
+                    <font>
+                        <Font size="25.0"/>
+                    </font>
+                </Label>
+                <Region HBox.hgrow="ALWAYS" />
+                <Slider fx:id="musicSlider"/>
+            </HBox>
+            <HBox fx:id="sfxVolumePane" alignment="CENTER_LEFT">
+                <Label styleClass="text-white, monograf-regular" text="Sound Effects Volume:">
+                    <font>
+                        <Font size="25.0"/>
+                    </font>
+                </Label>
+                <Region HBox.hgrow="ALWAYS" />
+                <Slider fx:id="sfxSlider"/>
+            </HBox>
+        </VBox>
+    </content>
+</ScrollPane>
