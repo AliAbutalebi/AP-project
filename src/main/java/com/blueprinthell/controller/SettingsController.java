@@ -1,13 +1,11 @@
 package com.blueprinthell.controller;
 
 import com.blueprinthell.audio.MusicPlayer;
+import com.blueprinthell.audio.SoundEffectManager;
 import com.blueprinthell.model.ScreenDimensions;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
@@ -15,18 +13,25 @@ import java.io.IOException;
 
 public class SettingsController extends BaseController {
 
+
     @FXML
-    private AnchorPane rootPane;
+    private ScrollPane scrollPane;
     @FXML
-    private VBox volumePane;
+    private VBox rootPane;
+
     @FXML
-    private Label volumeLabel;
+    private HBox musicVolumePane;
     @FXML
-    private Slider volumeSlider;
+    private Slider musicSlider;
+    @FXML
+    private HBox sfxVolumePane;
+    @FXML
+    private Slider sfxSlider;
+
 
     private static final ScreenDimensions screenDimensions = ScreenDimensions.getInstance();
 
-    private static final double SLIDER_WIDTH = screenDimensions.getWidth() / 4;
+    private static final double SLIDER_WIDTH = screenDimensions.getWidth() / 5;
     private static final double SPACING = 10;
 
     MusicPlayer musicPlayer = MusicPlayer.getInstance();
@@ -34,29 +39,22 @@ public class SettingsController extends BaseController {
 
     @FXML
     public void initialize() {
-        setupVolumePane();
+        scrollPane.setStyle("-fx-background-color: #333333");
+        setupMusicVolumePane();
+        setupSfxVolumePane();
         setupReturnButton();
         musicPlayer.play();
     }
 
-    private void setupVolumePane() {
-        AnchorPane.setTopAnchor(volumePane, 0.0);
-        AnchorPane.setLeftAnchor(volumePane, 0.0);
-        AnchorPane.setRightAnchor(volumePane, 0.0);
-        AnchorPane.setBottomAnchor(volumePane, 0.0);
-        volumePane.setAlignment(Pos.CENTER);
-        volumePane.setSpacing(SPACING);
+    private void setupMusicVolumePane() {
 
-        volumeLabel.setTextFill(Color.web("#FFFFFF"));
 
-        volumeSlider.setPrefWidth(SLIDER_WIDTH);
-        volumeSlider.setMaxWidth(SLIDER_WIDTH);
-        volumeSlider.setMin(0);
-        volumeSlider.setMax(100);
-        volumeSlider.setValue(10);
-        volumeSlider.setMajorTickUnit(10);
-        volumeSlider.setMinorTickCount(10);
-        volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+        musicSlider.setPrefWidth(SLIDER_WIDTH);
+        musicSlider.setMaxWidth(SLIDER_WIDTH);
+        musicSlider.setMin(0);
+        musicSlider.setMax(100);
+        musicSlider.setValue(10);
+        musicSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             musicPlayer.setVolume(newValue.doubleValue() / 100);
         });
     }
