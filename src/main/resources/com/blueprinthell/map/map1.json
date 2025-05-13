@@ -6,106 +6,71 @@
             "location": { "X": 100.0, "Y": 100.0 },
             "inputPorts": [],
             "outputPorts": [
-                {
-                    "type": "TrianglePort",
-                    "id": 1,
-                    "isInput": false,
-                    "occupied": false,
-                    "parentSystemId": 0
-                },
-                {
-                    "type": "SquarePort",
-                    "id": 2,
-                    "isInput": false,
-                    "occupied": false,
-                    "parentSystemId": 0
-                }
+                { "type": "TrianglePort", "id": 1,  "isInput": false, "occupied": false, "parentSystemId": 0 },
+                { "type": "SquarePort",   "id": 2,  "isInput": false, "occupied": false, "parentSystemId": 0 },
+                { "type": "TrianglePort", "id": 3,  "isInput": false, "occupied": false, "parentSystemId": 0 }
             ],
             "isActive": true
         },
         {
             "type": "SystemNode",
             "id": 1,
-            "location": { "X": 300.0, "Y": 150.0 },
+            "location": { "X": 300.0, "Y": 200.0 },
             "inputPorts": [
-                {
-                    "type": "SquarePort",
-                    "id": 3,
-                    "isInput": true,
-                    "occupied": false,
-                    "parentSystemId": 1
-                },
-                {
-                    "type": "TrianglePort",
-                    "id": 4,
-                    "isInput": true,
-                    "occupied": false,
-                    "parentSystemId": 1
-                }
+                { "type": "SquarePort",   "id": 4,  "isInput": true,  "occupied": false, "parentSystemId": 1 },
+                { "type": "TrianglePort", "id": 5,  "isInput": true,  "occupied": false, "parentSystemId": 1 },
+                { "type": "SquarePort",   "id": 6,  "isInput": true,  "occupied": false, "parentSystemId": 1 }
             ],
             "outputPorts": [
-                {
-                    "type": "SquarePort",
-                    "id": 5,
-                    "isInput": false,
-                    "occupied": false,
-                    "parentSystemId": 1
-                },
-                {
-                    "type": "TrianglePort",
-                    "id": 6,
-                    "isInput": false,
-                    "occupied": false,
-                    "parentSystemId": 1
-                }
+                { "type": "TrianglePort", "id": 7,  "isInput": false, "occupied": false, "parentSystemId": 1 },
+                { "type": "SquarePort",   "id": 8,  "isInput": false, "occupied": false, "parentSystemId": 1 }
             ],
             "isActive": true
         },
         {
             "type": "SystemNode",
             "id": 2,
-            "location": { "X": 550.0, "Y": 200.0 },
+            "location": { "X": 550.0, "Y": 300.0 },
             "inputPorts": [
-                {
-                    "type": "SquarePort",
-                    "id": 7,
-                    "isInput": true,
-                    "occupied": false,
-                    "parentSystemId": 2
-                },
-                {
-                    "type": "TrianglePort",
-                    "id": 8,
-                    "isInput": true,
-                    "occupied": false,
-                    "parentSystemId": 2
-                }
+                { "type": "TrianglePort", "id": 9,  "isInput": true,  "occupied": false, "parentSystemId": 2 },
+                { "type": "SquarePort",   "id": 10, "isInput": true,  "occupied": false, "parentSystemId": 2 },
+                { "type": "TrianglePort", "id": 11, "isInput": true,  "occupied": false, "parentSystemId": 2 },
+                { "type": "SquarePort",   "id": 12, "isInput": true,  "occupied": false, "parentSystemId": 2 }
             ],
             "outputPorts": [
-                {
-                    "type": "SquarePort",
-                    "id": 9,
-                    "isInput": false,
-                    "occupied": false,
-                    "parentSystemId": 2
-                }
+                { "type": "SquarePort",   "id": 13, "isInput": false, "occupied": false, "parentSystemId": 2 },
+                { "type": "TrianglePort", "id": 14, "isInput": false, "occupied": false, "parentSystemId": 2 },
+                { "type": "SquarePort",   "id": 15, "isInput": false, "occupied": false, "parentSystemId": 2 },
+                { "type": "TrianglePort", "id": 16, "isInput": false, "occupied": false, "parentSystemId": 2 }
             ],
             "isActive": false
         },
         {
             "type": "SystemNode",
             "id": 3,
-            "location": { "X": 400.0, "Y": 450.0 },
+            "location": { "X": 800.0, "Y": 150.0 },
             "inputPorts": [
-                {
-                    "type": "TrianglePort",
-                    "id": 10,
-                    "isInput": true,
-                    "occupied": false,
-                    "parentSystemId": 3
-                }
+                { "type": "TrianglePort", "id": 17, "isInput": true,  "occupied": false, "parentSystemId": 3 }
             ],
-            "outputPorts": [],
+            "outputPorts": [
+                { "type": "SquarePort",   "id": 18, "isInput": false, "occupied": false, "parentSystemId": 3 },
+                { "type": "TrianglePort", "id": 19, "isInput": false, "occupied": false, "parentSystemId": 3 },
+                { "type": "SquarePort",   "id": 20, "isInput": false, "occupied": false, "parentSystemId": 3 }
+            ],
+            "isActive": true
+        },
+        {
+            "type": "SystemNode",
+            "id": 4,
+            "location": { "X": 950.0, "Y": 450.0 },
+            "inputPorts": [
+                { "type": "SquarePort",   "id": 21, "isInput": true,  "occupied": false, "parentSystemId": 4 },
+                { "type": "TrianglePort", "id": 22, "isInput": true,  "occupied": false, "parentSystemId": 4 },
+                { "type": "SquarePort",   "id": 23, "isInput": true,  "occupied": false, "parentSystemId": 4 }
+            ],
+            "outputPorts": [
+                { "type": "TrianglePort", "id": 24, "isInput": false, "occupied": false, "parentSystemId": 4 }
+            ],
             "isActive": false
         }
     ],
@@ -130,10 +95,86 @@
             "onWire": false,
             "progressOnWire": 0,
             "currentWire": null,
+            "locationSystemNodeId": 1
+        },
+        {
+            "id": 2,
+            "shapeType": "TRIANGLE",
+            "alive": true,
+            "noise": 2,
+            "currentSpeed": 0,
+            "onWire": false,
+            "progressOnWire": 0,
+            "currentWire": null,
+            "locationSystemNodeId": 2
+        },
+        {
+            "id": 3,
+            "shapeType": "SQUARE",
+            "alive": true,
+            "noise": 1,
+            "currentSpeed": 0,
+            "onWire": false,
+            "progressOnWire": 0,
+            "currentWire": null,
+            "locationSystemNodeId": 3
+        },
+        {
+            "id": 4,
+            "shapeType": "SQUARE",
+            "alive": true,
+            "noise": 0,
+            "currentSpeed": 0,
+            "onWire": false,
+            "progressOnWire": 0,
+            "currentWire": null,
+            "locationSystemNodeId": 1
+        },
+        {
+            "id": 5,
+            "shapeType": "TRIANGLE",
+            "alive": true,
+            "noise": 0,
+            "currentSpeed": 0,
+            "onWire": false,
+            "progressOnWire": 0,
+            "currentWire": null,
+            "locationSystemNodeId": 2
+        },
+        {
+            "id": 6,
+            "shapeType": "SQUARE",
+            "alive": true,
+            "noise": 1,
+            "currentSpeed": 0,
+            "onWire": false,
+            "progressOnWire": 0,
+            "currentWire": null,
+            "locationSystemNodeId": 4
+        },
+        {
+            "id": 7,
+            "shapeType": "TRIANGLE",
+            "alive": true,
+            "noise": 0,
+            "currentSpeed": 0,
+            "onWire": false,
+            "progressOnWire": 0,
+            "currentWire": null,
             "locationSystemNodeId": 0
+        },
+        {
+            "id": 8,
+            "shapeType": "SQUARE",
+            "alive": true,
+            "noise": 0,
+            "currentSpeed": 0,
+            "onWire": false,
+            "progressOnWire": 0,
+            "currentWire": null,
+            "locationSystemNodeId": 3
         }
     ],
-    "wires": [
-    ],
+    "wires": [],
     "maxWireLength": 800.0
 }
