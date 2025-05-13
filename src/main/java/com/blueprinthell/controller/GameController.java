@@ -357,31 +357,36 @@ public class GameController {
         ArrayList<Packet> arrived = new ArrayList<>();
         for (Packet packet : movingPackets) {
             if (packet.getDistanceOnWire() >= packet.getCurrentWire().getLength()) {
-                arrived.add(packet);
+                if (packet.getCurrentWire().getDestinationPort().getParentSystemNode().getPacketQueue().size() <= SystemNode.getQueueCapacity()) {
+                    arrived.add(packet);
 
-                packet.setParentSystemNode(packet.getCurrentWire().getDestinationPort().getParentSystemNode());
-                packet.getCurrentWire().getDestinationPort().getParentSystemNode().getPacketQueue().add(packet);
+                    packet.setParentSystemNode(packet.getCurrentWire().getDestinationPort().getParentSystemNode());
+                    packet.getCurrentWire().getDestinationPort().getParentSystemNode().getPacketQueue().add(packet);
 
-                packet.getCurrentWire().getDestinationPort().receivePacket(packet);
+                    packet.getCurrentWire().getDestinationPort().receivePacket(packet);
 
-                SystemNodeView nodeView = nodeToView.get(packet.getCurrentWire().getDestinationPort().getParentSystemNode());
-                PacketView packetView = packetToView.get(packet);
-                packetPane.getChildren().remove(packetView);
-                nodeView.update();
+                    SystemNodeView nodeView = nodeToView.get(packet.getCurrentWire().getDestinationPort().getParentSystemNode());
+                    PacketView packetView = packetToView.get(packet);
+                    packetPane.getChildren().remove(packetView);
+                    nodeView.update();
 
-                packet.setCurrentSpeed(packet.getBaseSpeed());
-                packet.setOnWire(false);
-                packet.getCurrentWire().setPacketOnWire(null);
-                packet.setCurrentWire(null);
-                packet.setDistanceOnWire(0);
-                if (packet.getShapeType() == ShapeType.SQUARE) {
-                    hud.addCoins(1);
-                    hudView.update();
-                } else if (packet.getShapeType() == ShapeType.TRIANGLE) {
-                    hud.addCoins(2);
-                    hudView.update();
+                    packet.setCurrentSpeed(packet.getBaseSpeed());
+                    packet.setOnWire(false);
+                    packet.getCurrentWire().setPacketOnWire(null);
+                    packet.setCurrentWire(null);
+                    packet.setDistanceOnWire(0);
+                    if (packet.getShapeType() == ShapeType.SQUARE) {
+                        hud.addCoins(1);
+                        hudView.update();
+                    } else if (packet.getShapeType() == ShapeType.TRIANGLE) {
+                        hud.addCoins(2);
+                        hudView.update();
+                    }
+                    soundEffectManager.play("packet-arrival");
                 }
-                soundEffectManager.play("packet-arrival");
+                else {
+                    packetLoss(packet);
+                }
             }
         }
         movingPackets.removeAll(arrived);
