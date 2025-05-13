@@ -12,6 +12,7 @@ public class SoundEffectManager {
 
     private SoundEffectManager() {
         loadSoundEffects();
+        setVolume(0.1);
     }
 
     private void loadSoundEffects() {
@@ -36,5 +37,11 @@ public class SoundEffectManager {
             instance = new SoundEffectManager();
         }
         return instance;
+    }
+
+    public void setVolume(double volume) {
+        for (AudioClip clip : soundEffects.values()) {
+            clip.setVolume(volume);
+        }
     }
 }

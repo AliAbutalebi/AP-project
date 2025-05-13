@@ -30,6 +30,7 @@ public class SettingsController extends BaseController {
     private static final double SPACING = 10;
 
     MusicPlayer musicPlayer = MusicPlayer.getInstance();
+    SoundEffectManager soundEffectManager = SoundEffectManager.getInstance();
 
     @FXML
     public void initialize() {
@@ -57,6 +58,16 @@ public class SettingsController extends BaseController {
         volumeSlider.setMinorTickCount(10);
         volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             musicPlayer.setVolume(newValue.doubleValue() / 100);
+        });
+    }
+    private void setupSfxVolumePane() {
+        sfxSlider.setPrefWidth(SLIDER_WIDTH);
+        sfxSlider.setMaxWidth(SLIDER_WIDTH);
+        sfxSlider.setMin(0);
+        sfxSlider.setMax(100);
+        sfxSlider.setValue(10);
+        sfxSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            soundEffectManager.setVolume(newValue.doubleValue() / 100);
         });
     }
 
