@@ -4,13 +4,16 @@
             "type": "ReferenceSystemNode",
             "id": 0,
             "location": { "X": 100.0, "Y": 100.0 },
-            "inputPorts": [],
-            "outputPorts": [
-                { "type": "TrianglePort", "id": 1,  "isInput": false, "occupied": false, "parentSystemId": 0 },
-                { "type": "SquarePort",   "id": 2,  "isInput": false, "occupied": false, "parentSystemId": 0 },
-                { "type": "TrianglePort", "id": 3,  "isInput": false, "occupied": false, "parentSystemId": 0 }
+            "inputPorts": [
+                { "type": "TrianglePort", "id": 1,  "isInput": true, "occupied": false, "parentSystemId": 0 },
+                { "type": "SquarePort",   "id": 2,  "isInput": true, "occupied": false, "parentSystemId": 0 }
             ],
-            "isActive": true
+            "outputPorts": [
+                { "type": "TrianglePort", "id": 3,  "isInput": false, "occupied": false, "parentSystemId": 0 },
+                { "type": "SquarePort",   "id": 4,  "isInput": false, "occupied": false, "parentSystemId": 0 },
+                { "type": "TrianglePort", "id": 5,  "isInput": false, "occupied": false, "parentSystemId": 0 }
+            ],
+            "isActive": false
         },
         {
             "type": "SystemNode",
@@ -25,7 +28,7 @@
                 { "type": "TrianglePort", "id": 7,  "isInput": false, "occupied": false, "parentSystemId": 1 },
                 { "type": "SquarePort",   "id": 8,  "isInput": false, "occupied": false, "parentSystemId": 1 }
             ],
-            "isActive": true
+            "isActive": false
         },
         {
             "type": "SystemNode",
@@ -35,13 +38,13 @@
                 { "type": "TrianglePort", "id": 9,  "isInput": true,  "occupied": false, "parentSystemId": 2 },
                 { "type": "SquarePort",   "id": 10, "isInput": true,  "occupied": false, "parentSystemId": 2 },
                 { "type": "TrianglePort", "id": 11, "isInput": true,  "occupied": false, "parentSystemId": 2 },
-                { "type": "SquarePort",   "id": 12, "isInput": true,  "occupied": false, "parentSystemId": 2 }
+                { "type": "SquarePort",   "id": 12, "isInput": true,  "occupied": false, "parentSystemId": 2 },
+                { "type": "TrianglePort", "id": 13, "isInput": true,  "occupied": false, "parentSystemId": 2 }
             ],
             "outputPorts": [
-                { "type": "SquarePort",   "id": 13, "isInput": false, "occupied": false, "parentSystemId": 2 },
-                { "type": "TrianglePort", "id": 14, "isInput": false, "occupied": false, "parentSystemId": 2 },
-                { "type": "SquarePort",   "id": 15, "isInput": false, "occupied": false, "parentSystemId": 2 },
-                { "type": "TrianglePort", "id": 16, "isInput": false, "occupied": false, "parentSystemId": 2 }
+                { "type": "SquarePort",   "id": 14, "isInput": false, "occupied": false, "parentSystemId": 2 },
+                { "type": "TrianglePort", "id": 15, "isInput": false, "occupied": false, "parentSystemId": 2 },
+                { "type": "SquarePort",   "id": 16, "isInput": false, "occupied": false, "parentSystemId": 2 }
             ],
             "isActive": false
         },
@@ -57,19 +60,17 @@
                 { "type": "TrianglePort", "id": 19, "isInput": false, "occupied": false, "parentSystemId": 3 },
                 { "type": "SquarePort",   "id": 20, "isInput": false, "occupied": false, "parentSystemId": 3 }
             ],
-            "isActive": true
+            "isActive": false
         },
         {
             "type": "SystemNode",
             "id": 4,
             "location": { "X": 950.0, "Y": 450.0 },
             "inputPorts": [
-                { "type": "SquarePort",   "id": 21, "isInput": true,  "occupied": false, "parentSystemId": 4 },
-                { "type": "TrianglePort", "id": 22, "isInput": true,  "occupied": false, "parentSystemId": 4 },
-                { "type": "SquarePort",   "id": 23, "isInput": true,  "occupied": false, "parentSystemId": 4 }
+                { "type": "SquarePort",   "id": 21, "isInput": true,  "occupied": false, "parentSystemId": 4 }
             ],
             "outputPorts": [
-                { "type": "TrianglePort", "id": 24, "isInput": false, "occupied": false, "parentSystemId": 4 }
+                { "type": "TrianglePort", "id": 22, "isInput": false, "occupied": false, "parentSystemId": 4 }
             ],
             "isActive": false
         }
