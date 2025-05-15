@@ -8,6 +8,7 @@ import com.blueprinthell.model.*;
 import com.blueprinthell.view.*;
 import javafx.animation.AnimationTimer;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -23,13 +24,14 @@ import javafx.util.Duration;
 import org.kordamp.ikonli.fontawesome6.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.io.IOException;
 import java.lang.invoke.SwitchPoint;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GameController {
+public class GameController extends BaseController {
 
     private static final Color DRAGGING_COLOR = Color.web("#888888");
     private static final Color SQUARE_COLOR = Color.web("#00FF00");
@@ -488,6 +490,8 @@ public class GameController {
 
                 soundEffectManager.play("packet-collision");
 
+                handleImpacts(getImpactCenter(packet1, packet2));
+                System.out.println("Impact Center: " + getImpactCenter(packet1, packet2));
                 handlePacketLoss(packet1);
                 handlePacketLoss(packet2);
             } else if (!collided && (packet1.isColliding() || packet2.isColliding())) {
@@ -495,6 +499,21 @@ public class GameController {
                 packet2.setColliding(false);
             }
 
+        }
+    }
+
+    private Point2D getImpactCenter(Packet packet1, Packet packet2) {
+        double x = (packet1.getDeviatedLocation().getX() + packet2.getDeviatedLocation().getX()) / 2;
+        double y = (packet1.getDeviatedLocation().getY() + packet2.getDeviatedLocation().getY()) / 2;
+        return new Point2D(x, y);
+    }
+
+    private void handleImpacts(Point2D impactCenter) {
+        for (Packet packet : movingPackets) {
+            packet.absorbImpact(impactCenter);
+            packetToView.get(packet).update();
+            System.out.println(packet.getLocation().toString());
+            System.out.println(packet.getDeviatedLocation().toString());
         }
     }
 

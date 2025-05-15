@@ -46,8 +46,8 @@ public class PacketView extends Polygon {
     }
 
     public void update() {
-        setLayoutX(packet.getLocation().getX());
-        setLayoutY(packet.getLocation().getY());
+        setLayoutX(packet.getDeviatedLocation().getX());
+        setLayoutY(packet.getDeviatedLocation().getY());
     }
 
     public void saveLocation() {

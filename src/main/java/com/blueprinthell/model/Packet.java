@@ -9,6 +9,7 @@ public class Packet {
     private static final int SQUARE_COINS = 1;
     private static final int TRIANGLE_COINS = 2;
     private static final int MAX_NOISE= 2;
+    private static final double IMPACT = 20;
     private int id;
     private double currentSpeed = BASE_SPEED;
     private int noise = 0;
@@ -17,7 +18,7 @@ public class Packet {
     private boolean onWire;
     private Wire currentWire;
     private boolean isAlive = true;
-    private Point2D center;
+    private Point2D deviation = new Point2D(0, 0);
     private Point2D location = new Point2D(0, 0);
     private SystemNode parentSystemNode;
     private boolean colliding = false;
@@ -54,12 +55,12 @@ public class Packet {
         this.distanceOnWire = distanceOnWire;
     }
 
-    public Point2D getCenter() {
-        return center;
+    public Point2D getDeviation() {
+        return deviation;
     }
 
-    public void setCenter(Point2D center) {
-        this.center = center;
+    public void setDeviation(Point2D deviation) {
+        this.deviation = deviation;
     }
 
     public boolean isOnWire() {
@@ -92,6 +93,10 @@ public class Packet {
 
     public void setLocation(Point2D location) {
         this.location = location;
+    }
+
+    public Point2D getDeviatedLocation() {
+        return new Point2D(location.getX() + deviation.getX(), location.getY() + deviation.getY());
     }
 
     public double getBaseSpeed() {
@@ -144,6 +149,14 @@ public class Packet {
 
     public void applyCollision() {
         noise++;
+    }
+
+    public void absorbImpact(Point2D impactCenter) {
+        Point2D collisionDistance = getDeviatedLocation().subtract(impactCenter);
+        double impactX = IMPACT / collisionDistance.getY();
+        double impactY = IMPACT / collisionDistance.getX();
+        deviation = deviation.add(new Point2D(impactX, impactY));
+        System.out.println("Impact: " + impactX + ", " + impactY);
     }
 }
 
