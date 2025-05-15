@@ -2,6 +2,7 @@ package com.blueprinthell.view;
 
 import com.blueprinthell.model.HUD;
 import com.blueprinthell.model.ScreenDimensions;
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -9,6 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 public class HUDView extends AnchorPane {
     private static final double WIDTH = ScreenDimensions.getInstance().getWidth() / 3;
@@ -112,12 +114,27 @@ public class HUDView extends AnchorPane {
 
     public void showHUD() {
         setupContent();
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(200), this);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+        fadeIn.setCycleCount(1);
+        fadeIn.setAutoReverse(false);
+        fadeIn.play();
         setVisible(true);
     }
 
     public void hideHUD() {
-        contentPane.getChildren().clear();
-        setVisible(false);
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(200), this);
+        fadeOut.setFromValue(1);
+        fadeOut.setToValue(0);
+        fadeOut.setCycleCount(1);
+        fadeOut.setAutoReverse(false);
+        fadeOut.setOnFinished(e -> {
+            contentPane.getChildren().clear();
+            setVisible(false);
+        });
+        fadeOut.play();
+
     }
 
     public double getHUDWidth() {
