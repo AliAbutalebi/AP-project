@@ -156,7 +156,6 @@ public class Packet {
         double impactX = IMPACT / collisionDistance.getY();
         double impactY = IMPACT / collisionDistance.getX();
         deviation = deviation.add(new Point2D(impactX, impactY));
-        System.out.println("Impact: " + impactX + ", " + impactY);
     }
 }
 

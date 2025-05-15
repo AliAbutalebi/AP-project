@@ -491,7 +491,6 @@ public class GameController extends BaseController {
                 soundEffectManager.play("packet-collision");
 
                 handleImpacts(getImpactCenter(packet1, packet2));
-                System.out.println("Impact Center: " + getImpactCenter(packet1, packet2));
                 handlePacketLoss(packet1);
                 handlePacketLoss(packet2);
             } else if (!collided && (packet1.isColliding() || packet2.isColliding())) {
@@ -512,8 +511,10 @@ public class GameController extends BaseController {
         for (Packet packet : movingPackets) {
             packet.absorbImpact(impactCenter);
             packetToView.get(packet).update();
-            System.out.println(packet.getLocation().toString());
-            System.out.println(packet.getDeviatedLocation().toString());
+
+            if (!packetToView.get(packet).contains(packet.getLocation())) {
+                packetLoss(packet);
+            }
         }
     }
 
