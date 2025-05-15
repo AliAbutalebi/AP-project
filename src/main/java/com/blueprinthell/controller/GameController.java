@@ -516,6 +516,35 @@ public class GameController {
 
         hud.setLostPackets(hud.getLostPackets() + 1);
         hudView.update();
+
+        handleGameOver();
+    }
+
+    private void handleGameOver() {
+        if (checkGameOver()) {
+            gameOver();
+        }
+    }
+
+    private boolean checkGameOver() {
+        return (double) hud.getLostPackets() / hud.getPacketsCount() > 0.5;
+    }
+
+    private void gameOver(){
+        musicPlayer.stop();
+
+        if (gameLoop != null) {
+            gameLoop.stop();
+        }
+
+
+        try {
+            super.switchScene(ScenePath.GAME_OVER.getResourceURL(), rootPane);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
     private void drawGrid() {
@@ -546,8 +575,6 @@ public class GameController {
             });
             pause.play();
         }
-
-
     }
 }
 
