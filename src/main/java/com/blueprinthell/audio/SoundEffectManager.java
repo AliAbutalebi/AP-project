@@ -12,7 +12,7 @@ public class SoundEffectManager {
 
     private SoundEffectManager() {
         loadSoundEffects();
-        setVolume(0.1);
+        setVolume(0.5);
     }
 
     private void loadSoundEffects() {

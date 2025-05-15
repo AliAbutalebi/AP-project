@@ -2,14 +2,13 @@ package com.blueprinthell.controller;
 
 import com.blueprinthell.audio.MusicPlayer;
 import com.blueprinthell.audio.SoundEffectManager;
+import com.blueprinthell.model.ScenePath;
 import com.blueprinthell.model.ScreenDimensions;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 import java.io.IOException;
 
@@ -73,7 +72,7 @@ public class SettingsController extends BaseController {
         sfxSlider.setMaxWidth(SLIDER_WIDTH);
         sfxSlider.setMin(0);
         sfxSlider.setMax(100);
-        sfxSlider.setValue(10);
+        sfxSlider.setValue(50);
         sfxSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             soundEffectManager.setVolume(newValue.doubleValue() / 100);
         });
@@ -87,7 +86,7 @@ public class SettingsController extends BaseController {
         returnButton.setPrefWidth(SLIDER_WIDTH);
         returnButton.setOnAction(event -> {
             try {
-                super.switchScene("/com/blueprinthell/view/MainMenu.fxml", event);
+                super.switchScene(ScenePath.MAIN_MENU.getResourceURL(), event);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
