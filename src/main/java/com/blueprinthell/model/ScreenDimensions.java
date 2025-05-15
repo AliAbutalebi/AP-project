@@ -9,7 +9,7 @@ public final class ScreenDimensions {
     private final double HEIGHT;
 
     private ScreenDimensions() {
-        Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+        Rectangle2D bounds = Screen.getPrimary().getBounds();
         this.WIDTH = bounds.getWidth();
         this.HEIGHT = bounds.getHeight();
     }

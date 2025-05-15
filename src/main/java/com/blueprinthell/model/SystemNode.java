@@ -28,6 +28,9 @@ public class SystemNode {
     public Queue<Packet> getPacketQueue() {
         return packetQueue;
     }
+    public static int getQueueCapacity() {
+        return QUEUE_CAPACITY;
+    }
     public void setInputPorts(ArrayList<Port> inputPorts) {
         this.inputPorts = inputPorts;
     }

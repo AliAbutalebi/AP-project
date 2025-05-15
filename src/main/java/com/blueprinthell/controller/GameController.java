@@ -14,7 +14,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +28,9 @@ public class GameController {
     private static final Color DRAGGING_COLOR = Color.web("#888888");
     private static final Color SQUARE_COLOR = Color.web("#00FF00");
     private static final Color TRIANGLE_COLOR = Color.web("#FFFF00");
+    private static final Color GRID_COLOR = Color.web("#040505");
+    private static final double GRID_SIZE = 50;
+    private static final double GRID_STROKE = 5;
     private final List<SystemNodeView> systemNodeViews = new ArrayList<>();
     private final List<WireView> wireViews = new ArrayList<>();
     private final List<PacketView> packetViews = new ArrayList<>();
@@ -66,6 +71,7 @@ public class GameController {
     @FXML
     public void initialize() {
         musicPlayer.play();
+        drawGrid();
         setGameMap(MapLoader.loadRandomMap());
         rootPane.setOnMouseDragged(this::onWireDragged);
         rootPane.setOnMouseReleased(this::onWireReleased);
@@ -484,6 +490,21 @@ public class GameController {
 
         hud.setLostPackets(hud.getLostPackets() + 1);
         hudView.update();
+    }
+
+    private void drawGrid() {
+        for (int x = 0; x <= screenDimensions.getWidth(); x += GRID_SIZE) {
+            Line vertical = new Line(x, 0, x, screenDimensions.getHeight());
+            vertical.setStroke(GRID_COLOR);
+            vertical.setStrokeWidth(GRID_STROKE);
+            rootPane.getChildren().add(0, vertical);
+        }
+        for (int y = 0; y <= screenDimensions.getHeight(); y += GRID_SIZE) {
+            Line horizontal = new Line(0, y, screenDimensions.getWidth(), y);
+            horizontal.setStroke(GRID_COLOR);
+            horizontal.setStrokeWidth(GRID_STROKE);
+            rootPane.getChildren().add(0, horizontal);
+        }
     }
 
 }
