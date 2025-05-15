@@ -58,6 +58,11 @@
             <artifactId>ikonli-fontawesome6-pack</artifactId>
             <version>12.4.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.mpatric</groupId>
+            <artifactId>mp3agic</artifactId>
+            <version>0.9.1</version>
+        </dependency>
     </dependencies>
 
     <build>

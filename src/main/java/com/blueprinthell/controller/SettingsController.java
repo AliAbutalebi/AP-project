@@ -3,6 +3,8 @@ package com.blueprinthell.controller;
 import com.blueprinthell.audio.MusicPlayer;
 import com.blueprinthell.audio.SoundEffectManager;
 import com.blueprinthell.model.ScreenDimensions;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -20,11 +22,11 @@ public class SettingsController extends BaseController {
     private VBox rootPane;
 
     @FXML
-    private HBox musicVolumePane;
+    private Label musicTitle;
+    @FXML
+    private Button musicSwitchButton;
     @FXML
     private Slider musicSlider;
-    @FXML
-    private HBox sfxVolumePane;
     @FXML
     private Slider sfxSlider;
 
@@ -40,15 +42,23 @@ public class SettingsController extends BaseController {
     @FXML
     public void initialize() {
         scrollPane.setStyle("-fx-background-color: #333333");
+        setupMusicSwitchPane();
         setupMusicVolumePane();
         setupSfxVolumePane();
         setupReturnButton();
         musicPlayer.play();
     }
 
+    private void setupMusicSwitchPane() {
+        updateMusicTitle();
+
+        musicSwitchButton.setOnAction(event -> {
+            musicPlayer.switchMusic();
+            updateMusicTitle();
+        });
+    }
+
     private void setupMusicVolumePane() {
-
-
         musicSlider.setPrefWidth(SLIDER_WIDTH);
         musicSlider.setMaxWidth(SLIDER_WIDTH);
         musicSlider.setMin(0);
@@ -82,5 +92,15 @@ public class SettingsController extends BaseController {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    private void updateMusicTitle() {
+        try {
+            String newMusicTitle = musicPlayer.getMusicTitle();
+            musicTitle.setText(newMusicTitle);
+        }
+        catch (InvalidDataException | UnsupportedTagException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

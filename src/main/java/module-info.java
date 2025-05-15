@@ -7,6 +7,7 @@ module com.blueprinthell {
     requires javafx.media;
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.ikonli.fontawesome6;
+    requires mp3agic;
 
 
     opens com.blueprinthell to javafx.fxml;
