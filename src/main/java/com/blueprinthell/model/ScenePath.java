@@ -4,7 +4,8 @@ public enum ScenePath {
     MAIN_MENU("/com/blueprinthell/view/MainMenu.fxml"),
     SETTINGS("/com/blueprinthell/view/SettingsView.fxml"),
     GAME("/com/blueprinthell/view/GameView.fxml"),
-    SHOP("/com/blueprinthell/view/ShopView.fxml");
+    SHOP("/com/blueprinthell/view/ShopView.fxml"),
+    GAME_OVER("/com/blueprinthell/view/GameOverView.fxml");
 
     private final String path;
 

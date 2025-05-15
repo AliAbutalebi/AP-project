@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.blueprinthell.controller.GameOverController">
+    <stylesheets>
+        <URL value="@style/global.css" />
+        <URL value="@style/main-menu.css" />
+    </stylesheets>
+    <VBox alignment="CENTER" spacing="30" style="-fx-background-color: #FF0000" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+        <HBox fx:id="gameOverPane" alignment="CENTER">
+    <Label alignment="CENTER" style="-fx-text-fill: #FFFFFF" styleClass="monograf-bold" text="GAME OVER" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+            <font>
+               <Font size="100" />
+            </font></Label>
+        </HBox>
+    <HBox fx:id="dataPane">
+        <Label style="-fx-text-fill: #FFFFFF" styleClass="space-mono" text="Recieved Packets:">
+            <font>
+               <Font size="25.0" />
+            </font></Label>
+        <Label fx:id="receivedPackets" style="-fx-text-fill: #FFFFFF" styleClass="monograf-regular">
+            <font>
+               <Font size="25.0" />
+            </font></Label>
+
+        <Region HBox.hgrow="ALWAYS" />
+
+        <Label style="-fx-text-fill: #FFFFFF" styleClass="space-mono" text="Packet Loss: ">
+            <font>
+               <Font size="25.0" />
+            </font></Label>
+        <Label fx:id="packetLoss" style="-fx-text-fill: #FFFFFF" styleClass="monograf-regular">
+            <font>
+               <Font size="25.0" />
+            </font></Label>
+    </HBox>
+    </VBox>
+</AnchorPane>
