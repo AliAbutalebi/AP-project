@@ -25,6 +25,7 @@ public class MusicPlayer {
         mediaPlayer.setAutoPlay(false);
         mediaPlayer.setVolume(0.1);
         mediaPlayer.setOnEndOfMedia(this::switchMusic);
+        // TODO: update music title in Settings when the Media ends.
     }
 
     public void play() {

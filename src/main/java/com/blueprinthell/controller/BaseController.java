@@ -8,11 +8,12 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 
 public abstract class BaseController {
 
-    protected void switchScene(String fxmlPath, ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+    protected void switchScene(URL fxmlPath, ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(fxmlPath);
         Parent root = loader.load();
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -24,6 +25,5 @@ public abstract class BaseController {
         } else {
             scene.setRoot(root);
         }
-
     }
 }
