@@ -58,3 +58,8 @@
 .reference {
     -fx-font-family: "Monograf Regular";
 }
+
+.hud-button {
+    -fx-background-radius: 25px;
+    -fx-border-radius: 25px;
+}

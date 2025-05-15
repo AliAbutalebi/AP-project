@@ -5,6 +5,8 @@ module com.blueprinthell {
     requires jdk.jshell;
     requires java.desktop;
     requires javafx.media;
+    requires org.kordamp.ikonli.javafx;
+    requires org.kordamp.ikonli.fontawesome6;
 
 
     opens com.blueprinthell to javafx.fxml;

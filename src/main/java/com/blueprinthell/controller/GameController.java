@@ -7,9 +7,11 @@ import com.blueprinthell.map.MapLoader;
 import com.blueprinthell.model.*;
 import com.blueprinthell.view.*;
 import javafx.animation.AnimationTimer;
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -17,6 +19,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.util.Duration;
+import org.kordamp.ikonli.fontawesome6.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.lang.invoke.SwitchPoint;
 import java.util.ArrayList;
@@ -193,8 +198,7 @@ public class GameController {
             if (!isValidConnection(draggingWire.getWire().getSourcePort(), hoveredPortView.getPort())) {
                 draggingWire.markInvalid();
             }
-        }
-        else {
+        } else {
             draggingWire.markDragging();
         }
     }
@@ -400,8 +404,7 @@ public class GameController {
                         hudView.update();
                     }
                     soundEffectManager.play("packet-arrival");
-                }
-                else {
+                } else {
                     packetLoss(packet);
                 }
             }
@@ -413,13 +416,25 @@ public class GameController {
     private void setupHUD() {
         hud = HUD.getInstance();
         hudView = HUDView.getInstance();
-        hudPane.getChildren().add(hudView);
         hudView.setLayoutX(screenDimensions.getWidth() - hudView.getHUDWidth() - 20);
         hudView.setLayoutY(screenDimensions.getHeight() - hudView.getHUDHeight() - 20);
         rootPane.setOnKeyPressed(this::handleHUDEvent);
         hud.setRemainingWireLength(gameMap.getMaxWireLength());
         hudView.setVisible(false);
         hudPane.setMouseTransparent(true);
+
+        Button hudButton = new Button();
+        FontIcon hudIcon = new FontIcon(FontAwesomeSolid.INFO);
+        hudButton.setGraphic(hudIcon);
+        hudButton.setPrefSize(50, 50);
+        hudButton.getStyleClass().add("hud-button");
+        hudButton.setLayoutX(screenDimensions.getWidth() - hudButton.getPrefWidth() - 20);
+        hudButton.setLayoutY(screenDimensions.getHeight() - hudButton.getPrefHeight() - 20);
+        hudButton.setOnAction(this::handleHudButton);
+        hudButton.requestFocus();
+
+        systemNodePane.getChildren().add(hudButton);
+        hudPane.getChildren().add(hudView);
     }
 
     private void handleHUDEvent(KeyEvent event) {
@@ -518,5 +533,21 @@ public class GameController {
         }
     }
 
+    private void handleHudButton(ActionEvent event) {
+        hud.toggleVisibility();
+        if (hud.isVisible()) {
+            HUD.update();
+            hudView.showHUD();
+
+            PauseTransition pause = new PauseTransition(Duration.seconds(3));
+            pause.setOnFinished(e -> {
+                hudView.hideHUD();
+                hud.toggleVisibility();
+            });
+            pause.play();
+        }
+
+
+    }
 }
 
