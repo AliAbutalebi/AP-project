@@ -18,6 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
+import java.lang.invoke.SwitchPoint;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,8 +30,8 @@ public class GameController {
     private static final Color SQUARE_COLOR = Color.web("#00FF00");
     private static final Color TRIANGLE_COLOR = Color.web("#FFFF00");
     private static final Color GRID_COLOR = Color.web("#040505");
-    private static final double GRID_SIZE = 50;
-    private static final double GRID_STROKE = 5;
+    private static final double GRID_SIZE = 30;
+    private static final double GRID_STROKE = 3;
     private final List<SystemNodeView> systemNodeViews = new ArrayList<>();
     private final List<WireView> wireViews = new ArrayList<>();
     private final List<PacketView> packetViews = new ArrayList<>();
@@ -175,7 +176,7 @@ public class GameController {
             draggingWire = new WireView(wire);
             draggingWire.getWire().setSourcePort(portView.getPort());
             wirePane.getChildren().add(draggingWire);
-            draggingWire.setStroke(getWireColor(draggingWire.getWire()));
+            draggingWire.markDragging();
             soundEffectManager.play("wire");
         }
     }
@@ -186,6 +187,16 @@ public class GameController {
         }
         draggingWire.getWire().setEndLocation(new Point2D(event.getX(), event.getY()));
         draggingWire.updateView();
+
+        PortView hoveredPortView = findHoveredInputPort(event.getX(), event.getY());
+        if (hoveredPortView != null) {
+            if (!isValidConnection(draggingWire.getWire().getSourcePort(), hoveredPortView.getPort())) {
+                draggingWire.markInvalid();
+            }
+        }
+        else {
+            draggingWire.markDragging();
+        }
     }
 
     private void onWireReleased(MouseEvent event) {
@@ -249,7 +260,7 @@ public class GameController {
     }
 
     private boolean isValidConnection(Port from, Port to) {
-        return from != to && !from.isInput() && to.isInput() && from.getShapeType() == to.getShapeType() && from.getParentSystemId() != to.getParentSystemId();
+        return from != to && !from.isInput() && to.isInput() && from.getShapeType() == to.getShapeType() && from.getParentSystemId() != to.getParentSystemId() && !from.isOccupied() && !to.isOccupied();
     }
 
     private void removeWire(WireView wireView) {

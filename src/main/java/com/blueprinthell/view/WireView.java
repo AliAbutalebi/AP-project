@@ -9,7 +9,10 @@ public class WireView extends Line {
     private Wire wire;
 
     private static final double DEFAULT_STROKE_WIDTH = 3;
-    private static final Color INVALID_COLOR = Color.RED;
+    private static final Color INVALID_COLOR = Color.web("#FF0000");
+    private static final Color DRAGGING_COLOR = Color.web("#666666");
+    private static final Color SQUARE_COLOR = Color.web("#00FF00");
+    private static final Color TRIANGLE_COLOR = Color.web("#FFFF00");
 
     public WireView(Wire wire) {
         super(wire.getStartLocation().getX(), wire.getStartLocation().getY(), wire.getEndLocation().getX(), wire.getEndLocation().getY());
@@ -32,6 +35,18 @@ public class WireView extends Line {
 
     public void markInvalid() {
         setStroke(INVALID_COLOR);
+    }
+
+    public void markDragging() {
+        setStroke(DRAGGING_COLOR);
+    }
+
+    public void markSquare() {
+        setStroke(SQUARE_COLOR);
+    }
+
+    public void markTriangle() {
+        setStroke(TRIANGLE_COLOR);
     }
 
     public void setWire(Wire wire) {
