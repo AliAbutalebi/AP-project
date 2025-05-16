@@ -62,7 +62,7 @@ public class SettingsController extends BaseController {
         musicSlider.setMaxWidth(SLIDER_WIDTH);
         musicSlider.setMin(0);
         musicSlider.setMax(100);
-        musicSlider.setValue(10);
+        musicSlider.setValue(20);
         musicSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             musicPlayer.setVolume(newValue.doubleValue() / 100);
         });
@@ -72,7 +72,7 @@ public class SettingsController extends BaseController {
         sfxSlider.setMaxWidth(SLIDER_WIDTH);
         sfxSlider.setMin(0);
         sfxSlider.setMax(100);
-        sfxSlider.setValue(50);
+        sfxSlider.setValue(20);
         sfxSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             soundEffectManager.setVolume(newValue.doubleValue() / 100);
         });
