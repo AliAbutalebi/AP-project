@@ -45,6 +45,7 @@ public class GameController extends BaseController {
     private final Map<SystemNode, SystemNodeView> nodeToView = new HashMap<>();
     private final Map<Wire, WireView> wireToView = new HashMap<>();
     private final Map<Packet, PacketView> packetToView = new HashMap<>();
+    private SystemNode referenceSystemNode;
 
     private final ArrayList<Packet> movingPackets = new ArrayList<>();
     private final Map<Packet, Packet> potentialCollisions = new HashMap<>();
@@ -106,6 +107,7 @@ public class GameController extends BaseController {
         for (SystemNode node : gameMap.getSystemNodes()) {
             SystemNodeView nodeView = new SystemNodeView(node);
             if (nodeView.getSystemNode() instanceof ReferenceSystemNode) {
+                referenceSystemNode = nodeView.getSystemNode();
                 nodeView.setupReferenceLabel();
                 nodeView.setupRunButton();
                 nodeView.getRunButton().setOnAction(this::startGameLoop);
@@ -132,6 +134,7 @@ public class GameController extends BaseController {
             wireToView.put(wire, wireView);
         }
 
+        checkRunButton();
     }
 
     private void startGameLoop(ActionEvent event) {
@@ -299,6 +302,7 @@ public class GameController extends BaseController {
             }
             setSystemNodeActive(nodeView, true);
         }
+        checkRunButton();
     }
 
     private Color getWireColor(Wire wire) {
@@ -598,6 +602,21 @@ public class GameController extends BaseController {
             pause.play();
         }
     }
+
+    private void checkRunButton() {
+        for (SystemNodeView nodeView : systemNodeViews) {
+            if (!nodeView.getSystemNode().isActive()) {
+                nodeToView.get(referenceSystemNode).getRunButton().setDisable(true);
+                return;
+            }
+        }
+        if (hud.getRemainingWireLength() < 0) {
+            nodeToView.get(referenceSystemNode).getRunButton().setDisable(true);
+            return;
+        }
+        nodeToView.get(referenceSystemNode).getRunButton().setDisable(false);
+    }
+
     private void setupTopBarView() {
         topBarView = TopBarView.getInstance();
         systemNodePane.getChildren().add(topBarView);
