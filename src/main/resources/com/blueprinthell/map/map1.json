@@ -3,7 +3,7 @@
         {
             "type": "ReferenceSystemNode",
             "id": 0,
-            "location": { "X": 100.0, "Y": 100.0 },
+            "location": { "X": 100.0, "Y": 150.0 },
             "inputPorts": [
                 { "type": "TrianglePort", "id": 1,  "isInput": true, "occupied": false, "parentSystemId": 0 },
                 { "type": "SquarePort",   "id": 2,  "isInput": true, "occupied": false, "parentSystemId": 0 }

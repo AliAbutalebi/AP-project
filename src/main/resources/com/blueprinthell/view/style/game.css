@@ -63,3 +63,37 @@
     -fx-background-radius: 25px;
     -fx-border-radius: 25px;
 }
+
+
+.temporal-progress {
+
+}
+
+.temporal-progress .track {
+    -fx-background-color: #666666;
+    -fx-background-radius: 40;
+    -fx-border-color: #999999;
+    -fx-border-width: 3;
+    -fx-border-radius: 40;
+    -fx-pref-height: 40;
+}
+
+.temporal-progress .thumb {
+    -fx-background-color: #cccccc;
+    -fx-background-radius: 40;
+    -fx-border-color: #999999;
+    -fx-border-width: 3;
+    -fx-border-radius: 40;
+    -fx-pref-width: 40;
+    -fx-pref-height: 40;
+    -fx-cursor: hand;
+}
+
+.temporal-progress .thumb:hover {
+    -fx-background-color: #3fa8f5;
+}
+
+.temporal-progress .thumb:pressed {
+    -fx-background-color: #3fa8f5;
+
+}

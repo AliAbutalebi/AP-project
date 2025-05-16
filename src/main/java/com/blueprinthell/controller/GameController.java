@@ -50,6 +50,7 @@ public class GameController extends BaseController {
     private final Map<Packet, Packet> potentialCollisions = new HashMap<>();
     private final double PACKET_PROXIMITY = 20;
 
+    private TopBarView topBarView;
     private final Logger logger = Logger.getInstance();
     private static final ScreenDimensions screenDimensions = ScreenDimensions.getInstance();
     private HUD hud;
@@ -85,6 +86,7 @@ public class GameController extends BaseController {
         rootPane.setOnMouseReleased(this::onWireReleased);
         setupHUD();
         hud.setPacketsCount(packetViews.size());
+        setupTopBarView();
     }
 
     public void setGameMap(GameMap gameMap) {
@@ -595,6 +597,10 @@ public class GameController extends BaseController {
             });
             pause.play();
         }
+    }
+    private void setupTopBarView() {
+        topBarView = TopBarView.getInstance();
+        systemNodePane.getChildren().add(topBarView);
     }
 }
 
