@@ -25,8 +25,8 @@ public class PortView extends Polygon {
                     halfSize, halfSize,
                     -halfSize, halfSize
             );
-            setFill(Color.web("#00FF00"));
-            setStrokeWidth(2);
+            setFill(Color.web("#32c65f"));
+            setStrokeWidth(3);
         }
         else if (port.getShapeType() == ShapeType.TRIANGLE) {
             double height = Math.sqrt(3) / 2 * PORT_SIZE;
@@ -37,7 +37,7 @@ public class PortView extends Polygon {
                     0.0, -height / 2
             );
             setFill(Color.web("#FFFF00"));
-            setStrokeWidth(2);
+            setStrokeWidth(3);
         }
     }
 

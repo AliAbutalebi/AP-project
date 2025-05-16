@@ -34,7 +34,7 @@ import java.util.Map;
 public class GameController extends BaseController {
 
     private static final Color DRAGGING_COLOR = Color.web("#888888");
-    private static final Color SQUARE_COLOR = Color.web("#00FF00");
+    private static final Color SQUARE_COLOR = Color.web("#32c65f");
     private static final Color TRIANGLE_COLOR = Color.web("#FFFF00");
     private static final Color GRID_COLOR = Color.web("#040505");
     private static final double GRID_SIZE = 30;

@@ -29,7 +29,7 @@ public class PacketView extends Polygon {
                     -halfSize, halfSize
             );
             setFill(Color.TRANSPARENT);
-            setStroke(Color.web("#00FF00"));
+            setStroke(Color.web("#32c65f"));
             setStrokeWidth(3);
         } else if (packet.getShapeType() == ShapeType.TRIANGLE) {
             double height = Math.sqrt(3) / 2 * PACKET_SIZE;

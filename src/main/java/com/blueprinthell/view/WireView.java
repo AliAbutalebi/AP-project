@@ -11,7 +11,7 @@ public class WireView extends Line {
     private static final double DEFAULT_STROKE_WIDTH = 3;
     private static final Color INVALID_COLOR = Color.web("#FF0000");
     private static final Color DRAGGING_COLOR = Color.web("#666666");
-    private static final Color SQUARE_COLOR = Color.web("#00FF00");
+    private static final Color SQUARE_COLOR = Color.web("#32c65f");
     private static final Color TRIANGLE_COLOR = Color.web("#FFFF00");
 
     public WireView(Wire wire) {

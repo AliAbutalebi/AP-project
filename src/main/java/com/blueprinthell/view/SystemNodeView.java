@@ -173,7 +173,8 @@ public class SystemNodeView extends AnchorPane {
 
     public void setupReferenceLabel() {
         Label reference = new Label("Reference");
-        reference.getStyleClass().add("reference");
+        reference.getStyleClass().add("monograf-regular");
+        reference.setStyle(String.format("-fx-font-size: %d", (int) INDICATOR_PANEL_HEIGHT / 2));
         reference.setTextFill(Color.WHITE);
         indicatorPane.getChildren().add(reference);
         Platform.runLater(() -> {
