@@ -22,6 +22,7 @@ public class Packet {
     private Point2D location = new Point2D(0, 0);
     private SystemNode parentSystemNode;
     private boolean colliding = false;
+    private boolean received  = false;
 
     public Packet(ShapeType shapeType) {
         this.shapeType = shapeType;
@@ -145,6 +146,14 @@ public class Packet {
 
     public void setColliding(boolean colliding) {
         this.colliding = colliding;
+    }
+
+    public void setReceived(boolean received) {
+        this.received = received;
+    }
+
+    public boolean isReceived() {
+        return received;
     }
 
     public void applyCollision() {

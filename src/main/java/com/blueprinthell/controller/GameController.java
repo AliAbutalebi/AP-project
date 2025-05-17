@@ -306,7 +306,7 @@ public class GameController extends BaseController {
         for (SystemNodeView nodeView : systemNodeViews) {
             SystemNode node = nodeView.getSystemNode();
             Packet packet = node.getPacketQueue().peek();
-            if (packet != null) {
+            if (packet != null && !packet.isReceived()) {
                 Port selectedOutputPort = findPort(node, packet);
                 if (selectedOutputPort != null) {
                     packet.getParentSystemNode().getPacketQueue().remove(packet);
@@ -383,6 +383,10 @@ public class GameController extends BaseController {
                     PacketView packetView = packetToView.get(packet);
                     packetPane.getChildren().remove(packetView);
                     nodeView.update();
+
+                    if (nodeView.getSystemNode() instanceof ReferenceSystemNode) {
+                        packet.setReceived(true);
+                    }
 
                     packet.setCurrentSpeed(packet.getBaseSpeed());
                     packet.setOnWire(false);
