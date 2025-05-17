@@ -96,29 +96,29 @@
             "onWire": false,
             "progressOnWire": 0,
             "currentWire": null,
-            "locationSystemNodeId": 1
+            "locationSystemNodeId": 0
         },
         {
             "id": 2,
             "shapeType": "TRIANGLE",
             "alive": true,
-            "noise": 2,
+            "noise": 0,
             "currentSpeed": 0,
             "onWire": false,
             "progressOnWire": 0,
             "currentWire": null,
-            "locationSystemNodeId": 2
+            "locationSystemNodeId": 0
         },
         {
             "id": 3,
             "shapeType": "SQUARE",
             "alive": true,
-            "noise": 1,
+            "noise": 0,
             "currentSpeed": 0,
             "onWire": false,
             "progressOnWire": 0,
             "currentWire": null,
-            "locationSystemNodeId": 3
+            "locationSystemNodeId": 0
         },
         {
             "id": 4,
@@ -129,7 +129,7 @@
             "onWire": false,
             "progressOnWire": 0,
             "currentWire": null,
-            "locationSystemNodeId": 1
+            "locationSystemNodeId": 0
         },
         {
             "id": 5,
@@ -140,18 +140,18 @@
             "onWire": false,
             "progressOnWire": 0,
             "currentWire": null,
-            "locationSystemNodeId": 2
+            "locationSystemNodeId": 0
         },
         {
             "id": 6,
             "shapeType": "SQUARE",
             "alive": true,
-            "noise": 1,
+            "noise": 0,
             "currentSpeed": 0,
             "onWire": false,
             "progressOnWire": 0,
             "currentWire": null,
-            "locationSystemNodeId": 4
+            "locationSystemNodeId": 0
         },
         {
             "id": 7,
@@ -173,7 +173,7 @@
             "onWire": false,
             "progressOnWire": 0,
             "currentWire": null,
-            "locationSystemNodeId": 3
+            "locationSystemNodeId": 0
         }
     ],
     "wires": [],

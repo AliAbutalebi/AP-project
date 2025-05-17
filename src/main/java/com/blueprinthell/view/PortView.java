@@ -53,4 +53,8 @@ public class PortView extends Polygon {
         Point2D location = localToScene(0, 0);
         port.setLocation(location);
     }
+
+    public static double getPortSize() {
+        return PORT_SIZE;
+    }
 }

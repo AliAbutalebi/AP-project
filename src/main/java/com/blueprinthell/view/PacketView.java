@@ -74,4 +74,8 @@ public class PacketView extends Polygon {
     public void setupNoiseOpacity() {
         setOpacity(1 - (double) packet.getNoise() / (packet.getMaxNoise() + 1));
     }
+
+    public static double getPacketSize() {
+        return PACKET_SIZE;
+    }
 }

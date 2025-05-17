@@ -18,7 +18,7 @@ public class GameMapDeserializer implements JsonDeserializer<GameMap> {
         gameMap.setMaxWireLength(maxWireLength);
 
         ArrayList<SystemNode> systemNodes = new ArrayList<>();
-        Map<Integer, ReferenceSystemNode> referenceNodesById = new HashMap<>();
+        Map<Integer, SystemNode> idToSystemNode = new HashMap<>();
         Map<Integer, Port> portIdMap = new HashMap<>();
 
         JsonArray nodesArray = rootObject.getAsJsonArray("systemNodes");
@@ -29,7 +29,6 @@ public class GameMapDeserializer implements JsonDeserializer<GameMap> {
             SystemNode node;
             if (nodeType.equals("ReferenceSystemNode")) {
                 node = new ReferenceSystemNode();
-                referenceNodesById.put(nodeObject.get("id").getAsInt(), (ReferenceSystemNode) node);
             } else {
                 node = new SystemNode();
             }
@@ -55,6 +54,7 @@ public class GameMapDeserializer implements JsonDeserializer<GameMap> {
             node.setOutputPorts(outputPorts);
 
             systemNodes.add(node);
+            idToSystemNode.put(id, node);
         }
 
         gameMap.setSystemNodes(systemNodes);
@@ -82,7 +82,7 @@ public class GameMapDeserializer implements JsonDeserializer<GameMap> {
                 }
 
                 int systemNodeId = p.get("locationSystemNodeId").getAsInt();
-                ReferenceSystemNode node = referenceNodesById.get(systemNodeId);
+                SystemNode node = idToSystemNode.get(systemNodeId);
                 if (node != null) {
                     node.getPacketQueue().add(packet);
                     packet.setParentSystemNode(node);

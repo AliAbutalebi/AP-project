@@ -134,7 +134,7 @@ public class GameController extends BaseController {
             wireToView.put(wire, wireView);
         }
 
-        checkRunButton();
+        // checkRunButton();
     }
 
     private void startGameLoop(ActionEvent event) {
@@ -316,6 +316,8 @@ public class GameController extends BaseController {
                     packet.setCurrentWire(selectedOutputPort.getConnectedWire());
                     packet.setDistanceOnWire(0);
 
+                    nodeToView.get(packet.getCurrentWire().getSourcePort().getParentSystemNode()).update();
+
                     selectedOutputPort.getConnectedWire().setPacketOnWire(packet);
 
                     selectedOutputPort.sendPacket(packet);
@@ -387,6 +389,8 @@ public class GameController extends BaseController {
                     if (nodeView.getSystemNode() instanceof ReferenceSystemNode) {
                         packet.setReceived(true);
                     }
+
+                    nodeToView.get(packet.getCurrentWire().getDestinationPort().getParentSystemNode()).update();
 
                     packet.setCurrentSpeed(packet.getBaseSpeed());
                     packet.setOnWire(false);
@@ -525,6 +529,8 @@ public class GameController extends BaseController {
 
     private void packetLoss(Packet packet) {
         packet.setAlive(false);
+
+        packet.getCurrentWire().setPacketOnWire(null);
 
         packetPane.getChildren().remove(packetToView.get(packet));
         movingPackets.remove(packet);
