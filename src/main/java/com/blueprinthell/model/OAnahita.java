@@ -32,4 +32,12 @@ public class OAnahita implements ShopItem{
     public void apply(GameController game) {
         // game.clearAllPacketNoise();
     }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
+
+    @Override
+    public void enable() {}
 }

@@ -4,6 +4,8 @@ import com.blueprinthell.controller.GameController;
 
 public class OAiryaman implements ShopItem{
     private static final OAiryaman instance = new OAiryaman();
+    private static double remainingTime = 5;
+    private static boolean enabled = false;
     private OAiryaman() {
 
     }
@@ -31,4 +33,29 @@ public class OAiryaman implements ShopItem{
     public void apply(GameController game) {
         // game.disablePacketCollisionsFor(5_000);
     }
+
+    public void updateRemainingTime(double deltaTime) {
+        remainingTime -= deltaTime;
+    }
+
+    public void resetRemainingTime() {
+        remainingTime = 5;
+    }
+
+    public boolean isExpired() {
+        return remainingTime <= 0;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void enable() {
+        enabled = true;
+    }
+
+    public void disable() {
+        enabled = false;
+    }
+
 }
