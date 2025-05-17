@@ -92,6 +92,7 @@ public class GameController extends BaseController {
         setupHUD();
         hud.setPacketsCount(packetViews.size());
         setupTopBarView();
+        rootPane.getChildren().add(ShopView.getInstance());
     }
 
     public void setGameMap(GameMap gameMap) {
