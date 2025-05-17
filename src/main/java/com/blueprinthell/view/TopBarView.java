@@ -1,5 +1,6 @@
 package com.blueprinthell.view;
 
+import com.blueprinthell.controller.GameController;
 import com.blueprinthell.model.ScreenDimensions;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -26,6 +27,8 @@ public class TopBarView extends AnchorPane {
     private StackPane mapTitlePane = new StackPane();
     private StackPane temporalProgressPane = new StackPane();
     private StackPane shopButtonPane = new StackPane();
+
+    private Button shopButton;
 
     private static final double BAR_WIDTH = screenDimensions.getWidth();
     private static final double BAR_HEIGHT = screenDimensions.getHeight() / 8;
@@ -136,10 +139,14 @@ public class TopBarView extends AnchorPane {
 
         FontIcon shopIcon = FontIcon.of(FontAwesomeSolid.SHOPPING_CART);
         shopIcon.setIconSize((int) BAR_CONTENT_HEIGHT / 2);
-        Button shopButton = new Button();
+        shopButton = new Button();
         shopButton.setGraphic(shopIcon);
         shopButton.setPrefWidth(BAR_CONTENT_HEIGHT);
         shopButton.setPrefHeight(BAR_CONTENT_HEIGHT);
         shopButtonPane.getChildren().add(shopButton);
+    }
+
+    public Button getShopButton() {
+        return shopButton;
     }
 }

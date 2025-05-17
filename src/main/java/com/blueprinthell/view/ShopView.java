@@ -1,5 +1,6 @@
 package com.blueprinthell.view;
 
+import com.blueprinthell.controller.GameController;
 import com.blueprinthell.model.*;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -10,6 +11,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import org.kordamp.ikonli.fontawesome6.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class ShopView extends StackPane {
     private static ShopView instance;
@@ -31,11 +34,17 @@ public class ShopView extends StackPane {
     private static final Color ITEM_BORDER_COLOR = Color.web("#4d4d4d");
     private static final Color TEXT_COLOR = Color.WHITE;
 
-    VBox contentPane;
+    private Pane splitterPane;
+    private VBox contentPane;
+    private HBox itemsPane = new HBox();
+
+    private Button returnButton;
 
     private ShopView() {
         setupBackground();
+        contentPane.getChildren().add(itemsPane);
         setupItems();
+        setupReturnButton();
     }
 
     public static ShopView getInstance() {
@@ -49,10 +58,10 @@ public class ShopView extends StackPane {
         setPrefSize(screenDimensions.getWidth(), screenDimensions.getHeight());
         setAlignment(Pos.CENTER);
 
-        Pane splitterPane = new Pane();
+        splitterPane = new Pane();
         splitterPane.setPrefSize(screenDimensions.getWidth(), screenDimensions.getHeight());
         splitterPane.setStyle("-fx-background-color: #000000");
-        splitterPane.setOpacity(0.8);
+        splitterPane.setOpacity(0.5);
         getChildren().add(splitterPane);
 
         Rectangle background = new Rectangle(SHOP_WIDTH, SHOP_HEIGHT);
@@ -66,7 +75,6 @@ public class ShopView extends StackPane {
         contentPane = new VBox();
         contentPane.setMaxSize(SHOP_WIDTH, SHOP_HEIGHT);
         getChildren().add(contentPane);
-        contentPane.setAlignment(Pos.TOP_CENTER);
         contentPane.setSpacing(50);
 
         HBox titlePane = new HBox();
@@ -81,11 +89,9 @@ public class ShopView extends StackPane {
     }
 
     private void setupItems() {
-        HBox itemsPane = new HBox();
-        itemsPane.setAlignment(Pos.BASELINE_CENTER);
+        itemsPane.setAlignment(Pos.CENTER);
         itemsPane.setPrefSize(SHOP_WIDTH, ITEM_HEIGHT);
         itemsPane.setSpacing(50);
-        contentPane.getChildren().add(itemsPane);
 
 
         for (ShopItem item : shop.getItems()) {
@@ -134,21 +140,45 @@ public class ShopView extends StackPane {
             itemPrice.setStyle(String.format("-fx-font-size: %d;", (int) ITEM_HEIGHT / 20));
             box.getChildren().add(itemPrice);
 
-            Button itemActivateButton = new Button("Activate");
+            Button itemActivateButton = new Button("ACTIVATE");
             itemActivateButton.setPrefSize(BUTTON_WIDTH, BUTTON_HEIGHT);
             box.getChildren().add(itemActivateButton);
             itemActivateButton.getStyleClass().add("monograf-bold");
             itemActivateButton.setStyle(String.format("-fx-font-size: %d;", (int) BUTTON_HEIGHT / 3));
-            itemActivateButton.setOnAction(event -> {
-                item.enable();
-            });
-
             if (item.isEnabled()) {
                 itemActivateButton.setDisable(true);
+                itemActivateButton.setText("ACTIVATED");
             }
-
-
+            itemActivateButton.setOnAction(event -> {
+                item.enable();
+                itemActivateButton.setDisable(true);
+                itemActivateButton.setText("ACTIVATED");
+            });
         }
+    }
+
+    private void setupReturnButton() {
+        Pane returnPane = new Pane();
+        getChildren().add(returnPane);
+        returnPane.setLayoutX(20);
+        returnPane.setLayoutY(20);
+
+        FontIcon returnIcon = new FontIcon(FontAwesomeSolid.ARROW_LEFT);
+        returnButton = new Button();
+        returnButton.setGraphic(returnIcon);
+        returnButton.setPrefSize(BUTTON_HEIGHT, BUTTON_HEIGHT);
+        returnPane.getChildren().add(returnButton);
+        returnButton.setLayoutX(20);
+        returnButton.setLayoutY(20);
+    }
+
+    public void update() {
+        itemsPane.getChildren().clear();
+        setupItems();
+    }
+
+    public Button getReturnButton() {
+        return returnButton;
     }
 
 

@@ -57,6 +57,8 @@ public class GameController extends BaseController {
     private HUD hud;
     private HUDView hudView;
 
+    private ShopView shopView = ShopView.getInstance();
+
     private static final MusicPlayer musicPlayer = MusicPlayer.getInstance();
     private static final SoundEffectManager soundEffectManager = SoundEffectManager.getInstance();
 
@@ -80,6 +82,7 @@ public class GameController extends BaseController {
 
     private AnimationTimer gameLoop;
     private long lastUpdateTime = 0;
+    private boolean pause;
 
 
     @FXML
@@ -92,7 +95,8 @@ public class GameController extends BaseController {
         setupHUD();
         hud.setPacketsCount(packetViews.size());
         setupTopBarView();
-        rootPane.getChildren().add(ShopView.getInstance());
+        setupShopButtons();
+        resume();
     }
 
     public void setGameMap(GameMap gameMap) {
@@ -155,6 +159,7 @@ public class GameController extends BaseController {
             }
         };
         gameLoop.start();
+        topBarView.getShopButton().setDisable(false);
     }
 
     private void update(double deltaTime) {
@@ -400,7 +405,7 @@ public class GameController extends BaseController {
         ArrayList<Packet> arrived = new ArrayList<>();
         for (Packet packet : movingPackets) {
             if (packet.getDistanceOnWire() >= packet.getCurrentWire().getLength()) {
-                if (packet.getCurrentWire().getDestinationPort().getParentSystemNode().getPacketQueue().size() <= SystemNode.getQueueCapacity()) {
+                if (packet.getCurrentWire().getDestinationPort().getParentSystemNode().getPacketQueue().size() < SystemNode.getQueueCapacity()) {
                     arrived.add(packet);
 
                     packet.setParentSystemNode(packet.getCurrentWire().getDestinationPort().getParentSystemNode());
@@ -585,7 +590,7 @@ public class GameController extends BaseController {
         musicPlayer.stop();
 
         if (gameLoop != null) {
-            gameLoop.stop();
+            pause();
         }
 
 
@@ -656,5 +661,28 @@ public class GameController extends BaseController {
         nodeToView.get(referenceSystemNode).update();
 
     }
+
+    private void setupShopButtons() {
+        topBarView.getShopButton().setDisable(true);
+        topBarView.getShopButton().setOnAction(e -> {
+            openShopView();
+        });
+
+        shopView.getReturnButton().setOnAction(e -> {
+           returnFromShopView();
+        });
+    }
+
+    private void openShopView() {
+        pause();
+        shopView.update();
+        rootPane.getChildren().add(shopView);
+    }
+
+    private void returnFromShopView() {
+        rootPane.getChildren().remove(shopView);
+        resume();
+    }
+
 }
 
