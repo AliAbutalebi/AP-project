@@ -151,11 +151,13 @@ public class GameController extends BaseController {
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (lastUpdateTime > 0) {
-                    double deltaTime = (now - lastUpdateTime) / 1_000_000_000.0;
-                    update(deltaTime);
+                if (!pause) {
+                    if (lastUpdateTime > 0) {
+                        double deltaTime = (now - lastUpdateTime) / 1_000_000_000.0;
+                        update(deltaTime);
+                    }
+                    lastUpdateTime = now;
                 }
-                lastUpdateTime = now;
             }
         };
         gameLoop.start();
@@ -684,5 +686,12 @@ public class GameController extends BaseController {
         resume();
     }
 
+    private void pause() {
+        pause = true;
+    }
+
+    private void resume() {
+        pause = false;
+    }
 }
 
