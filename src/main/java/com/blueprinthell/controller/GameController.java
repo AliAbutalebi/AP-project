@@ -145,7 +145,6 @@ public class GameController extends BaseController {
                 if (lastUpdateTime > 0) {
                     double deltaTime = (now - lastUpdateTime) / 1_000_000_000.0;
                     update(deltaTime);
-                    render();
                 }
                 lastUpdateTime = now;
             }
@@ -160,16 +159,6 @@ public class GameController extends BaseController {
         }
         handleCollisions();
         checkArrivals();
-    }
-
-    private void render() {
-        for (WireView wireView : wireViews) {
-            wireView.updateView();
-        }
-
-        for (PacketView packetView : packetViews) {
-            packetView.update();
-        }
     }
 
     private void savePortLocation(PortView portView) {
@@ -239,7 +228,10 @@ public class GameController extends BaseController {
         to.getPort().setConnectedWire(draggingWire.getWire());
         to.getPort().setOccupied(true);
 
-        draggingWire.setStroke(getWireColor(draggingWire.getWire()));
+        switch (draggingWire.getWire().getShapeType()) {
+            case SQUARE -> draggingWire.markSquare();
+            case TRIANGLE -> draggingWire.markTriangle();
+        }
 
         wireViews.add(draggingWire);
         wireToView.put(draggingWire.getWire(), draggingWire);
@@ -302,14 +294,7 @@ public class GameController extends BaseController {
             }
             setSystemNodeActive(nodeView, true);
         }
-        checkRunButton();
-    }
-
-    private Color getWireColor(Wire wire) {
-        if (wire.getDestinationPort() == null) return DRAGGING_COLOR;
-        if (wire.getShapeType() == ShapeType.SQUARE) return SQUARE_COLOR;
-        if (wire.getShapeType() == ShapeType.TRIANGLE) return TRIANGLE_COLOR;
-        return Color.GRAY;
+        // checkRunButton();
     }
 
     private void setSystemNodeActive(SystemNodeView view, boolean active) {
@@ -556,7 +541,7 @@ public class GameController extends BaseController {
         return (double) hud.getLostPackets() / hud.getPacketsCount() > 0.5;
     }
 
-    private void gameOver(){
+    private void gameOver() {
         musicPlayer.stop();
 
         if (gameLoop != null) {
@@ -620,6 +605,16 @@ public class GameController extends BaseController {
     private void setupTopBarView() {
         topBarView = TopBarView.getInstance();
         systemNodePane.getChildren().add(topBarView);
+    }
+
+    public void handleTemporalProgress() {
+        movingPackets.clear();
+        for (SystemNodeView nodeView : systemNodeViews) {
+            nodeView.getSystemNode().getPacketQueue().clear();
+        }
+        referenceSystemNode.getPacketQueue().addAll(packetToView.keySet());
+        nodeToView.get(referenceSystemNode).update();
+
     }
 }
 
