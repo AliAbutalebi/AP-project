@@ -7,4 +7,6 @@ public interface ShopItem {
     int getPrice();
     String getDescription();
     void apply(GameController game);
+    boolean isEnabled();
+    void enable();
 }

@@ -60,6 +60,10 @@ public class GameController extends BaseController {
     private static final MusicPlayer musicPlayer = MusicPlayer.getInstance();
     private static final SoundEffectManager soundEffectManager = SoundEffectManager.getInstance();
 
+    private static final OAtar oAtar = OAtar.getInstance();
+    private static final OAiryaman oAiryaman = OAiryaman.getInstance();
+    private static final OAnahita oAnahita = OAnahita.getInstance();
+
     @FXML
     private AnchorPane rootPane;
     @FXML
@@ -157,8 +161,30 @@ public class GameController extends BaseController {
         for (Packet packet : movingPackets) {
             movePacketOnWire(packet, deltaTime);
         }
-        handleCollisions();
+
+        if (!oAiryaman.isEnabled()) {
+            handleCollisions();
+        }
+
         checkArrivals();
+
+        if (oAtar.isEnabled()) {
+            if (oAtar.isExpired()) {
+                oAtar.disable();
+                oAiryaman.resetRemainingTime();
+            } else {
+                oAtar.updateRemainingTime(deltaTime);
+            }
+        }
+
+        if (oAiryaman.isEnabled()) {
+            if (oAiryaman.isExpired()) {
+                oAiryaman.disable();
+                oAiryaman.resetRemainingTime();
+            } else {
+                oAiryaman.updateRemainingTime(deltaTime);
+            }
+        }
     }
 
     private void savePortLocation(PortView portView) {
@@ -489,7 +515,10 @@ public class GameController extends BaseController {
 
                 soundEffectManager.play("packet-collision");
 
-                handleImpacts(getImpactCenter(packet1, packet2));
+                if (!oAtar.isEnabled()) {
+                    handleImpacts(getImpactCenter(packet1, packet2));
+                }
+
                 handlePacketLoss(packet1);
                 handlePacketLoss(packet2);
             } else if (!collided && (packet1.isColliding() || packet2.isColliding())) {
