@@ -8,16 +8,16 @@ import com.blueprinthell.model.*;
 import com.blueprinthell.view.*;
 import javafx.animation.AnimationTimer;
 import javafx.animation.PauseTransition;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
@@ -25,7 +25,6 @@ import org.kordamp.ikonli.fontawesome6.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
-import java.lang.invoke.SwitchPoint;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,9 +32,6 @@ import java.util.Map;
 
 public class GameController extends BaseController {
 
-    private static final Color DRAGGING_COLOR = Color.web("#888888");
-    private static final Color SQUARE_COLOR = Color.web("#32c65f");
-    private static final Color TRIANGLE_COLOR = Color.web("#FFFF00");
     private static final Color GRID_COLOR = Color.web("#040505");
     private static final double GRID_SIZE = 30;
     private static final double GRID_STROKE = 3;
@@ -209,7 +205,13 @@ public class GameController extends BaseController {
             return;
         } else if (portView.getPort().isOccupied()) {
             removeWire(wireToView.get(portView.getPort().getConnectedWire()));
-        } else {
+
+        }
+        else if (hud.isWireFinished()) {
+            newMessage("Insuffisient wire.", 3);
+            return;
+        }
+        else {
             startingPortView = portView;
             Wire wire = new Wire(startingPortView.getPort().getLocation(), startingPortView.getPort().getLocation());
             draggingWire = new WireView(wire);
@@ -305,6 +307,8 @@ public class GameController extends BaseController {
     }
 
     private void removeWire(WireView wireView) {
+        hud.setRemainingWireLength(hud.getRemainingWireLength() + wireView.getWire().getLength());
+
         wireView.getWire().getSourcePort().setConnectedWire(null);
         wireView.getWire().getDestinationPort().setConnectedWire(null);
         wireView.getWire().getSourcePort().setOccupied(false);

@@ -95,4 +95,8 @@ public class HUD {
         coins -= amount;
     }
 
+    public boolean isWireFinished() {
+        return remainingWireLength <= 0;
+    }
+
 }
