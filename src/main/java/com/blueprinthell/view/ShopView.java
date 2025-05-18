@@ -1,5 +1,6 @@
 package com.blueprinthell.view;
 
+import com.blueprinthell.audio.SoundEffectManager;
 import com.blueprinthell.controller.GameController;
 import com.blueprinthell.model.*;
 import javafx.application.Application;
@@ -20,6 +21,8 @@ public class ShopView extends StackPane {
     private Shop shop = Shop.getInstance();
 
     private static final HUD hud = HUD.getInstance();
+
+    private static final SoundEffectManager  soundEfectManager = SoundEffectManager.getInstance();
 
     private static final ScreenDimensions screenDimensions = ScreenDimensions.getInstance();
 
@@ -158,6 +161,7 @@ public class ShopView extends StackPane {
             }
             itemActivateButton.setOnAction(event -> {
                 item.apply();
+                soundEfectManager.play("click");
                 GameController.newMessage(item.getName() + "Activated.", 3);
                 update();
             });

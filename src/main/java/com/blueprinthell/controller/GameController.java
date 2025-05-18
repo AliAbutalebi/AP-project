@@ -207,19 +207,17 @@ public class GameController extends BaseController {
         } else if (portView.getPort().isOccupied()) {
             removeWire(wireToView.get(portView.getPort().getConnectedWire()));
 
-        }
-        else if (hud.isWireFinished()) {
+        } else if (hud.isWireFinished()) {
             newMessage("Insuffisient wire.", 3);
             return;
-        }
-        else {
+        } else {
             startingPortView = portView;
             Wire wire = new Wire(startingPortView.getPort().getLocation(), startingPortView.getPort().getLocation());
             draggingWire = new WireView(wire);
             draggingWire.getWire().setSourcePort(portView.getPort());
             wirePane.getChildren().add(draggingWire);
             draggingWire.markDragging();
-            soundEffectManager.play("wire");
+            soundEffectManager.play("click");
         }
     }
 
@@ -257,7 +255,7 @@ public class GameController extends BaseController {
         hud.setRemainingWireLength(hud.getRemainingWireLength() - targetPortView.getPort().getConnectedWire().getLength());
         hudView.update();
         checkActiveNode();
-        soundEffectManager.play("wire");
+        soundEffectManager.play("click");
     }
 
     private void finalizeWireConnection(PortView from, PortView to) {
@@ -676,11 +674,13 @@ public class GameController extends BaseController {
     private void setupShopButtons() {
         topBarView.getShopButton().setDisable(true);
         topBarView.getShopButton().setOnAction(e -> {
+            soundEffectManager.play("click");
             openShopView();
         });
 
         shopView.getReturnButton().setOnAction(e -> {
-           returnFromShopView();
+            soundEffectManager.play("click");
+            returnFromShopView();
         });
     }
 
