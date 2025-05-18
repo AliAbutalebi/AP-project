@@ -158,6 +158,7 @@ public class ShopView extends StackPane {
             }
             itemActivateButton.setOnAction(event -> {
                 item.apply();
+                GameController.newMessage(item.getName() + "Activated.", 3);
                 update();
             });
         }
