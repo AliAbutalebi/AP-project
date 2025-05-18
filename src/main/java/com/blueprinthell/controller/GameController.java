@@ -94,7 +94,7 @@ public class GameController extends BaseController {
     public void initialize() {
         musicPlayer.play();
         drawGrid();
-        setGameMap(MapLoader.loadRandomMap());
+        setGameMap(MapLoader.loadLevelMap(MapLoader.getSelectedMap()));
         rootPane.setOnMouseDragged(this::onWireDragged);
         rootPane.setOnMouseReleased(this::onWireReleased);
         setupHUD();
@@ -478,7 +478,7 @@ public class GameController extends BaseController {
                         hudView.update();
                     }
 
-                    if (packet.getParentSystemNode() instanceof ReferenceSystemNode) {
+                    if (packet.getParentSystemNode() instanceof ReferenceSystemNode && !scrubbing) {
                         handleWin();
                     }
 
@@ -705,6 +705,7 @@ public class GameController extends BaseController {
         topBarView = TopBarView.getInstance();
         systemNodePane.getChildren().add(topBarView);
         topBarView.setGameController(this);
+        topBarView.updateMapTitle(gameMap.getMapName());
     }
 
     public void handleTemporalProgress() {
@@ -862,7 +863,6 @@ public class GameController extends BaseController {
         }
         catch (Exception ignored) {
         }
-
     }
 
 
