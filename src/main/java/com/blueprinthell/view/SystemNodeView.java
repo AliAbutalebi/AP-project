@@ -2,9 +2,12 @@ package com.blueprinthell.view;
 
 import com.blueprinthell.model.*;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -33,6 +36,7 @@ public class SystemNodeView extends AnchorPane {
     private Pane inputPortPane;
     private Pane outputPortPane;
     private Pane indicatorPane;
+    private HBox labelPane;
     private Pane queuePane;
     private Rectangle background;
     private Rectangle indicatorPanel;
@@ -171,15 +175,19 @@ public class SystemNodeView extends AnchorPane {
     }
 
     public void setupReferenceLabel() {
+        labelPane = new HBox();
+        labelPane.setPrefSize(NODE_WIDTH, INDICATOR_PANEL_HEIGHT);
+        labelPane.setAlignment(Pos.CENTER_RIGHT);
+        getChildren().add(labelPane);
+        labelPane.setLayoutX(0);
+        labelPane.setLayoutY(0);
+        labelPane.setPadding(new Insets(0, 5, 0, 0));
+
         Label reference = new Label("Reference");
-        reference.getStyleClass().add("monograf-regular");
+        reference.getStyleClass().add("monograf-bold");
         reference.setStyle(String.format("-fx-font-size: %d", (int) INDICATOR_PANEL_HEIGHT / 2));
         reference.setTextFill(Color.WHITE);
-        indicatorPane.getChildren().add(reference);
-        Platform.runLater(() -> {
-            reference.setLayoutX(indicatorPane.getWidth() - reference.getWidth() - 10);
-            reference.setLayoutY(indicatorPanel.getHeight() / 2 - reference.getHeight() / 2);
-        });
+        labelPane.getChildren().add(reference);
     }
 
     public void setupRunButton() {
