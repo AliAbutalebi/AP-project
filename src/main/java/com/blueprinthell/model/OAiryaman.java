@@ -6,6 +6,9 @@ public class OAiryaman implements ShopItem{
     private static final OAiryaman instance = new OAiryaman();
     private static double remainingTime = 5;
     private static boolean enabled = false;
+
+    private static final HUD hud = HUD.getInstance();
+
     private OAiryaman() {
 
     }
@@ -30,8 +33,12 @@ public class OAiryaman implements ShopItem{
     }
 
     @Override
-    public void apply(GameController game) {
-        // game.disablePacketCollisionsFor(5_000);
+    public void apply() {
+        if (hud.getCoins() >= getPrice()) {
+            resetRemainingTime();
+            hud.removeCoins(getPrice());
+            enable();
+        }
     }
 
     public void updateRemainingTime(double deltaTime) {

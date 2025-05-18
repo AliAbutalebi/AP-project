@@ -19,6 +19,8 @@ public class ShopView extends StackPane {
 
     private Shop shop = Shop.getInstance();
 
+    private static final HUD hud = HUD.getInstance();
+
     private static final ScreenDimensions screenDimensions = ScreenDimensions.getInstance();
 
     private static final double SHOP_WIDTH = screenDimensions.getWidth() * 0.8;
@@ -43,8 +45,8 @@ public class ShopView extends StackPane {
     private ShopView() {
         setupBackground();
         contentPane.getChildren().add(itemsPane);
-        setupItems();
         setupReturnButton();
+        setupItems();
     }
 
     public static ShopView getInstance() {
@@ -149,17 +151,21 @@ public class ShopView extends StackPane {
                 itemActivateButton.setDisable(true);
                 itemActivateButton.setText("ACTIVATED");
             }
-            itemActivateButton.setOnAction(event -> {
-                item.enable();
+            else if (hud.getCoins() < item.getPrice()) {
                 itemActivateButton.setDisable(true);
-                itemActivateButton.setText("ACTIVATED");
+                itemActivateButton.setText("INSUFFICIENT COINS");
+                itemActivateButton.setStyle(String.format("-fx-font-size: %d;", (int) BUTTON_HEIGHT / 5));
+            }
+            itemActivateButton.setOnAction(event -> {
+                item.apply();
+                update();
             });
         }
     }
 
     private void setupReturnButton() {
         Pane returnPane = new Pane();
-        getChildren().add(returnPane);
+        getChildren().add(1, returnPane);
         returnPane.setLayoutX(20);
         returnPane.setLayoutY(20);
 
@@ -180,7 +186,6 @@ public class ShopView extends StackPane {
     public Button getReturnButton() {
         return returnButton;
     }
-
 
 
 }

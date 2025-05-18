@@ -5,6 +5,8 @@ import com.blueprinthell.controller.GameController;
 public class OAnahita implements ShopItem{
     private static final OAnahita instance = new OAnahita();
 
+    private static final HUD hud = HUD.getInstance();
+
     private OAnahita() {
 
     }
@@ -29,8 +31,11 @@ public class OAnahita implements ShopItem{
     }
 
     @Override
-    public void apply(GameController game) {
-        // game.clearAllPacketNoise();
+    public void apply() {
+        if (hud.getCoins() >= getPrice()) {
+            hud.removeCoins(getPrice());
+            enable();
+        }
     }
 
     @Override
@@ -39,5 +44,8 @@ public class OAnahita implements ShopItem{
     }
 
     @Override
-    public void enable() {}
+    public void enable() {
+        GameController.applyOAnahita();
+
+    }
 }
