@@ -9,6 +9,8 @@ import java.util.*;
 
 public class GameMapDeserializer implements JsonDeserializer<GameMap> {
 
+    private static final ScreenDimensions screenDimensions = ScreenDimensions.getInstance();
+
     @Override
     public GameMap deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject rootObject = jsonElement.getAsJsonObject();
@@ -37,7 +39,7 @@ public class GameMapDeserializer implements JsonDeserializer<GameMap> {
             node.setId(id);
 
             JsonObject locationObj = nodeObject.getAsJsonObject("location");
-            Point2D location = new Point2D(locationObj.get("X").getAsDouble(), locationObj.get("Y").getAsDouble());
+            Point2D location = new Point2D(locationObj.get("X").getAsDouble() / 1920 * screenDimensions.getWidth(), locationObj.get("Y").getAsDouble() / 1080 * screenDimensions.getHeight());
             node.setLocation(location);
 
             node.setActive(nodeObject.get("isActive").getAsBoolean());
