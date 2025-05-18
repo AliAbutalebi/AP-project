@@ -582,6 +582,8 @@ public class GameController extends BaseController {
         hud.setLostPackets(hud.getLostPackets() + 1);
         hudView.update();
 
+        newMessage("Packet " + packet.getId() + " was lost.", 3);
+
         handleGameOver();
     }
 
