@@ -28,6 +28,7 @@ public class TopBarView extends AnchorPane {
     private StackPane temporalProgressPane = new StackPane();
     private StackPane shopButtonPane = new StackPane();
 
+    private Slider temporalProgressSlider;
     private Button shopButton;
 
     private static final double BAR_WIDTH = screenDimensions.getWidth();
@@ -125,7 +126,7 @@ public class TopBarView extends AnchorPane {
         temporalProgressBackground.setHeight(BAR_CONTENT_HEIGHT);
         temporalProgressPane.getChildren().add(temporalProgressBackground);
 
-        Slider temporalProgressSlider = new Slider();
+        temporalProgressSlider = new Slider();
         temporalProgressSlider.setMaxWidth(SLIDER_WIDTH);
         temporalProgressSlider.getStyleClass().add("temporal-progress");
         temporalProgressPane.getChildren().add(temporalProgressSlider);
@@ -148,5 +149,9 @@ public class TopBarView extends AnchorPane {
 
     public Button getShopButton() {
         return shopButton;
+    }
+
+    public Slider getTemporalProgressSlider() {
+        return temporalProgressSlider;
     }
 }

@@ -163,6 +163,7 @@ public class GameController extends BaseController {
         };
         gameLoop.start();
         topBarView.getShopButton().setDisable(false);
+        topBarView.getTemporalProgressSlider().setDisable(true);
     }
 
     private void update(double deltaTime) {
