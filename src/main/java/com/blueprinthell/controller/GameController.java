@@ -41,7 +41,7 @@ public class GameController extends BaseController {
     private static final double GRID_STROKE = 3;
     private final List<SystemNodeView> systemNodeViews = new ArrayList<>();
     private final List<WireView> wireViews = new ArrayList<>();
-    private final List<PacketView> packetViews = new ArrayList<>();
+    private static final List<PacketView> packetViews = new ArrayList<>();
     private final Map<SystemNode, SystemNodeView> nodeToView = new HashMap<>();
     private final Map<Wire, WireView> wireToView = new HashMap<>();
     private final Map<Packet, PacketView> packetToView = new HashMap<>();
@@ -692,6 +692,13 @@ public class GameController extends BaseController {
 
     private void resume() {
         pause = false;
+    }
+
+    public static void applyOAnahita() {
+        for (PacketView packetView : packetViews) {
+            packetView.getPacket().setNoise(0);
+            packetView.update();
+        }
     }
 }
 
