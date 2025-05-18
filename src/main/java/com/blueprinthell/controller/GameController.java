@@ -10,6 +10,7 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -714,6 +715,7 @@ public class GameController extends BaseController {
         messagesPane.setPrefSize(screenDimensions.getWidth() / 5, screenDimensions.getHeight() - 10);
         messagesPane.setAlignment(Pos.BOTTOM_LEFT);
         messagesPane.setSpacing(20);
+        messagesPane.setPadding(new Insets(10, 10, 10, 10));
         messagesPane.setLayoutX(10);
         messagesPane.setLayoutY(0);
         uiPane.getChildren().add(messagesPane);
