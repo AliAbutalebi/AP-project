@@ -4,8 +4,8 @@ import javafx.geometry.Point2D;
 
 public class Packet {
 
-    private static final double BASE_SPEED = 50;
-    private static final double ACCELERATION = 150;
+    private static final double BASE_SPEED = 100;
+    private static final double ACCELERATION = 200;
     private static final int SQUARE_COINS = 1;
     private static final int TRIANGLE_COINS = 2;
     private static final int MAX_NOISE= 2;
