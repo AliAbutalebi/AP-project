@@ -248,6 +248,12 @@ public class GameController extends BaseController {
             return;
         }
 
+        if (hud.getRemainingWireLength() < draggingWire.getWire().getLength()) {
+            clearDraggingWire();
+            newMessage("Insuffisient wire.", 3);
+            return;
+        }
+
         if (!isValidConnection(draggingWire.getWire().getSourcePort(), targetPortView.getPort())) {
             clearDraggingWire();
             return;
