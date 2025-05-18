@@ -2,12 +2,17 @@ package com.blueprinthell.controller;
 
 import com.blueprinthell.audio.SoundEffectManager;
 import com.blueprinthell.model.HUD;
+import com.blueprinthell.model.ScenePath;
 import com.blueprinthell.model.ScreenDimensions;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
-public class GameOverController {
+import java.io.IOException;
+
+public class GameOverController extends BaseController {
 
     @FXML
     private HBox gameOverPane;
@@ -17,6 +22,8 @@ public class GameOverController {
     private Label receivedPackets;
     @FXML
     private Label packetLoss;
+    @FXML
+    private Button returnButton;
 
     ScreenDimensions screenDimensions = ScreenDimensions.getInstance();
 
@@ -33,6 +40,14 @@ public class GameOverController {
 
         Double packetLossPercentage = (double) Math.round(hud.getLostPackets() / (double) hud.getPacketsCount() * 100);
         packetLoss.setText(packetLossPercentage + "%");
+
+        returnButton.setOnAction(e -> {
+            try {
+                super.switchScene(ScenePath.MAIN_MENU.getResourceURL(), e);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
     }
 
