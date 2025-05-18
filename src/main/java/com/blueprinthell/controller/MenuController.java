@@ -21,7 +21,7 @@ public class MenuController extends BaseController {
     }
     @FXML
     private void handleSelectLevel(ActionEvent event) throws IOException {
-        //TODO: create "Select Level" scene and write the SwitchScene
+        super.switchScene(ScenePath.LEVEL_SELECT.getResourceURL(), event);
     }
     @FXML
     private void handleSettings(ActionEvent event) throws IOException {

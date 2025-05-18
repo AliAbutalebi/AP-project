@@ -80,7 +80,7 @@ public class SettingsController extends BaseController {
     }
 
     private void setupReturnButton () {
-        Button returnButton = new Button("Return");
+        Button returnButton = new Button("RETURN TO MENU");
         rootPane.getChildren().add(returnButton);
         returnButton.setLayoutX(0);
         returnButton.setLayoutY(0);
