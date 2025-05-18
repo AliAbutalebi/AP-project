@@ -100,7 +100,7 @@ public class Packet {
         return new Point2D(location.getX() + deviation.getX(), location.getY() + deviation.getY());
     }
 
-    public double getBaseSpeed() {
+    public static double getBaseSpeed() {
         return BASE_SPEED;
     }
 

@@ -6,8 +6,7 @@ import com.blueprinthell.log.Logger;
 import com.blueprinthell.map.MapLoader;
 import com.blueprinthell.model.*;
 import com.blueprinthell.view.*;
-import javafx.animation.AnimationTimer;
-import javafx.animation.PauseTransition;
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -46,7 +45,6 @@ public class GameController extends BaseController {
 
     private final ArrayList<Packet> movingPackets = new ArrayList<>();
     private final Map<Packet, Packet> potentialCollisions = new HashMap<>();
-    private final double PACKET_PROXIMITY = 20;
 
     private TopBarView topBarView;
     private boolean scrubbing = false;
@@ -60,7 +58,8 @@ public class GameController extends BaseController {
     private HUD hud;
     private HUDView hudView;
 
-    private ShopView shopView = ShopView.getInstance();
+
+    private final ShopView shopView = ShopView.getInstance();
 
     private static final MusicPlayer musicPlayer = MusicPlayer.getInstance();
     private static final SoundEffectManager soundEffectManager = SoundEffectManager.getInstance();
@@ -178,7 +177,7 @@ public class GameController extends BaseController {
             wireToView.put(wire, wireView);
         }
 
-        // checkRunButton();
+        checkRunButton();
     }
 
     private void startGameLoop(ActionEvent event) {
@@ -255,7 +254,7 @@ public class GameController extends BaseController {
 
         PortView hoveredPortView = findHoveredInputPort(event.getX(), event.getY());
         if (hoveredPortView != null) {
-            if (!isValidConnection(draggingWire.getWire().getSourcePort(), hoveredPortView.getPort())) {
+            if (isInvalidConnection(draggingWire.getWire().getSourcePort(), hoveredPortView.getPort())) {
                 draggingWire.markInvalid();
             }
         } else {
@@ -278,7 +277,7 @@ public class GameController extends BaseController {
             return;
         }
 
-        if (!isValidConnection(draggingWire.getWire().getSourcePort(), targetPortView.getPort())) {
+        if (isInvalidConnection(draggingWire.getWire().getSourcePort(), targetPortView.getPort())) {
             clearDraggingWire();
             return;
         }
@@ -305,6 +304,7 @@ public class GameController extends BaseController {
 
         wireViews.add(draggingWire);
         wireToView.put(draggingWire.getWire(), draggingWire);
+        gameMap.getWires().add(draggingWire.getWire());
         clearDraggingWire();
         wirePane.getChildren().add(wireViews.get(wireViews.size() - 1));
     }
@@ -332,8 +332,8 @@ public class GameController extends BaseController {
         }
     }
 
-    private boolean isValidConnection(Port from, Port to) {
-        return from != to && !from.isInput() && to.isInput() && from.getShapeType() == to.getShapeType() && from.getParentSystemId() != to.getParentSystemId() && !from.isOccupied() && !to.isOccupied();
+    private boolean isInvalidConnection(Port from, Port to) {
+        return from == to || from.isInput() || !to.isInput() || from.getShapeType() != to.getShapeType() || from.getParentSystemId() == to.getParentSystemId() || from.isOccupied() || to.isOccupied();
     }
 
     private void removeWire(WireView wireView) {
@@ -346,6 +346,7 @@ public class GameController extends BaseController {
         wirePane.getChildren().remove(wireView);
         wireViews.remove(wireView);
         wireToView.remove(wireView.getWire());
+        gameMap.getWires().remove(wireView.getWire());
         checkActiveNode();
     }
 
@@ -366,7 +367,7 @@ public class GameController extends BaseController {
             }
             setSystemNodeActive(nodeView, true);
         }
-        // checkRunButton();
+        checkRunButton();
     }
 
     private void setSystemNodeActive(SystemNodeView view, boolean active) {
@@ -431,9 +432,9 @@ public class GameController extends BaseController {
     private void calculateNewDistance(Packet packet, double deltaTime) {
         double deltaDistance = 0;
         if (packet.getShapeType() == packet.getCurrentWire().getShapeType()) {
-            deltaDistance = packet.getBaseSpeed() * deltaTime;
+            deltaDistance = Packet.getBaseSpeed() * deltaTime;
         } else if (packet.getShapeType() == ShapeType.SQUARE) {
-            deltaDistance = packet.getBaseSpeed() / 2 * deltaTime;
+            deltaDistance = Packet.getBaseSpeed() / 2 * deltaTime;
         } else if (packet.getShapeType() == ShapeType.TRIANGLE) {
             deltaDistance = packet.getCurrentSpeed() * deltaTime;
             packet.setCurrentSpeed(packet.getCurrentSpeed() + packet.getAcceleration() * deltaTime);
@@ -464,7 +465,7 @@ public class GameController extends BaseController {
 
                     nodeToView.get(packet.getCurrentWire().getDestinationPort().getParentSystemNode()).update();
 
-                    packet.setCurrentSpeed(packet.getBaseSpeed());
+                    packet.setCurrentSpeed(Packet.getBaseSpeed());
                     packet.setOnWire(false);
                     packet.getCurrentWire().setPacketOnWire(null);
                     packet.setCurrentWire(null);
@@ -482,6 +483,7 @@ public class GameController extends BaseController {
                     }
 
                     soundEffectManager.play("packet-arrival");
+                    logger.info("Packet " + packet.getId() + " arrived");
                 } else {
                     packetLoss(packet);
                 }
@@ -535,6 +537,7 @@ public class GameController extends BaseController {
                 else if (potentialCollisions.containsKey(packet2) && potentialCollisions.get(packet2).equals(packet1))
                     continue;
                 else {
+                    double PACKET_PROXIMITY = 20;
                     if (packet1.getLocation().distance(packet2.getLocation()) < PACKET_PROXIMITY) {
                         potentialCollisions.put(packet1, packet2);
                     }
@@ -655,13 +658,13 @@ public class GameController extends BaseController {
     }
 
     private void drawGrid() {
-        for (int x = 0; x <= screenDimensions.getWidth(); x += GRID_SIZE) {
+        for (int x = 0; x <= screenDimensions.getWidth(); x += (int) GRID_SIZE) {
             Line vertical = new Line(x, 0, x, screenDimensions.getHeight());
             vertical.setStroke(GRID_COLOR);
             vertical.setStrokeWidth(GRID_STROKE);
             rootPane.getChildren().add(0, vertical);
         }
-        for (int y = 0; y <= screenDimensions.getHeight(); y += GRID_SIZE) {
+        for (int y = 0; y <= screenDimensions.getHeight(); y += (int) GRID_SIZE) {
             Line horizontal = new Line(0, y, screenDimensions.getWidth(), y);
             horizontal.setStroke(GRID_COLOR);
             horizontal.setStrokeWidth(GRID_STROKE);
