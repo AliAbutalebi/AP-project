@@ -3,7 +3,7 @@
         {
             "type": "ReferenceSystemNode",
             "id": 0,
-            "location": { "X": 100.0, "Y": 150.0 },
+            "location": { "X": 200, "Y": 150.0 },
             "inputPorts": [
                 { "type": "TrianglePort", "id": 1,  "isInput": true, "occupied": false, "parentSystemId": 0 },
                 { "type": "SquarePort",   "id": 2,  "isInput": true, "occupied": false, "parentSystemId": 0 }
@@ -18,7 +18,7 @@
         {
             "type": "SystemNode",
             "id": 1,
-            "location": { "X": 300.0, "Y": 200.0 },
+            "location": { "X": 500, "Y": 500 },
             "inputPorts": [
                 { "type": "SquarePort",   "id": 4,  "isInput": true,  "occupied": false, "parentSystemId": 1 },
                 { "type": "TrianglePort", "id": 5,  "isInput": true,  "occupied": false, "parentSystemId": 1 },
@@ -33,7 +33,7 @@
         {
             "type": "SystemNode",
             "id": 2,
-            "location": { "X": 550.0, "Y": 300.0 },
+            "location": { "X": 800, "Y": 300.0 },
             "inputPorts": [
                 { "type": "TrianglePort", "id": 9,  "isInput": true,  "occupied": false, "parentSystemId": 2 },
                 { "type": "SquarePort",   "id": 10, "isInput": true,  "occupied": false, "parentSystemId": 2 },
@@ -51,7 +51,7 @@
         {
             "type": "SystemNode",
             "id": 3,
-            "location": { "X": 800.0, "Y": 150.0 },
+            "location": { "X": 1100, "Y": 600 },
             "inputPorts": [
                 { "type": "TrianglePort", "id": 17, "isInput": true,  "occupied": false, "parentSystemId": 3 }
             ],
@@ -65,7 +65,7 @@
         {
             "type": "SystemNode",
             "id": 4,
-            "location": { "X": 950.0, "Y": 450.0 },
+            "location": { "X": 1500, "Y": 800 },
             "inputPorts": [
                 { "type": "SquarePort",   "id": 21, "isInput": true,  "occupied": false, "parentSystemId": 4 }
             ],
