@@ -19,6 +19,7 @@ public class Main extends Application {
         Scene scene = new Scene(loader.load());
         stage.setTitle("Blueprint Hell");
         stage.setFullScreen(true);
+        stage.setFullScreenExitHint("Press ESC to exit or just escape");
         stage.setScene(scene);
         stage.show();
         ScreenDimensions screenDimensions = ScreenDimensions.getInstance();
