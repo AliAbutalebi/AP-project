@@ -39,7 +39,7 @@ public class ImpactView extends Circle {
 
     private void handleFinish() {
         if (timer != null) {
-            if (getRadius() > screenDimensions.getWidth()) {
+            if (getRadius() > screenDimensions.getWidth() || getOpacity() <= 0) {
                 timer.stop();
                 AnchorPane parent = (AnchorPane) getParent();
                 parent.getChildren().remove(this);
