@@ -7,6 +7,7 @@ import com.blueprinthell.model.ScreenDimensions;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
@@ -40,7 +41,7 @@ public class SettingsController extends BaseController {
 
     @FXML
     public void initialize() {
-        scrollPane.setStyle("-fx-background-color: #333333");
+        rootPane.setPrefHeight(screenDimensions.getHeight());
         setupMusicSwitchPane();
         setupMusicVolumePane();
         setupSfxVolumePane();
