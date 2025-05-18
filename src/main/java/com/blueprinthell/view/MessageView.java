@@ -37,7 +37,7 @@ public class MessageView extends StackPane {
 
         label = new Label(message.toUpperCase());
         getChildren().add(label);
-        label.setPrefSize(MESSAGE_WIDTH, MESSAGE_HEIGHT);
+        label.setPrefSize(MESSAGE_WIDTH * 0.95, MESSAGE_HEIGHT * 0.9);
         label.setAlignment(Pos.CENTER);
         label.getStyleClass().add("monograf-bold");
         label.setWrapText(true);
