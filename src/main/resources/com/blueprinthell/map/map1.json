@@ -130,50 +130,6 @@
             "progressOnWire": 0,
             "currentWire": null,
             "locationSystemNodeId": 0
-        },
-        {
-            "id": 5,
-            "shapeType": "TRIANGLE",
-            "alive": true,
-            "noise": 0,
-            "currentSpeed": 0,
-            "onWire": false,
-            "progressOnWire": 0,
-            "currentWire": null,
-            "locationSystemNodeId": 0
-        },
-        {
-            "id": 6,
-            "shapeType": "SQUARE",
-            "alive": true,
-            "noise": 0,
-            "currentSpeed": 0,
-            "onWire": false,
-            "progressOnWire": 0,
-            "currentWire": null,
-            "locationSystemNodeId": 0
-        },
-        {
-            "id": 7,
-            "shapeType": "TRIANGLE",
-            "alive": true,
-            "noise": 0,
-            "currentSpeed": 0,
-            "onWire": false,
-            "progressOnWire": 0,
-            "currentWire": null,
-            "locationSystemNodeId": 0
-        },
-        {
-            "id": 8,
-            "shapeType": "SQUARE",
-            "alive": true,
-            "noise": 0,
-            "currentSpeed": 0,
-            "onWire": false,
-            "progressOnWire": 0,
-            "currentWire": null,
-            "locationSystemNodeId": 0
         }
     ],
     "wires": [],
