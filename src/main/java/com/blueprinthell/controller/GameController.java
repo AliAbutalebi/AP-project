@@ -49,6 +49,12 @@ public class GameController extends BaseController {
     private final double PACKET_PROXIMITY = 20;
 
     private TopBarView topBarView;
+    private boolean scrubbing = false;
+    private double scrubTargetTime = 0;
+    private double simulatedTime = 0;
+    private static final double SIMULATION_CONSTANT = 10;
+
+
     private final Logger logger = Logger.getInstance();
     private static final ScreenDimensions screenDimensions = ScreenDimensions.getInstance();
     private HUD hud;
@@ -98,6 +104,34 @@ public class GameController extends BaseController {
         setupTopBarView();
         setupShopButtons();
         resume();
+
+        gameLoop = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (!pause) {
+                    if (lastUpdateTime > 0) {
+                        double deltaTime = (now - lastUpdateTime) / 1_000_000_000.0;
+
+                        if (scrubbing) {
+                            double fastDelta = deltaTime * SIMULATION_CONSTANT;
+                            update(fastDelta);
+                            simulatedTime += fastDelta;
+
+                            if (simulatedTime >= scrubTargetTime) {
+                                setScrubbing(false);
+                                soundEffectManager.unmute();
+                                pause();
+                                gameLoop.stop();
+                            }
+                        } else {
+                            update(deltaTime);
+                        }
+                    }
+                    lastUpdateTime = now;
+                }
+            }
+        };
+
     }
 
     public void setGameMap(GameMap gameMap) {
@@ -149,18 +183,8 @@ public class GameController extends BaseController {
 
     private void startGameLoop(ActionEvent event) {
         logger.info("startGameLoop");
-        gameLoop = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                if (!pause) {
-                    if (lastUpdateTime > 0) {
-                        double deltaTime = (now - lastUpdateTime) / 1_000_000_000.0;
-                        update(deltaTime);
-                    }
-                    lastUpdateTime = now;
-                }
-            }
-        };
+        resetGame();
+        resume();
         gameLoop.start();
         topBarView.getShopButton().setDisable(false);
         topBarView.getTemporalProgressSlider().setDisable(true);
@@ -593,7 +617,9 @@ public class GameController extends BaseController {
 
         newMessage("Packet " + packet.getId() + " was lost.", 3);
 
-        handleGameOver();
+        if (!scrubbing) {
+            handleGameOver();
+        }
     }
 
     private void handleGameOver() {
@@ -670,6 +696,7 @@ public class GameController extends BaseController {
     private void setupTopBarView() {
         topBarView = TopBarView.getInstance();
         systemNodePane.getChildren().add(topBarView);
+        topBarView.setGameController(this);
     }
 
     public void handleTemporalProgress() {
@@ -740,6 +767,62 @@ public class GameController extends BaseController {
         MessageView messageView = new MessageView(message, time);
         messagesPane.getChildren().add(messageView);
     }
+
+    public void handleTemporalProgress(double time) {
+        resetGame();
+        soundEffectManager.mute();
+        simulatedTime = 0;
+        scrubTargetTime = time;
+        setScrubbing(true);
+        resume();
+        gameLoop.start();
+    }
+
+    private void resetGame() {
+
+        for (PacketView packetView : packetViews) {
+            if (packetView.getPacket().getParentSystemNode() != null) {
+                packetView.getPacket().getParentSystemNode().getPacketQueue().remove(packetView.getPacket());
+                nodeToView.get(packetView.getPacket().getParentSystemNode()).update();
+            }
+
+            if (movingPackets.contains(packetView.getPacket())) {
+                movingPackets.remove(packetView.getPacket());
+                packetPane.getChildren().remove(packetView);
+            }
+
+            packetView.getPacket().setNoise(0);
+
+            packetView.getPacket().setParentSystemNode(referenceSystemNode);
+            referenceSystemNode.getPacketQueue().add(packetView.getPacket());
+            nodeToView.get(referenceSystemNode).update();
+
+            if (packetView.getPacket().getCurrentWire() != null) {
+                packetView.getPacket().getCurrentWire().setPacketOnWire(null);
+            }
+
+            packetView.getPacket().setCurrentWire(null);
+            packetView.getPacket().setDistanceOnWire(0);
+            packetView.getPacket().setLocation(new Point2D(0, 0));
+            packetView.getPacket().setDeviation(new Point2D(0, 0));
+            packetView.getPacket().setReceived(false);
+            packetView.getPacket().setCurrentSpeed(Packet.getBaseSpeed());
+
+
+            packetView.update();
+        }
+
+        hud.setLostPackets(0);
+        hud.setCoins(0);
+
+
+    }
+
+    public void setScrubbing(boolean scrubbing) {
+        this.scrubbing = scrubbing;
+        topBarView.getTemporalProgressSlider().setDisable(scrubbing);
+    }
+
     private void newImpactView(Point2D center) {
         ImpactView impactView = new ImpactView(center);
         packetPane.getChildren().add(impactView);

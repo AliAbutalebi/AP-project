@@ -31,6 +31,8 @@ public class TopBarView extends AnchorPane {
     private Slider temporalProgressSlider;
     private Button shopButton;
 
+    private GameController gameController;
+
     private static final double BAR_WIDTH = screenDimensions.getWidth();
     private static final double BAR_HEIGHT = screenDimensions.getHeight() / 8;
     private static final double MAP_TITLE_WIDTH = BAR_WIDTH / 12;
@@ -129,6 +131,15 @@ public class TopBarView extends AnchorPane {
         temporalProgressSlider = new Slider();
         temporalProgressSlider.setMaxWidth(SLIDER_WIDTH);
         temporalProgressSlider.getStyleClass().add("temporal-progress");
+        temporalProgressSlider.setMin(0);
+        temporalProgressSlider.setMax(120);
+        temporalProgressSlider.setValue(0);
+
+        temporalProgressSlider.valueChangingProperty().addListener((observable, oldValue, newValue) -> {
+            double time = temporalProgressSlider.getValue();
+            gameController.handleTemporalProgress(time);
+        });
+
         temporalProgressPane.getChildren().add(temporalProgressSlider);
     }
 
@@ -153,5 +164,9 @@ public class TopBarView extends AnchorPane {
 
     public Slider getTemporalProgressSlider() {
         return temporalProgressSlider;
+    }
+
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
     }
 }
