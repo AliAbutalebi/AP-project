@@ -64,11 +64,6 @@
     -fx-border-radius: 25px;
 }
 
-
-.temporal-progress {
-
-}
-
 .temporal-progress .track {
     -fx-background-color: #666666;
     -fx-background-radius: 40;
