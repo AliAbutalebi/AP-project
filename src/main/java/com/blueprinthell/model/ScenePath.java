@@ -2,6 +2,7 @@ package com.blueprinthell.model;
 
 public enum ScenePath {
     MAIN_MENU("/com/blueprinthell/view/MainMenu.fxml"),
+    LEVEL_SELECT("/com/blueprinthell/view/LevelSelectView.fxml"),
     SETTINGS("/com/blueprinthell/view/SettingsView.fxml"),
     GAME("/com/blueprinthell/view/GameView.fxml"),
     SHOP("/com/blueprinthell/view/ShopView.fxml"),

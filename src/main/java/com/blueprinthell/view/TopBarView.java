@@ -30,6 +30,7 @@ public class TopBarView extends AnchorPane {
 
     private Slider temporalProgressSlider;
     private Button shopButton;
+    private Label mapTitleLabel;
 
     private GameController gameController;
 
@@ -104,7 +105,7 @@ public class TopBarView extends AnchorPane {
         mapTitlePane.getChildren().add(mapTitleBackground);
 
 
-        Label mapTitleLabel = new Label("MAP1");
+        mapTitleLabel = new Label("MAP1");
         mapTitleLabel.setTextFill(Color.WHITE);
         mapTitleLabel.setStyle(String.format("-fx-font-size: %d", (int) BAR_CONTENT_HEIGHT / 2));
         mapTitleLabel.getStyleClass().add("monograf-bold");
@@ -135,7 +136,7 @@ public class TopBarView extends AnchorPane {
         temporalProgressSlider.setMax(120);
         temporalProgressSlider.setValue(0);
 
-        temporalProgressSlider.valueChangingProperty().addListener((observable, oldValue, newValue) -> {
+        temporalProgressSlider.setOnMouseDragged(event -> {
             double time = temporalProgressSlider.getValue();
             gameController.handleTemporalProgress(time);
         });
@@ -168,5 +169,9 @@ public class TopBarView extends AnchorPane {
 
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
+    }
+
+    public void updateMapTitle(String mapTitle) {
+        mapTitleLabel.setText(mapTitle.toUpperCase());
     }
 }
