@@ -562,6 +562,8 @@ public class GameController extends BaseController {
             packet.absorbImpact(impactCenter);
             packetToView.get(packet).update();
 
+            newImpactView(impactCenter);
+
             if (!packetToView.get(packet).contains(packet.getLocation())) {
                 packetLoss(packet);
             }
@@ -738,5 +740,10 @@ public class GameController extends BaseController {
         MessageView messageView = new MessageView(message, time);
         messagesPane.getChildren().add(messageView);
     }
+    private void newImpactView(Point2D center) {
+        ImpactView impactView = new ImpactView(center);
+        packetPane.getChildren().add(impactView);
+    }
+
 }
 
