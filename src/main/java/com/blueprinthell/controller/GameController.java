@@ -76,6 +76,9 @@ public class GameController extends BaseController {
     private AnchorPane systemNodePane;
     @FXML
     private AnchorPane hudPane;
+    @FXML
+    private AnchorPane uiPane;
+    private static VBox messagesPane;
     private GameMap gameMap;
     private PortView startingPortView = null;
     private WireView draggingWire = null;
@@ -94,6 +97,7 @@ public class GameController extends BaseController {
         rootPane.setOnMouseReleased(this::onWireReleased);
         setupHUD();
         hud.setPacketsCount(packetViews.size());
+        setupMessagesPane();
         setupTopBarView();
         setupShopButtons();
         resume();
@@ -699,6 +703,25 @@ public class GameController extends BaseController {
             packetView.getPacket().setNoise(0);
             packetView.update();
         }
+    }
+
+    private void setupMessagesPane() {
+        messagesPane = new VBox();
+        messagesPane.setPrefSize(screenDimensions.getWidth() / 5, screenDimensions.getHeight() - 10);
+        messagesPane.setAlignment(Pos.BOTTOM_LEFT);
+        messagesPane.setSpacing(20);
+        messagesPane.setLayoutX(10);
+        messagesPane.setLayoutY(0);
+        uiPane.getChildren().add(messagesPane);
+
+        AnchorPane.setTopAnchor(messagesPane, 0.0);
+        AnchorPane.setLeftAnchor(messagesPane, 0.0);
+        AnchorPane.setBottomAnchor(messagesPane, 0.0);
+    }
+
+    public static void newMessage(String message, double time) {
+        MessageView messageView = new MessageView(message, time);
+        messagesPane.getChildren().add(messageView);
     }
 }
 
