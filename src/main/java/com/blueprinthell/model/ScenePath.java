@@ -5,7 +5,8 @@ public enum ScenePath {
     SETTINGS("/com/blueprinthell/view/SettingsView.fxml"),
     GAME("/com/blueprinthell/view/GameView.fxml"),
     SHOP("/com/blueprinthell/view/ShopView.fxml"),
-    GAME_OVER("/com/blueprinthell/view/GameOverView.fxml");
+    GAME_OVER("/com/blueprinthell/view/GameOverView.fxml"),
+    WIN("/com/blueprinthell/view/WinView.fxml");
 
     private final String path;
 

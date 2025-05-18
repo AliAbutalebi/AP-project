@@ -476,6 +476,11 @@ public class GameController extends BaseController {
                         hud.addCoins(2);
                         hudView.update();
                     }
+
+                    if (packet.getParentSystemNode() instanceof ReferenceSystemNode) {
+                        handleWin();
+                    }
+
                     soundEffectManager.play("packet-arrival");
                 } else {
                     packetLoss(packet);
@@ -827,6 +832,36 @@ public class GameController extends BaseController {
         ImpactView impactView = new ImpactView(center);
         packetPane.getChildren().add(impactView);
     }
+
+    private void handleWin() {
+        if (checkWin()) {
+            win();
+        }
+    }
+
+    private boolean checkWin() {
+        for (PacketView packetView : packetViews) {
+            if (packetView.getPacket().isAlive()) {
+                if (!packetView.getPacket().isReceived()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private void win() {
+        pause();
+        gameLoop.stop();
+        musicPlayer.stop();
+        try {
+            super.switchScene(ScenePath.WIN.getResourceURL(), rootPane);
+        }
+        catch (Exception ignored) {
+        }
+
+    }
+
 
 }
 
