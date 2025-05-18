@@ -9,6 +9,7 @@ import java.util.Map;
 public class SoundEffectManager {
     private static SoundEffectManager instance;
     Map<String, AudioClip> soundEffects = new HashMap<>();
+    private double lastVolume;
 
     private SoundEffectManager() {
         loadSoundEffects();
@@ -42,6 +43,19 @@ public class SoundEffectManager {
     public void setVolume(double volume) {
         for (AudioClip clip : soundEffects.values()) {
             clip.setVolume(volume);
+        }
+        lastVolume = volume;
+    }
+
+    public void mute() {
+        for (AudioClip clip : soundEffects.values()) {
+            clip.setVolume(0);
+        }
+    }
+
+    public void unmute() {
+        for (AudioClip clip : soundEffects.values()) {
+            clip.setVolume(lastVolume);
         }
     }
 }
