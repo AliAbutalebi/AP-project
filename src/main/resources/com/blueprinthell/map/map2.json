@@ -1,0 +1,126 @@
+{
+  "systemNodes": [
+    {
+      "type": "ReferenceSystemNode",
+      "id": 0,
+      "location": { "X": 100, "Y": 100 },
+      "inputPorts": [
+        { "type": "SquarePort",   "id": 2, "isInput": true, "occupied": false, "parentSystemId": 0 }
+      ],
+      "outputPorts": [
+        { "type": "TrianglePort", "id": 3, "isInput": false, "occupied": false, "parentSystemId": 0 },
+        { "type": "SquarePort",   "id": 4, "isInput": false, "occupied": false, "parentSystemId": 0 }
+      ],
+      "isActive": false
+    },
+    {
+      "type": "SystemNode",
+      "id": 1,
+      "location": { "X": 400, "Y": 200 },
+      "inputPorts": [
+        { "type": "TrianglePort", "id": 5, "isInput": true, "occupied": false, "parentSystemId": 1 }
+      ],
+      "outputPorts": [
+        { "type": "SquarePort",   "id": 6, "isInput": false, "occupied": false, "parentSystemId": 1 }
+      ],
+      "isActive": false
+    },
+    {
+      "type": "SystemNode",
+      "id": 2,
+      "location": { "X": 700, "Y": 100 },
+      "inputPorts": [
+        { "type": "SquarePort",   "id": 7, "isInput": true, "occupied": false, "parentSystemId": 2 }
+      ],
+      "outputPorts": [
+        { "type": "TrianglePort", "id": 8, "isInput": false, "occupied": false, "parentSystemId": 2 }
+      ],
+      "isActive": false
+    },
+    {
+      "type": "SystemNode",
+      "id": 3,
+      "location": { "X": 1000, "Y": 500 },
+      "inputPorts": [
+        { "type": "TrianglePort", "id": 9, "isInput": true, "occupied": false, "parentSystemId": 3 },
+        { "type": "SquarePort",   "id": 10, "isInput": true, "occupied": false, "parentSystemId": 3 }
+      ],
+      "outputPorts": [
+        { "type": "TrianglePort", "id": 11, "isInput": false, "occupied": false, "parentSystemId": 3 }
+      ],
+      "isActive": false
+    },
+    {
+      "type": "SystemNode",
+      "id": 4,
+      "location": { "X": 1300, "Y": 800 },
+      "inputPorts": [
+        { "type": "SquarePort",   "id": 12, "isInput": true, "occupied": false, "parentSystemId": 4 }
+      ],
+      "outputPorts": [
+        { "type": "SquarePort",   "id": 13, "isInput": false, "occupied": false, "parentSystemId": 4 }
+      ],
+      "isActive": false
+    },
+    {
+      "type": "SystemNode",
+      "id": 5,
+      "location": { "X": 1600, "Y": 700 },
+      "inputPorts": [
+        { "type": "TrianglePort", "id": 14, "isInput": true, "occupied": false, "parentSystemId": 5 }
+      ],
+      "outputPorts": [
+        { "type": "SquarePort",   "id": 15, "isInput": false, "occupied": false, "parentSystemId": 5 }
+      ],
+      "isActive": false
+    }
+  ],
+  "packets": [
+    {
+      "id": 0,
+      "shapeType": "TRIANGLE",
+      "alive": true,
+      "noise": 0,
+      "currentSpeed": 0,
+      "onWire": false,
+      "progressOnWire": 0,
+      "currentWire": null,
+      "locationSystemNodeId": 0
+    },
+    {
+      "id": 1,
+      "shapeType": "SQUARE",
+      "alive": true,
+      "noise": 0,
+      "currentSpeed": 0,
+      "onWire": false,
+      "progressOnWire": 0,
+      "currentWire": null,
+      "locationSystemNodeId": 0
+    },
+    {
+      "id": 2,
+      "shapeType": "TRIANGLE",
+      "alive": true,
+      "noise": 0,
+      "currentSpeed": 0,
+      "onWire": false,
+      "progressOnWire": 0,
+      "currentWire": null,
+      "locationSystemNodeId": 0
+    },
+    {
+      "id": 3,
+      "shapeType": "SQUARE",
+      "alive": true,
+      "noise": 0,
+      "currentSpeed": 0,
+      "onWire": false,
+      "progressOnWire": 0,
+      "currentWire": null,
+      "locationSystemNodeId": 0
+    }
+  ],
+  "wires": [],
+  "maxWireLength": 4000
+}
