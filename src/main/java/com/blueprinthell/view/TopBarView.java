@@ -136,7 +136,7 @@ public class TopBarView extends AnchorPane {
         temporalProgressSlider.setMax(120);
         temporalProgressSlider.setValue(0);
 
-        temporalProgressSlider.setOnMouseDragged(event -> {
+        temporalProgressSlider.setOnMouseReleased(event -> {
             double time = temporalProgressSlider.getValue();
             gameController.handleTemporalProgress(time);
         });

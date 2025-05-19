@@ -112,19 +112,31 @@ public class GameController extends BaseController {
                         double deltaTime = (now - lastUpdateTime) / 1_000_000_000.0;
 
                         if (scrubbing) {
-                            double fastDelta = deltaTime * SIMULATION_CONSTANT;
-                            update(fastDelta);
-                            simulatedTime += fastDelta;
+                            deltaTime *= SIMULATION_CONSTANT;
+                            update(deltaTime);
+                            simulatedTime += deltaTime;
+
+                            if (topBarView.getTemporalProgressSlider().getValue() < topBarView.getTemporalProgressSlider().getMax()) {
+                                topBarView.getTemporalProgressSlider().setValue(simulatedTime);
+                            }
+
+                            topBarView.getTemporalProgressSlider().setDisable(scrubbing);
 
                             if (simulatedTime >= scrubTargetTime) {
                                 setScrubbing(false);
+                                topBarView.getTemporalProgressSlider().setDisable(scrubbing);
                                 soundEffectManager.unmute();
                                 pause();
                                 gameLoop.stop();
                             }
                         } else {
                             update(deltaTime);
+
+                            if (topBarView.getTemporalProgressSlider().getValue() < topBarView.getTemporalProgressSlider().getMax()) {
+                                topBarView.getTemporalProgressSlider().setValue(topBarView.getTemporalProgressSlider().getValue() + deltaTime);
+                            }
                         }
+
                     }
                     lastUpdateTime = now;
                 }
@@ -177,7 +189,7 @@ public class GameController extends BaseController {
             wireToView.put(wire, wireView);
         }
 
-        checkRunButton();
+        // checkRunButton();
     }
 
     private void startGameLoop(ActionEvent event) {
@@ -187,6 +199,7 @@ public class GameController extends BaseController {
         gameLoop.start();
         topBarView.getShopButton().setDisable(false);
         topBarView.getTemporalProgressSlider().setDisable(true);
+        topBarView.getTemporalProgressSlider().setValue(0);
     }
 
     private void update(double deltaTime) {
@@ -367,7 +380,7 @@ public class GameController extends BaseController {
             }
             setSystemNodeActive(nodeView, true);
         }
-        checkRunButton();
+        // checkRunButton();
     }
 
     private void setSystemNodeActive(SystemNodeView view, boolean active) {
@@ -779,10 +792,12 @@ public class GameController extends BaseController {
 
     public void handleTemporalProgress(double time) {
         resetGame();
+        hud.setTemporalProgress(time);
         soundEffectManager.mute();
         simulatedTime = 0;
         scrubTargetTime = time;
         setScrubbing(true);
+        topBarView.getTemporalProgressSlider().setValue(0);
         resume();
         gameLoop.start();
     }
@@ -823,13 +838,13 @@ public class GameController extends BaseController {
 
         hud.setLostPackets(0);
         hud.setCoins(0);
+        hud.setTemporalProgress(0);
 
 
     }
 
     public void setScrubbing(boolean scrubbing) {
         this.scrubbing = scrubbing;
-        topBarView.getTemporalProgressSlider().setDisable(scrubbing);
     }
 
     private void newImpactView(Point2D center) {
