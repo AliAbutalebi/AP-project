@@ -53,12 +53,23 @@ public class LevelSelectController extends BaseController {
             mapContentPane.setPrefWidth(MAP_WIDTH);
             mapContentPane.setPrefHeight(MAP_HEIGHT);
             mapContentPane.setAlignment(Pos.CENTER);
+            mapContentPane.setSpacing(10);
             mapPane.getChildren().add(mapContentPane);
 
             Label mapNameLabel = new Label(MapLoader.loadMap(mapFile).getMapName().toUpperCase());
             mapNameLabel.getStyleClass().add("monograf-bold");
             mapNameLabel.setStyle(String.format("-fx-font-size: %d;", (int) MAP_HEIGHT / 4));
             mapContentPane.getChildren().add(mapNameLabel);
+
+            Label systemNodeCount = new Label(MapLoader.loadMap(mapFile).getSystemNodes().size() + " System Nodes");
+            systemNodeCount.getStyleClass().add("space-mono");
+            systemNodeCount.setStyle(String.format("-fx-font-size: %d;", (int) MAP_HEIGHT / 20));
+            mapContentPane.getChildren().add(systemNodeCount);
+
+            Label packetCount = new Label(MapLoader.loadMap(mapFile).getActivePackets().size() + " Packets");
+            packetCount.getStyleClass().add("space-mono");
+            packetCount.setStyle(String.format("-fx-font-size: %d;", (int) MAP_HEIGHT / 20));
+            mapContentPane.getChildren().add(packetCount);
 
             Button selectMapButton = new Button("SELECT");
             selectMapButton.getStyleClass().add("monograf-bold");

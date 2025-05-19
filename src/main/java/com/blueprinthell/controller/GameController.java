@@ -7,11 +7,13 @@ import com.blueprinthell.map.MapLoader;
 import com.blueprinthell.model.*;
 import com.blueprinthell.view.*;
 import javafx.animation.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -20,11 +22,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.kordamp.ikonli.fontawesome6.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
+import java.lang.ref.PhantomReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -879,7 +883,6 @@ public class GameController extends BaseController {
         catch (Exception ignored) {
         }
     }
-
 
 }
 
