@@ -101,6 +101,9 @@ public class HUDView extends AnchorPane {
                 if (hud.getContents().keySet().toArray()[i].equals("Packet Loss")) {
                  content.setText(content.getText() + "%");
                 }
+                else if (hud.getContents().keySet().toArray()[i].equals("Temporal Progress")) {
+                    content.setText(content.getText() + "s");
+                }
             }
             else if (contentObject instanceof Integer) {
                 content = new Label(contentObject.toString());
