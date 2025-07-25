@@ -2,6 +2,7 @@ package com.blueprinthell.view;
 
 import com.blueprinthell.audio.SoundEffectManager;
 import com.blueprinthell.controller.GameController;
+import com.blueprinthell.log.Logger;
 import com.blueprinthell.model.*;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -25,6 +26,8 @@ public class ShopView extends StackPane {
     private static final SoundEffectManager  soundEfectManager = SoundEffectManager.getInstance();
 
     private static final ScreenDimensions screenDimensions = ScreenDimensions.getInstance();
+
+    private static final Logger logger = Logger.getInstance();
 
     private static final double SHOP_WIDTH = screenDimensions.getWidth() * 0.8;
     private static final double SHOP_HEIGHT = screenDimensions.getHeight() * 0.8;
@@ -164,6 +167,7 @@ public class ShopView extends StackPane {
                 soundEfectManager.play("click");
                 GameController.newMessage(item.getName() + " Activated.", 3);
                 update();
+                logger.info(item.getName() + " Activated.");
             });
         }
     }

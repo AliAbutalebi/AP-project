@@ -318,6 +318,7 @@ public class GameController extends BaseController {
         gameMap.getWires().add(draggingWire.getWire());
         clearDraggingWire();
         wirePane.getChildren().add(wireViews.get(wireViews.size() - 1));
+        logger.info("Added wire from port " + from.getPort().getId() + " to port " + to.getPort().getId() + ".");
     }
 
 
@@ -359,6 +360,7 @@ public class GameController extends BaseController {
         wireToView.remove(wireView.getWire());
         gameMap.getWires().remove(wireView.getWire());
         checkActiveNode();
+        logger.info("Removed wire from port " + wireView.getWire().getSourcePort().getId() + " to port " + wireView.getWire().getDestinationPort().getId() + ".");
     }
 
     public void checkActiveNode() {
@@ -411,6 +413,7 @@ public class GameController extends BaseController {
                     packetPane.getChildren().add(packetView);
                     movingPackets.add(packet);
                     nodeView.update();
+                    logger.info("Packet " + packet.getId() + " left system " + node.getId() + " using port " + selectedOutputPort.getId() + ".");
                 }
             }
         }
@@ -475,6 +478,8 @@ public class GameController extends BaseController {
                     }
 
                     nodeToView.get(packet.getCurrentWire().getDestinationPort().getParentSystemNode()).update();
+
+                    logger.info("Packet " + packet.getId() + " arrived at system " + nodeView.getSystemNode().getId() + " using port " + packet.getCurrentWire().getDestinationPort().getId() + ".");
 
                     packet.setCurrentSpeed(Packet.getBaseSpeed());
                     packet.setOnWire(false);
@@ -578,7 +583,7 @@ public class GameController extends BaseController {
                 packetToView.get(entry.getValue()).applyCollision();
 
                 soundEffectManager.play("packet-collision");
-
+                logger.info("Packets " + packet1.getId() + " and " + packet2.getId() + " collided.");
                 if (!oAtar.isEnabled()) {
                     handleImpacts(getImpactCenter(packet1, packet2));
                 }
@@ -609,6 +614,7 @@ public class GameController extends BaseController {
             if (!packetToView.get(packet).contains(packet.getLocation())) {
                 packetLoss(packet);
             }
+            logger.info("Packet " + packet.getId() + " absorbed impact.");
         }
     }
 
@@ -638,6 +644,7 @@ public class GameController extends BaseController {
         if (!scrubbing) {
             handleGameOver();
         }
+        logger.info("Packet " + packet.getId() + " was lost.");
     }
 
     private void handleGameOver() {
@@ -657,14 +664,13 @@ public class GameController extends BaseController {
             pause();
         }
 
-
         try {
             super.switchScene(ScenePath.GAME_OVER.getResourceURL(), rootPane);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-
+        logger.info("Game over.");
     }
 
     private void drawGrid() {
@@ -754,10 +760,12 @@ public class GameController extends BaseController {
 
     private void pause() {
         pause = true;
+        logger.info("Paused.");
     }
 
     private void resume() {
         pause = false;
+        logger.info("Resumed.");
     }
 
     public static void applyOAnahita() {
@@ -797,6 +805,7 @@ public class GameController extends BaseController {
         topBarView.getTemporalProgressSlider().setValue(0);
         resume();
         gameLoop.start();
+        logger.info("Temporal progress was set on second " + time + ".");
     }
 
     private void resetGame() {
@@ -872,9 +881,9 @@ public class GameController extends BaseController {
         musicPlayer.stop();
         try {
             super.switchScene(ScenePath.WIN.getResourceURL(), rootPane);
+        } catch (Exception ignored) {
         }
-        catch (Exception ignored) {
-        }
+        logger.info("Won.");
     }
 
 }
