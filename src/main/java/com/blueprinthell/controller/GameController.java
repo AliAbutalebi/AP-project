@@ -150,13 +150,11 @@ public class GameController extends BaseController {
     }
 
     public void setGameMap(GameMap gameMap) {
-        logger.info("setGameMap");
         this.gameMap = gameMap;
         renderInitialMap();
     }
 
     private void renderInitialMap() {
-        logger.info("renderInitialMap");
         for (Packet packet : gameMap.getActivePackets()) {
             PacketView packetView = new PacketView(packet);
             packetViews.add(packetView);
@@ -197,7 +195,6 @@ public class GameController extends BaseController {
     }
 
     private void startGameLoop(ActionEvent event) {
-        logger.info("startGameLoop");
         resetGame();
         resume();
         gameLoop.start();
@@ -242,7 +239,6 @@ public class GameController extends BaseController {
     }
 
     private void onPortClicked(PortView portView, MouseEvent event) {
-        logger.info("onPortClicked");
         if (portView.getPort().isInput()) {
             return;
         } else if (portView.getPort().isOccupied()) {
@@ -280,7 +276,6 @@ public class GameController extends BaseController {
     }
 
     private void onWireReleased(MouseEvent event) {
-        logger.info("onWireReleased");
         PortView targetPortView = findHoveredInputPort(event.getX(), event.getY());
 
         if (draggingWire == null || startingPortView == null || targetPortView == null) {
@@ -306,7 +301,6 @@ public class GameController extends BaseController {
     }
 
     private void finalizeWireConnection(PortView from, PortView to) {
-        logger.info("finilizeWireConnection");
         draggingWire.getWire().setEndLocation(to.getPort().getLocation());
         draggingWire.getWire().setDestinationPort(to.getPort());
         from.getPort().setConnectedWire(draggingWire.getWire());
@@ -500,7 +494,6 @@ public class GameController extends BaseController {
                     }
 
                     soundEffectManager.play("packet-arrival");
-                    logger.info("Packet " + packet.getId() + " arrived");
                 } else {
                     packetLoss(packet);
                 }
