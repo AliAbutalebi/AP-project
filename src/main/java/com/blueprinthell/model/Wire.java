@@ -2,6 +2,8 @@ package com.blueprinthell.model;
 
 import javafx.geometry.Point2D;
 
+import java.util.ArrayList;
+
 public class Wire {
     private int id;
     private Port sourcePort;
@@ -11,6 +13,7 @@ public class Wire {
     private Packet packetOnWire;
     private Point2D startLocation;
     private Point2D endLocation;
+    private ArrayList<Point2D> controlPoints;
 
     public Wire(Point2D startLocation, Point2D endLocation) {
         this.startLocation = startLocation;
@@ -75,6 +78,34 @@ public class Wire {
 
     public ShapeType getShapeType() {
         return getSourcePort().getShapeType();
+    }
+
+    public void addControlPoint() {
+        int newCount = controlPoints.size() + 1;
+
+        controlPoints = new ArrayList<>();
+        for (int i = 0; i < newCount; i++) {
+            controlPoints.add(makeControlPoint(i + 1, newCount));
+        }
+    }
+
+    public void updateControlPoints() {
+        for (int i = 0; i <= controlPoints.size(); i++) {
+            controlPoints.set(i, makeControlPoint(i + 1, controlPoints.size()));
+        }
+    }
+
+    public Point2D makeControlPoint(int i, int n) {
+        double lengthX = endLocation.getX() - startLocation.getX();
+        double lengthY = endLocation.getY() - startLocation.getY();
+        double x = startLocation.getX() + lengthX / (n + 1) * i;
+        double y = startLocation.getY() + lengthY / (n + 1) * i;
+        return new Point2D(x, y);
+    }
+
+
+    public ArrayList<Point2D> getControlPoints() {
+        return controlPoints;
     }
 
     public Point2D interpolate(double percent) {
