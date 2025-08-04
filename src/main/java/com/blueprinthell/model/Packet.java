@@ -11,6 +11,7 @@ public class Packet {
     private static final int MAX_NOISE= 2;
     private static final double IMPACT = 20;
     private int id;
+    private boolean isProtected = false;
     private double currentSpeed = BASE_SPEED;
     private int noise = 0;
     private double distanceOnWire;
@@ -22,7 +23,7 @@ public class Packet {
     private Point2D location = new Point2D(0, 0);
     private SystemNode parentSystemNode;
     private boolean colliding = false;
-    private boolean received  = false;
+    private boolean received = false;
 
     public Packet(ShapeType shapeType) {
         this.shapeType = shapeType;
