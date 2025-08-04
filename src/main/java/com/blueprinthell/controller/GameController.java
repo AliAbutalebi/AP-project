@@ -445,7 +445,7 @@ public class GameController extends BaseController {
 
     private void calculateNewDistance(Packet packet, double deltaTime) {
         double deltaDistance = 0;
-        if (packet.getShapeType() == packet.getCurrentWire().getShapeType()) {
+        if (packet.getShapeType() == packet.getCurrentWire().getSourcePort().getShapeType()) {
             deltaDistance = Packet.getBaseSpeed() * deltaTime;
         } else if (packet.getShapeType() == ShapeType.SQUARE) {
             deltaDistance = Packet.getBaseSpeed() / 2 * deltaTime;
