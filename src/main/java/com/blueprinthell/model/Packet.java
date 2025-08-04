@@ -120,12 +120,9 @@ public class Packet {
         this.shapeType = shapeType;
     }
 
-    public int getSquareCoins() {
-        return SQUARE_COINS;
-    }
-
-    public int getTriangleCoins() {
-        return TRIANGLE_COINS;
+    public int getPacketCoins() {
+         if (isProtected) return 5;
+         return getSize();
     }
 
     public SystemNode getParentSystemNode() {
@@ -172,11 +169,14 @@ public class Packet {
     }
 
     public int getSize() {
-        return switch (shapeType) {
-            case SQUARE -> 2;
-            case TRIANGLE -> 3;
-            case HEXAGON -> 1;
-        };
+        int size = 0;
+        switch (shapeType) {
+            case SQUARE -> size = 2;
+            case TRIANGLE -> size = 3;
+            case HEXAGON -> size = 1;
+        }
+        if (isProtected) return size * 2;
+        return size;
     }
 }
 
