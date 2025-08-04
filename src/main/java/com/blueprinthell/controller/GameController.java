@@ -625,7 +625,7 @@ public class GameController extends BaseController {
     }
 
     private boolean checkPacketLoss(Packet packet) {
-        return packet.getNoise() > packet.getMaxNoise();
+        return packet.getNoise() > packet.getSize();
     }
 
     private void packetLoss(Packet packet) {

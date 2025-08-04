@@ -8,7 +8,6 @@ public class Packet {
     private static final double ACCELERATION = 200;
     private static final int SQUARE_COINS = 1;
     private static final int TRIANGLE_COINS = 2;
-    private static final int MAX_NOISE= 2;
     private static final double IMPACT = 20;
     private int id;
     private boolean isProtected = false;
@@ -43,10 +42,6 @@ public class Packet {
 
     public void setNoise(int noise) {
         this.noise = noise;
-    }
-
-    public int getMaxNoise() {
-        return MAX_NOISE;
     }
 
     public double getDistanceOnWire() {
@@ -166,6 +161,22 @@ public class Packet {
         double impactX = IMPACT / collisionDistance.getY();
         double impactY = IMPACT / collisionDistance.getX();
         deviation = deviation.add(new Point2D(impactX, impactY));
+    }
+
+    public boolean isProtected() {
+        return isProtected;
+    }
+
+    public void setProtected(boolean aProtected) {
+        isProtected = aProtected;
+    }
+
+    public int getSize() {
+        return switch (shapeType) {
+            case SQUARE -> 2;
+            case TRIANGLE -> 3;
+            case HEXAGON -> 1;
+        };
     }
 }
 
