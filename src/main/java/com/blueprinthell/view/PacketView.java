@@ -8,6 +8,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+
 public class PacketView extends Polygon {
 
     private Packet packet;
@@ -21,27 +23,12 @@ public class PacketView extends Polygon {
 
     private void setupShape() {
         if (packet.getShapeType() == ShapeType.SQUARE) {
-            double halfSize = PACKET_SIZE / 2;
-            getPoints().addAll(
-                    -halfSize, -halfSize,
-                    halfSize, -halfSize,
-                    halfSize, halfSize,
-                    -halfSize, halfSize
-            );
-            setFill(Color.TRANSPARENT);
-            setStroke(Color.web("#32c65f"));
-            setStrokeWidth(3);
+            createSquare();
         } else if (packet.getShapeType() == ShapeType.TRIANGLE) {
-            double height = Math.sqrt(3) / 2 * PACKET_SIZE;
-            double halfBase = PACKET_SIZE / 2;
-            getPoints().addAll(
-                    -halfBase, height / 2,
-                    halfBase, height / 2,
-                    0.0, -height / 2
-            );
-            setFill(Color.TRANSPARENT);
-            setStroke(Color.web("#FFFF00"));
-            setStrokeWidth(3);
+            createTriangle();
+        }
+        else if (packet.getShapeType() == ShapeType.HEXAGON) {
+            createHexagon();
         }
     }
 
@@ -78,5 +65,47 @@ public class PacketView extends Polygon {
 
     public static double getPacketSize() {
         return PACKET_SIZE;
+    }
+
+    private void createSquare() {
+        double halfSize = PacketView.PACKET_SIZE / 2;
+        getPoints().addAll(
+                -halfSize, -halfSize,
+                halfSize, -halfSize,
+                halfSize, halfSize,
+                -halfSize, halfSize
+        );
+        setFill(Color.TRANSPARENT);
+        setStroke(Color.web("#32c65f"));
+        setStrokeWidth(3);
+    }
+
+    private void createTriangle() {
+        double height = Math.sqrt(3) / 2 * PacketView.PACKET_SIZE;
+        double halfBase = PacketView.PACKET_SIZE / 2;
+        getPoints().addAll(
+                -halfBase, height / 2,
+                halfBase, height / 2,
+                0.0, -height / 2
+        );
+        setFill(Color.TRANSPARENT);
+        setStroke(Color.web("#FFFF00"));
+        setStrokeWidth(3);
+    }
+
+    private void createHexagon() {
+        ArrayList<Double> points = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            double angleRad = Math.toRadians(60 * i);
+            double x = PacketView.PACKET_SIZE * Math.sqrt(3) / 2 * Math.cos(angleRad);
+            double y = PacketView.PACKET_SIZE * Math.sqrt(3) / 2 * Math.sin(angleRad);
+            points.add(x);
+            points.add(y);
+        }
+        getPoints().addAll(points);
+        setFill(Color.TRANSPARENT);
+        setStroke(Color.web("#EEEEEE"));
+        setStrokeWidth(3);
+
     }
 }

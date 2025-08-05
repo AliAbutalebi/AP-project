@@ -78,7 +78,7 @@
     "packets": [
         {
             "id": 0,
-            "shapeType": "SQUARE",
+            "shapeType": "HEXAGON",
             "alive": true,
             "noise": 0,
             "currentSpeed": 0,
