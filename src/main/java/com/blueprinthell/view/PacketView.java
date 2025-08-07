@@ -4,16 +4,21 @@ import com.blueprinthell.model.Packet;
 import com.blueprinthell.model.ShapeType;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PacketView extends Polygon {
 
     private Packet packet;
-    private static final double PACKET_SIZE = 10;
+    private static final double PACKET_SIZE = 8;
 
     public PacketView(Packet packet) {
         this.packet = packet;
@@ -26,9 +31,10 @@ public class PacketView extends Polygon {
             createSquare();
         } else if (packet.getShapeType() == ShapeType.TRIANGLE) {
             createTriangle();
-        }
-        else if (packet.getShapeType() == ShapeType.HEXAGON) {
+        } else if (packet.getShapeType() == ShapeType.HEXAGON) {
             createHexagon();
+        } else if (packet.getShapeType() == ShapeType.CONFIDENTIAL_ONE) {
+            createConfidentialOne();
         }
     }
 
@@ -68,44 +74,48 @@ public class PacketView extends Polygon {
     }
 
     private void createSquare() {
-        double halfSize = PacketView.PACKET_SIZE / 2;
-        getPoints().addAll(
-                -halfSize, -halfSize,
-                halfSize, -halfSize,
-                halfSize, halfSize,
-                -halfSize, halfSize
-        );
+        getPoints().addAll(createPolygon(4, PACKET_SIZE).getPoints());
         setFill(Color.TRANSPARENT);
         setStroke(Color.web("#32c65f"));
         setStrokeWidth(3);
+        setRotate(-30);
     }
 
     private void createTriangle() {
-        double height = Math.sqrt(3) / 2 * PacketView.PACKET_SIZE;
-        double halfBase = PacketView.PACKET_SIZE / 2;
-        getPoints().addAll(
-                -halfBase, height / 2,
-                halfBase, height / 2,
-                0.0, -height / 2
-        );
+        getPoints().addAll(createPolygon(3, PACKET_SIZE).getPoints());
         setFill(Color.TRANSPARENT);
         setStroke(Color.web("#FFFF00"));
         setStrokeWidth(3);
+        setRotate(-40);
     }
 
     private void createHexagon() {
-        ArrayList<Double> points = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            double angleRad = Math.toRadians(60 * i);
-            double x = PacketView.PACKET_SIZE * Math.sqrt(3) / 2 * Math.cos(angleRad);
-            double y = PacketView.PACKET_SIZE * Math.sqrt(3) / 2 * Math.sin(angleRad);
-            points.add(x);
-            points.add(y);
-        }
-        getPoints().addAll(points);
+        getPoints().addAll(createPolygon(6, PACKET_SIZE).getPoints());
         setFill(Color.TRANSPARENT);
         setStroke(Color.web("#EEEEEE"));
         setStrokeWidth(3);
+        setRotate(-30);
+    }
 
+    private void createConfidentialOne() {
+        getPoints().addAll(createPolygon(20, PACKET_SIZE * 1.2).getPoints());
+        Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/confidential-one.png").toURI().toString());
+        setFill(new ImagePattern(pattern));
+    }
+
+    private Polygon createPolygon(int vertexCount, double radius) {
+        if (vertexCount < 3) return null;
+
+        Polygon polygon = new Polygon();
+        double angleStep = 2 * Math.PI / vertexCount;
+
+        for (int i = 0; i < vertexCount; i++) {
+            double angle = angleStep * i - Math.PI / 2;
+            double x = radius * Math.cos(angle);
+            double y = radius * Math.sin(angle);
+            polygon.getPoints().addAll(x, y);
+        }
+
+        return polygon;
     }
 }

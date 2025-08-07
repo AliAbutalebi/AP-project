@@ -89,7 +89,7 @@
         },
         {
             "id": 1,
-            "shapeType": "TRIANGLE",
+            "shapeType": "CONFIDENTIAL_ONE",
             "alive": true,
             "noise": 0,
             "currentSpeed": 0,

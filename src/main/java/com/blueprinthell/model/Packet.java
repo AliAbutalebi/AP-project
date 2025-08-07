@@ -122,6 +122,8 @@ public class Packet {
 
     public int getPacketCoins() {
          if (isProtected) return 5;
+         if (shapeType == ShapeType.CONFIDENTIAL_ONE) return 3;
+         if (shapeType == ShapeType.CONFIDENTIAL_TWO) return 4;
          return getSize();
     }
 
@@ -174,6 +176,8 @@ public class Packet {
             case SQUARE -> size = 2;
             case TRIANGLE -> size = 3;
             case HEXAGON -> size = 1;
+            case CONFIDENTIAL_ONE -> size = 4;
+            case CONFIDENTIAL_TWO -> size = 6;
         }
         if (isProtected) return size * 2;
         return size;
