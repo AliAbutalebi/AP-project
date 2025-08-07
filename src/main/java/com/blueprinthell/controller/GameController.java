@@ -265,7 +265,7 @@ public class GameController extends BaseController {
         draggingWire.getWire().setEndLocation(new Point2D(event.getX(), event.getY()));
         draggingWire.updateView();
 
-        PortView hoveredPortView = findHoveredInputPort(event.getX(), event.getY());
+        PortView hoveredPortView = findHoveredPort(event.getX(), event.getY());
         if (hoveredPortView != null) {
             if (isInvalidConnection(draggingWire.getWire().getSourcePort(), hoveredPortView.getPort())) {
                 draggingWire.markInvalid();
@@ -276,7 +276,7 @@ public class GameController extends BaseController {
     }
 
     private void onWireReleased(MouseEvent event) {
-        PortView targetPortView = findHoveredInputPort(event.getX(), event.getY());
+        PortView targetPortView = findHoveredPort(event.getX(), event.getY());
 
         if (draggingWire == null || startingPortView == null || targetPortView == null) {
             clearDraggingWire();
@@ -322,10 +322,16 @@ public class GameController extends BaseController {
     }
 
 
-    private PortView findHoveredInputPort(double x, double y) {
+    private PortView findHoveredPort(double x, double y) {
         final double radius = 10;
         for (SystemNodeView nodeView : systemNodeViews) {
             for (PortView portView : nodeView.getInputPortViews()) {
+                Point2D portPos = portView.getPort().getLocation();
+                if (portPos.distance(x, y) <= radius) {
+                    return portView;
+                }
+            }
+            for (PortView portView : nodeView.getOutputPortViews()) {
                 Point2D portPos = portView.getPort().getLocation();
                 if (portPos.distance(x, y) <= radius) {
                     return portView;
@@ -345,7 +351,7 @@ public class GameController extends BaseController {
     }
 
     private boolean isInvalidConnection(Port from, Port to) {
-        return from == to || from.isInput() || !to.isInput() || from.getShapeType() != to.getShapeType() || from.getParentSystemId() == to.getParentSystemId() || from.isOccupied() || to.isOccupied();
+        return from == to || from.isInput() || !to.isInput() || from.getParentSystemId() == to.getParentSystemId() || from.isOccupied() || to.isOccupied();
     }
 
     private void removeWire(WireView wireView) {
