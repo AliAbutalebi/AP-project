@@ -2,6 +2,7 @@ package com.blueprinthell.view;
 
 import com.blueprinthell.model.Packet;
 import com.blueprinthell.model.ShapeType;
+import com.blueprinthell.polygonization.Polygonizer;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
@@ -17,6 +18,8 @@ import java.util.Objects;
 
 public class PacketView extends Polygon {
 
+    private final Polygonizer polygonizer = Polygonizer.getInstance();
+
     private Packet packet;
     private static final double PACKET_SIZE = 8;
 
@@ -27,7 +30,9 @@ public class PacketView extends Polygon {
     }
 
     private void setupShape() {
-        if (packet.getShapeType() == ShapeType.SQUARE) {
+        if (packet.isProtected()) {
+            createProtected();
+        } else if (packet.getShapeType() == ShapeType.SQUARE) {
             createSquare();
         } else if (packet.getShapeType() == ShapeType.TRIANGLE) {
             createTriangle();
@@ -35,8 +40,7 @@ public class PacketView extends Polygon {
             createHexagon();
         } else if (packet.getShapeType() == ShapeType.CONFIDENTIAL_ONE) {
             createConfidentialOne();
-        }
-        else if (packet.getShapeType() ==  ShapeType.CONFIDENTIAL_TWO) {
+        } else if (packet.getShapeType() == ShapeType.CONFIDENTIAL_TWO) {
             createConfidentialTwo();
         }
     }
@@ -109,6 +113,12 @@ public class PacketView extends Polygon {
     private void createConfidentialTwo() {
         getPoints().addAll(createPolygon(20, PACKET_SIZE * 1.2).getPoints());
         Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/confidential-two.png").toURI().toString());
+        setFill(new ImagePattern(pattern));
+    }
+
+    private void createProtected() {
+        Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/protected.png").toURI().toString(), PACKET_SIZE * 3, PACKET_SIZE * 3, true, true);
+        getPoints().addAll(polygonizer.polygonize(pattern).getPoints());
         setFill(new ImagePattern(pattern));
     }
 
