@@ -8,9 +8,11 @@ public class Packet {
     private static final double ACCELERATION = 200;
     private static final int SQUARE_COINS = 1;
     private static final int TRIANGLE_COINS = 2;
-    private static final double IMPACT = 20;
+    private static final double IMPACT = 10;
     private int id;
     private boolean isProtected = false;
+    private SystemNode protector;
+    private boolean isTrojan = false;
     private double currentSpeed = BASE_SPEED;
     private int noise = 0;
     private double distanceOnWire;
@@ -170,6 +172,14 @@ public class Packet {
         isProtected = aProtected;
     }
 
+    public void setProtector(SystemNode protector) {
+        this.protector = protector;
+    }
+
+    public SystemNode getProtector() {
+        return protector;
+    }
+
     public int getSize() {
         int size = 0;
         switch (shapeType) {
@@ -181,6 +191,14 @@ public class Packet {
         }
         if (isProtected) return size * 2;
         return size;
+    }
+
+    public boolean isTrojan() {
+        return isTrojan;
+    }
+
+    public void setTrojan(boolean trojan) {
+        isTrojan = trojan;
     }
 }
 
