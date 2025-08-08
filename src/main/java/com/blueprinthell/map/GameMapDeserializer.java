@@ -26,23 +26,21 @@ public class GameMapDeserializer implements JsonDeserializer<GameMap> {
         JsonArray nodesArray = rootObject.getAsJsonArray("systemNodes");
         for (JsonElement nodeElement : nodesArray) {
             JsonObject nodeObject = nodeElement.getAsJsonObject();
-            String nodeType = nodeObject.get("type").getAsString();
 
-            SystemNode node;
-            if (nodeType.equals("ReferenceSystemNode")) {
-                node = new ReferenceSystemNode();
-            } else {
-                node = new SystemNode();
-            }
+            SystemNode node = new SystemNode();
 
             int id = nodeObject.get("id").getAsInt();
             node.setId(id);
+            System.out.println(id);
 
             JsonObject locationObj = nodeObject.getAsJsonObject("location");
             Point2D location = new Point2D(locationObj.get("X").getAsDouble() / 1920 * screenDimensions.getWidth(), locationObj.get("Y").getAsDouble() / 1080 * (screenDimensions.getHeight() - screenDimensions.getHeight() / 8) + screenDimensions.getHeight() / 8);
             node.setLocation(location);
 
             node.setActive(nodeObject.get("isActive").getAsBoolean());
+
+            SystemType type = SystemType.valueOf(nodeObject.get("systemType").getAsString());
+            node.setSystemType(type);
 
             ArrayList<Port> inputPorts = deserializePorts(nodeObject.getAsJsonArray("inputPorts"), portIdMap);
             ArrayList<Port> outputPorts = deserializePorts(nodeObject.getAsJsonArray("outputPorts"), portIdMap);

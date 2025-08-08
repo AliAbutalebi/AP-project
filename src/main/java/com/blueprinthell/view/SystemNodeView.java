@@ -1,7 +1,6 @@
 package com.blueprinthell.view;
 
 import com.blueprinthell.model.*;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -17,7 +16,7 @@ import java.util.List;
 
 public class SystemNodeView extends AnchorPane {
 
-    private static final double NODE_WIDTH = ScreenDimensions.getInstance().getWidth() / 12;
+    private static final double NODE_WIDTH = ScreenDimensions.getInstance().getWidth() / 11;
     private double nodeHeight;
     private static final double NODE_STROKE = 5;
     private static final double NODE_RADIUS = 10;
@@ -156,7 +155,7 @@ public class SystemNodeView extends AnchorPane {
         getChildren().add(queuePane);
         queuePane.setLayoutX(PORT_PANE_WIDTH);
         queuePane.setPrefWidth(RUN_BUTTON_WIDTH);
-        if (systemNode instanceof ReferenceSystemNode) {
+        if (systemNode.getSystemType() == SystemType.REFERENCE) {
             queuePane.setLayoutY(INDICATOR_HEIGHT + RUN_BUTTON_HEIGHT);
             queuePane.setPrefHeight(nodeHeight - INDICATOR_HEIGHT - RUN_BUTTON_HEIGHT);
         } else {
@@ -249,7 +248,7 @@ public class SystemNodeView extends AnchorPane {
             double heightByPackets = (systemNode.getPacketQueue().size() + 2) * PACKET_SPACING + INDICATOR_PANEL_HEIGHT;
             double heightByPorts = (Math.max(systemNode.getInputPorts().size(), systemNode.getOutputPorts().size())) * PORT_SPACING + INDICATOR_PANEL_HEIGHT;
             nodeHeight = Math.max(heightByPackets, heightByPorts);
-        if (systemNode instanceof ReferenceSystemNode) {
+        if (systemNode.getSystemType() == SystemType.REFERENCE) {
             nodeHeight += RUN_BUTTON_HEIGHT;
         }
     }
