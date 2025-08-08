@@ -29,10 +29,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
 import java.lang.ref.PhantomReference;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GameController extends BaseController {
 
@@ -46,6 +43,7 @@ public class GameController extends BaseController {
     private final Map<Wire, WireView> wireToView = new HashMap<>();
     private final Map<Packet, PacketView> packetToView = new HashMap<>();
     private SystemNode referenceSystemNode;
+    private ArrayList<SystemNode> spySystemNodes = new ArrayList<>();
 
     private final ArrayList<Packet> movingPackets = new ArrayList<>();
     private final Map<Packet, Packet> potentialCollisions = new HashMap<>();
@@ -504,6 +502,8 @@ public class GameController extends BaseController {
                     }
 
                     packet.getParentSystemNode().receivePacket(packet);
+                    handleArrivalBehavior(packet);
+
                     soundEffectManager.play("packet-arrival");
                 } else {
                     packetLoss(packet);
@@ -779,6 +779,31 @@ public class GameController extends BaseController {
             packetView.getPacket().setNoise(0);
             packetView.update();
         }
+    }
+
+    private void handleArrivalBehavior(Packet packet) {
+        ShapeType shapeType = packet.getShapeType();
+        switch (packet.getParentSystemNode().getSystemType()) {
+            case SPY -> {
+                if (packet.isProtected()) return;
+                else if (shapeType == ShapeType.CONFIDENTIAL_ONE || shapeType == ShapeType.CONFIDENTIAL_TWO) {
+                    packetLoss(packet);
+                }
+                else {
+                    spyMigrate(packet);
+                }
+            }
+        }
+    }
+
+    private void spyMigrate(Packet packet) {
+        ArrayList<SystemNode> candidates =  new ArrayList<>(spySystemNodes);
+        candidates.remove(packet.getParentSystemNode());
+        Random random = new Random();
+        SystemNode destination = candidates.get(random.nextInt(candidates.size()));
+        packet.getParentSystemNode().getPacketQueue().remove(packet);
+        packet.setParentSystemNode(destination);
+        destination.getPacketQueue().add(packet);
     }
 
     private void setupMessagesPane() {
