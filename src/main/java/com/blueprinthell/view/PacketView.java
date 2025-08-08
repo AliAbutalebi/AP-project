@@ -31,7 +31,7 @@ public class PacketView extends Polygon {
 
     private void setupShape() {
         if (packet.isProtected()) createProtected();
-        else if (packet.isTrojan()) createProtected();
+        else if (packet.isTrojan()) createTrojan();
         else if (packet.getShapeType() == ShapeType.SQUARE) createSquare();
         else if (packet.getShapeType() == ShapeType.TRIANGLE) createTriangle();
         else if (packet.getShapeType() == ShapeType.HEXAGON) createHexagon();
