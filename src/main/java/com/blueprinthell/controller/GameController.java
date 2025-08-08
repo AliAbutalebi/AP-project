@@ -169,6 +169,9 @@ public class GameController extends BaseController {
                 nodeView.setupRunButton();
                 nodeView.getRunButton().setOnAction(this::startGameLoop);
             }
+            if (nodeView.getSystemNode().getSystemType() == SystemType.SPY) {
+                spySystemNodes.add(nodeView.getSystemNode());
+            }
 
             systemNodePane.getChildren().add(nodeView);
             systemNodeViews.add(nodeView);
@@ -402,6 +405,7 @@ public class GameController extends BaseController {
                 Port selectedOutputPort = findPort(node, packet);
                 if (selectedOutputPort != null) {
                     packet.getParentSystemNode().getPacketQueue().remove(packet);
+                    packet.getParentSystemNode().sendPacket(packet);
                     packet.setParentSystemNode(null);
 
                     packet.setOnWire(true);
@@ -492,18 +496,14 @@ public class GameController extends BaseController {
                     packet.getCurrentWire().setPacketOnWire(null);
                     packet.setCurrentWire(null);
                     packet.setDistanceOnWire(0);
-                    if (packet.getShapeType() == ShapeType.SQUARE) {
-                        hud.addCoins(1);
-                        hudView.update();
-                    } else if (packet.getShapeType() == ShapeType.TRIANGLE) {
-                        hud.addCoins(2);
-                        hudView.update();
-                    }
+                    hud.addCoins(packet.getPacketCoins());
+                    hudView.update();
 
                     if (packet.getParentSystemNode() instanceof ReferenceSystemNode && !scrubbing) {
                         handleWin();
                     }
 
+                    packet.getParentSystemNode().receivePacket(packet);
                     soundEffectManager.play("packet-arrival");
                 } else {
                     packetLoss(packet);

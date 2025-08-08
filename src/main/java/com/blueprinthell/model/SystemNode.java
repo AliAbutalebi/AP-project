@@ -15,6 +15,7 @@ public class SystemNode {
     private ArrayList<Port> outputPorts = new ArrayList<>();
     private Point2D location;
     private boolean isActive = false;
+    private SystemType systemType;
 
     public void setId(int id) {
         this.id = id;
@@ -57,6 +58,34 @@ public class SystemNode {
     }
     public boolean tryReceivePacket(Packet packet) {
         return packetQueue.size() < QUEUE_CAPACITY;
+    }
+    public void setSystemType(SystemType systemType) {
+        this.systemType = systemType;
+    }
+    public SystemType getSystemType() {
+        return systemType;
+    }
+
+    public void receivePacket(Packet packet) {
+        switch (systemType) {
+            case SABOTEUR -> {
+                if (packet.isProtected()) return;
+                if (packet.getNoise() == 0) {
+                    packet.setNoise(1);
+                }
+            }
+        }
+    }
+
+    public void sendPacket(Packet packet) {
+        switch (systemType) {
+            case VPN -> {
+                if (!packet.isProtected()) {
+                    packet.setProtected(true);
+                    packet.setProtector(this);
+                }
+            }
+        }
     }
 }
 
