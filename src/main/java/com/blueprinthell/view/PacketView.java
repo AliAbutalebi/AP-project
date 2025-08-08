@@ -30,19 +30,13 @@ public class PacketView extends Polygon {
     }
 
     private void setupShape() {
-        if (packet.isProtected()) {
-            createProtected();
-        } else if (packet.getShapeType() == ShapeType.SQUARE) {
-            createSquare();
-        } else if (packet.getShapeType() == ShapeType.TRIANGLE) {
-            createTriangle();
-        } else if (packet.getShapeType() == ShapeType.HEXAGON) {
-            createHexagon();
-        } else if (packet.getShapeType() == ShapeType.CONFIDENTIAL_ONE) {
-            createConfidentialOne();
-        } else if (packet.getShapeType() == ShapeType.CONFIDENTIAL_TWO) {
-            createConfidentialTwo();
-        }
+        if (packet.isProtected()) createProtected();
+        else if (packet.isTrojan()) createProtected();
+        else if (packet.getShapeType() == ShapeType.SQUARE) createSquare();
+        else if (packet.getShapeType() == ShapeType.TRIANGLE) createTriangle();
+        else if (packet.getShapeType() == ShapeType.HEXAGON) createHexagon();
+        else if (packet.getShapeType() == ShapeType.CONFIDENTIAL_ONE) createConfidentialOne();
+        else if (packet.getShapeType() == ShapeType.CONFIDENTIAL_TWO) createConfidentialTwo();
     }
 
     public void update() {
@@ -118,6 +112,12 @@ public class PacketView extends Polygon {
 
     private void createProtected() {
         Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/protected.png").toURI().toString(), PACKET_SIZE * 3, PACKET_SIZE * 3, true, true);
+        getPoints().addAll(polygonizer.polygonize(pattern).getPoints());
+        setFill(new ImagePattern(pattern));
+    }
+
+    private void createTrojan() {
+        Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/trojan.png").toURI().toString(), PACKET_SIZE * 3, PACKET_SIZE * 3, true, true);
         getPoints().addAll(polygonizer.polygonize(pattern).getPoints());
         setFill(new ImagePattern(pattern));
     }

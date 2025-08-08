@@ -6,6 +6,7 @@ import javafx.geometry.Point2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Random;
 
 public class SystemNode {
     private int id;
@@ -73,6 +74,8 @@ public class SystemNode {
                 if (packet.getNoise() == 0) {
                     packet.setNoise(1);
                 }
+                Random random = new Random();
+                if (random.nextBoolean()) packet.setTrojan(true);
             }
         }
     }
