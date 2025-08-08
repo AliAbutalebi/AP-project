@@ -36,6 +36,9 @@ public class PacketView extends Polygon {
         } else if (packet.getShapeType() == ShapeType.CONFIDENTIAL_ONE) {
             createConfidentialOne();
         }
+        else if (packet.getShapeType() ==  ShapeType.CONFIDENTIAL_TWO) {
+            createConfidentialTwo();
+        }
     }
 
     public void update() {
@@ -100,6 +103,12 @@ public class PacketView extends Polygon {
     private void createConfidentialOne() {
         getPoints().addAll(createPolygon(20, PACKET_SIZE * 1.2).getPoints());
         Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/confidential-one.png").toURI().toString());
+        setFill(new ImagePattern(pattern));
+    }
+
+    private void createConfidentialTwo() {
+        getPoints().addAll(createPolygon(20, PACKET_SIZE * 1.2).getPoints());
+        Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/confidential-two.png").toURI().toString());
         setFill(new ImagePattern(pattern));
     }
 
