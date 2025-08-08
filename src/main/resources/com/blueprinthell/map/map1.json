@@ -1,7 +1,7 @@
 {
     "systemNodes": [
         {
-            "type": "ReferenceSystemNode",
+            "systemType": "REFERENCE",
             "id": 0,
             "location": { "X": 200, "Y": 150.0 },
             "inputPorts": [
@@ -16,7 +16,7 @@
             "isActive": false
         },
         {
-            "type": "SystemNode",
+            "systemType": "NORMAL",
             "id": 1,
             "location": { "X": 500, "Y": 500 },
             "inputPorts": [
@@ -31,7 +31,7 @@
             "isActive": false
         },
         {
-            "type": "SystemNode",
+            "systemType": "ANTI_TROJAN",
             "id": 2,
             "location": { "X": 800, "Y": 300.0 },
             "inputPorts": [
@@ -49,7 +49,7 @@
             "isActive": false
         },
         {
-            "type": "SystemNode",
+            "systemType": "SPY",
             "id": 3,
             "location": { "X": 1100, "Y": 600 },
             "inputPorts": [
@@ -63,7 +63,7 @@
             "isActive": false
         },
         {
-            "type": "SystemNode",
+            "systemType": "SABOTEUR",
             "id": 4,
             "location": { "X": 1500, "Y": 800 },
             "inputPorts": [

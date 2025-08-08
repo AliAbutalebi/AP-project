@@ -173,7 +173,7 @@ public class SystemNodeView extends AnchorPane {
         }
     }
 
-    public void setupReferenceLabel() {
+    public void setupLabel() {
         labelPane = new HBox();
         labelPane.setPrefSize(NODE_WIDTH, INDICATOR_PANEL_HEIGHT);
         labelPane.setAlignment(Pos.CENTER_RIGHT);
@@ -182,11 +182,12 @@ public class SystemNodeView extends AnchorPane {
         labelPane.setLayoutY(0);
         labelPane.setPadding(new Insets(0, 5, 0, 0));
 
-        Label reference = new Label("Reference");
-        reference.getStyleClass().add("monograf-bold");
-        reference.setStyle(String.format("-fx-font-size: %d", (int) INDICATOR_PANEL_HEIGHT / 2));
-        reference.setTextFill(Color.WHITE);
-        labelPane.getChildren().add(reference);
+        Label label = new Label(systemNode.getSystemType().name().replace("_", " "));
+        System.out.println(systemNode.getSystemType().name());
+        label.getStyleClass().add("monograf-bold");
+        label.setStyle(String.format("-fx-font-size: %d", (int) INDICATOR_PANEL_HEIGHT / 2));
+        label.setTextFill(Color.WHITE);
+        labelPane.getChildren().add(label);
     }
 
     public void setupRunButton() {

@@ -157,9 +157,9 @@ public class GameController extends BaseController {
 
         for (SystemNode node : gameMap.getSystemNodes()) {
             SystemNodeView nodeView = new SystemNodeView(node);
-            if (nodeView.getSystemNode() instanceof ReferenceSystemNode) {
+            nodeView.setupLabel();
+            if (nodeView.getSystemNode().getSystemType() == SystemType.REFERENCE) {
                 referenceSystemNode = nodeView.getSystemNode();
-                nodeView.setupReferenceLabel();
                 nodeView.setupRunButton();
                 nodeView.getRunButton().setOnAction(this::startGameLoop);
             }
