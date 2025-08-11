@@ -36,7 +36,7 @@ public class GameMapDeserializer implements JsonDeserializer<GameMap> {
             Point2D location = new Point2D(locationObj.get("X").getAsDouble() / 1920 * screenDimensions.getWidth(), locationObj.get("Y").getAsDouble() / 1080 * (screenDimensions.getHeight() - screenDimensions.getHeight() / 8) + screenDimensions.getHeight() / 8);
             node.setLocation(location);
 
-            node.setActive(nodeObject.get("isActive").getAsBoolean());
+            node.setReady(nodeObject.get("isActive").getAsBoolean());
 
             SystemType type = SystemType.valueOf(nodeObject.get("systemType").getAsString());
             node.setSystemType(type);

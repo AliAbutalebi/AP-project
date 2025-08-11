@@ -388,7 +388,7 @@ public class GameController extends BaseController {
     }
 
     private void setSystemNodeActive(SystemNodeView view, boolean active) {
-        view.getSystemNode().setActive(active);
+        view.getSystemNode().setReady(active);
         view.switchIndicator(active);
     }
 
@@ -710,7 +710,7 @@ public class GameController extends BaseController {
 
     private void checkRunButton() {
         for (SystemNodeView nodeView : systemNodeViews) {
-            if (!nodeView.getSystemNode().isActive()) {
+            if (!nodeView.getSystemNode().isReady()) {
                 nodeToView.get(referenceSystemNode).getRunButton().setDisable(true);
                 return;
             }
