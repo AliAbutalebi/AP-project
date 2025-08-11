@@ -10,7 +10,7 @@ import javafx.scene.shape.Shape;
 public class PortView extends Polygon {
 
     private Port port;
-    private static final double PORT_SIZE = 20;
+    private static final double PORT_SIZE = 350;
 
     public PortView(Port port) {
         this.port = port;
@@ -60,19 +60,18 @@ public class PortView extends Polygon {
         setFill(Color.web("#EEEEEE"));
     }
 
-    private Polygon createPolygon(int vertexCount, double radius) {
-        if (vertexCount < 3) return null;
+    private Polygon createPolygon(int n, double area) {
+        if (n < 3) return null;
+
+        double R = Math.sqrt((2 * area) / (n * Math.sin(2 * Math.PI / n)));
 
         Polygon polygon = new Polygon();
-        double angleStep = 2 * Math.PI / vertexCount;
-
-        for (int i = 0; i < vertexCount; i++) {
-            double angle = angleStep * i - Math.PI / 2;
-            double x = radius * Math.cos(angle);
-            double y = radius * Math.sin(angle);
-            polygon.getPoints().addAll(x, y);
+        double angleOffset = -Math.PI / 2;
+        for (int i = 0; i < n; i++) {
+            double theta = angleOffset + 2 * Math.PI * i / n;
+            polygon.getPoints().add(R * Math.cos(theta));
+            polygon.getPoints().add(R * Math.sin(theta));
         }
-
         return polygon;
     }
 }
