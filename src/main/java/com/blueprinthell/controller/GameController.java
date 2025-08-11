@@ -424,10 +424,12 @@ public class GameController extends BaseController {
     }
 
     private Port findPort(SystemNode node, Packet packet) {
-        for (Port outputPort : node.getOutputPorts()) {
-            if (outputPort.getConnectedWire() != null) {
-                if (outputPort.getConnectedWire().getPacketOnWire() == null) {
-                    if (outputPort.getShapeType() == packet.getShapeType()) return outputPort;
+        if (node.getSystemType() != SystemType.SABOTEUR) {
+            for (Port outputPort : node.getOutputPorts()) {
+                if (outputPort.getConnectedWire() != null) {
+                    if (outputPort.getConnectedWire().getPacketOnWire() == null) {
+                        if (outputPort.getShapeType() == packet.getShapeType()) return outputPort;
+                    }
                 }
             }
         }
