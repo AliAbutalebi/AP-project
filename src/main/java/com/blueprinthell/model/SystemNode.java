@@ -11,57 +11,82 @@ public class SystemNode {
     private int id;
     private final Queue<Packet> packetQueue = new LinkedList<>();
     private static final int QUEUE_CAPACITY = 5;
+    private static final double ANTI_TROJAN_RADIUS = 300;
     private ArrayList<Port> inputPorts = new ArrayList<>();
     private ArrayList<Port> outputPorts = new ArrayList<>();
     private Point2D location;
-    private boolean isReady = false;
+    private boolean isActive = true;
     private SystemType systemType;
+    private ArrayList<Packet> protectedPackets = new ArrayList<>();
 
     public void setId(int id) {
         this.id = id;
     }
+
     public int getId() {
         return id;
     }
+
     public void setPacketQueue(Queue<Packet> packetQueue) {
         this.packetQueue.addAll(packetQueue);
     }
+
     public Queue<Packet> getPacketQueue() {
         return packetQueue;
     }
+
     public static int getQueueCapacity() {
         return QUEUE_CAPACITY;
     }
+
+    public static double getAntiTrojanRadius() {return ANTI_TROJAN_RADIUS;}
+
     public void setInputPorts(ArrayList<Port> inputPorts) {
         this.inputPorts = inputPorts;
     }
+
     public ArrayList<Port> getInputPorts() {
         return inputPorts;
     }
+
     public void setOutputPorts(ArrayList<Port> outputPorts) {
         this.outputPorts = outputPorts;
     }
+
     public ArrayList<Port> getOutputPorts() {
         return outputPorts;
     }
+
     public void setLocation(Point2D location) {
         this.location = location;
     }
+
     public Point2D getLocation() {
         return location;
     }
-    public void setReady(boolean isActive) {
-        this.isReady = isActive;
-    }
+
     public boolean isReady() {
-        return isReady;
+        for (Port port : inputPorts) {
+            if (port.getConnectedWire() == null) return false;
+        }
+        for (Port port : outputPorts) {
+            if (port.getConnectedWire() == null) return false;
+        }
+        return true;
     }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
     public boolean tryReceivePacket(Packet packet) {
         return packetQueue.size() < QUEUE_CAPACITY;
     }
+
     public void setSystemType(SystemType systemType) {
         this.systemType = systemType;
     }
+
     public SystemType getSystemType() {
         return systemType;
     }
@@ -87,6 +112,23 @@ public class SystemNode {
                     packet.setProtector(this);
                 }
             }
+        }
+    }
+
+    public void activate() {
+        isActive = true;
+
+    }
+
+    public void deactivate() {
+        isActive = false;
+
+        if (systemType == SystemType.VPN) {
+            for (Packet packet : protectedPackets) {
+                packet.setProtected(false);
+                packet.setProtector(null);
+            }
+            protectedPackets.clear();
         }
     }
 }

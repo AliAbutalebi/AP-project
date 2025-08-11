@@ -196,12 +196,10 @@ public class SystemNodeView extends AnchorPane {
         runButton.setLayoutY(INDICATOR_PANEL_HEIGHT);
     }
 
-    public void switchIndicator(boolean isActive) {
-        if (isActive) {
-            indicator.setFill(Color.web("#00FEFE"));
-        } else {
-            indicator.setFill(Color.web("#222222"));
-        }
+    public void switchIndicator(boolean isReady, boolean isActive) {
+        if (isReady && !isActive) indicator.setFill(Color.web("#FF0000"));
+        else if (isReady) indicator.setFill(Color.web("#00FEFE"));
+        else indicator.setFill(Color.web("#222222"));
     }
 
     public List<PortView> getInputPortViews() {
@@ -228,6 +226,7 @@ public class SystemNodeView extends AnchorPane {
         queuePane.getChildren().clear();
         updateSystemNodeSize();
         setupPackets();
+        switchIndicator(systemNode.isReady(), systemNode.isActive());
     }
 
     private void updateSystemNodeSize() {
@@ -249,17 +248,5 @@ public class SystemNodeView extends AnchorPane {
         if (systemNode.getSystemType() == SystemType.REFERENCE) {
             nodeHeight += RUN_BUTTON_HEIGHT;
         }
-    }
-
-    public Pane getQueuePane() {
-        return queuePane;
-    }
-
-    public void removeFromQueuPane(PacketView packetView) {
-        queuePane.getChildren().remove(packetView);
-    }
-
-    public void addToQueuPane(PacketView packetView) {
-        queuePane.getChildren().add(packetView);
     }
 }

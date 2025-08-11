@@ -372,24 +372,19 @@ public class GameController extends BaseController {
         for (SystemNodeView nodeView : systemNodeViews) {
             for (PortView portView : nodeView.getInputPortViews()) {
                 if (portView.getPort().getConnectedWire() == null) {
-                    setSystemNodeActive(nodeView, false);
+                    nodeView.update();
                     continue outer;
                 }
             }
             for (PortView portView : nodeView.getOutputPortViews()) {
                 if (portView.getPort().getConnectedWire() == null) {
-                    setSystemNodeActive(nodeView, false);
+                    nodeView.update();
                     continue outer;
                 }
             }
-            setSystemNodeActive(nodeView, true);
+            nodeView.update();
         }
         // checkRunButton();
-    }
-
-    private void setSystemNodeActive(SystemNodeView view, boolean active) {
-        view.getSystemNode().setReady(active);
-        view.switchIndicator(active);
     }
 
     private void packetFromSystemsToWires() {
