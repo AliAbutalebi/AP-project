@@ -21,7 +21,7 @@ public class PacketView extends Polygon {
     private final Polygonizer polygonizer = Polygonizer.getInstance();
 
     private Packet packet;
-    private static final double PACKET_SIZE = 15;
+    private static final double PACKET_SIZE = 300;
 
     public PacketView(Packet packet) {
         this.packet = packet;
@@ -95,42 +95,41 @@ public class PacketView extends Polygon {
     }
 
     private void createConfidentialOne() {
-        getPoints().addAll(createPolygon(20, PACKET_SIZE / 2).getPoints());
-        Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/confidential-one.png").toURI().toString());
+        Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/confidential-one.png").toURI().toString(), PACKET_SIZE, PACKET_SIZE, true, true);
+        getPoints().addAll(polygonizer.polygonize(pattern, PACKET_SIZE).getPoints());
         setFill(new ImagePattern(pattern));
     }
 
     private void createConfidentialTwo() {
-        getPoints().addAll(createPolygon(20, PACKET_SIZE / 2).getPoints());
-        Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/confidential-two.png").toURI().toString());
+        Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/confidential-two.png").toURI().toString(), PACKET_SIZE, PACKET_SIZE, true, true);
+        getPoints().addAll(polygonizer.polygonize(pattern, PACKET_SIZE).getPoints());
         setFill(new ImagePattern(pattern));
     }
 
     private void createProtected() {
-        Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/protected.png").toURI().toString(), PACKET_SIZE , PACKET_SIZE, true, true);
-        getPoints().addAll(polygonizer.polygonize(pattern).getPoints());
+        Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/protected.png").toURI().toString(), PACKET_SIZE, PACKET_SIZE, true, true);
+        getPoints().addAll(polygonizer.polygonize(pattern, PACKET_SIZE).getPoints());
         setFill(new ImagePattern(pattern));
     }
 
     private void createTrojan() {
         Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/trojan.png").toURI().toString(), PACKET_SIZE, PACKET_SIZE, true, true);
-        getPoints().addAll(polygonizer.polygonize(pattern).getPoints());
+        getPoints().addAll(polygonizer.polygonize(pattern, PACKET_SIZE).getPoints());
         setFill(new ImagePattern(pattern));
     }
 
-    private Polygon createPolygon(int vertexCount, double radius) {
-        if (vertexCount < 3) return null;
+    private Polygon createPolygon(int n, double area) {
+        if (n < 3) return null;
+
+        double R = Math.sqrt((2 * area) / (n * Math.sin(2 * Math.PI / n)));
 
         Polygon polygon = new Polygon();
-        double angleStep = 2 * Math.PI / vertexCount;
-
-        for (int i = 0; i < vertexCount; i++) {
-            double angle = angleStep * i - Math.PI / 2;
-            double x = radius * Math.cos(angle);
-            double y = radius * Math.sin(angle);
-            polygon.getPoints().addAll(x, y);
+        double angleOffset = -Math.PI / 2;
+        for (int i = 0; i < n; i++) {
+            double theta = angleOffset + 2 * Math.PI * i / n;
+            polygon.getPoints().add(R * Math.cos(theta));
+            polygon.getPoints().add(R * Math.sin(theta));
         }
-
         return polygon;
     }
 }

@@ -21,12 +21,13 @@ public class Polygonizer {
 
     }
 
-    public Polygon polygonize(Image image) {
+    public Polygon polygonize(Image image, double area) {
         Polygon polygon = new Polygon();
         ArrayList<double[]> hullPoints = convexHull(extractImagePoints(image));
         for (double[] p : hullPoints) {
             polygon.getPoints().addAll(p[0], p[1]);
         }
+        scale(polygon, area);
         return polygon;
     }
 
@@ -75,6 +76,28 @@ public class Polygonizer {
 
     private static double cross(double[] o, double[] a, double[] b) {
         return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+    }
+
+    public static void scale(Polygon poly, double targetArea) {
+        var pts = poly.getPoints();
+        int n = pts.size() / 2;
+
+        double area = 0;
+        for (int i = 0; i < n; i++) {
+            double x1 = pts.get(2 * i);
+            double y1 = pts.get(2 * i + 1);
+            double x2 = pts.get(2 * ((i + 1) % n));
+            double y2 = pts.get(2 * ((i + 1) % n) + 1);
+            area += (x1 * y2 - x2 * y1);
+        }
+        area = Math.abs(area) / 2.0;
+
+        double scale = Math.sqrt(targetArea / area);
+
+        for (int i = 0; i < n; i++) {
+            pts.set(2 * i, pts.get(2 * i) * scale);
+            pts.set(2 * i + 1, pts.get(2 * i + 1) * scale);
+        }
     }
 
 
