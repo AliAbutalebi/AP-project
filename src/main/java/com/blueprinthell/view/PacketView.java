@@ -21,7 +21,7 @@ public class PacketView extends Polygon {
     private final Polygonizer polygonizer = Polygonizer.getInstance();
 
     private Packet packet;
-    private static final double PACKET_SIZE = 8;
+    private static final double PACKET_SIZE = 15;
 
     public PacketView(Packet packet) {
         this.packet = packet;
@@ -70,12 +70,8 @@ public class PacketView extends Polygon {
         setOpacity(1 - (double) packet.getNoise() / (packet.getSize() + 1));
     }
 
-    public static double getPacketSize() {
-        return PACKET_SIZE;
-    }
-
     private void createSquare() {
-        getPoints().addAll(createPolygon(4, PACKET_SIZE).getPoints());
+        getPoints().addAll(createPolygon(4, PACKET_SIZE / 2).getPoints());
         setFill(Color.TRANSPARENT);
         setStroke(Color.web("#32c65f"));
         setStrokeWidth(3);
@@ -83,7 +79,7 @@ public class PacketView extends Polygon {
     }
 
     private void createTriangle() {
-        getPoints().addAll(createPolygon(3, PACKET_SIZE).getPoints());
+        getPoints().addAll(createPolygon(3, PACKET_SIZE / 2).getPoints());
         setFill(Color.TRANSPARENT);
         setStroke(Color.web("#FFFF00"));
         setStrokeWidth(3);
@@ -91,7 +87,7 @@ public class PacketView extends Polygon {
     }
 
     private void createHexagon() {
-        getPoints().addAll(createPolygon(6, PACKET_SIZE).getPoints());
+        getPoints().addAll(createPolygon(6, PACKET_SIZE / 2).getPoints());
         setFill(Color.TRANSPARENT);
         setStroke(Color.web("#EEEEEE"));
         setStrokeWidth(3);
@@ -99,25 +95,25 @@ public class PacketView extends Polygon {
     }
 
     private void createConfidentialOne() {
-        getPoints().addAll(createPolygon(20, PACKET_SIZE * 1.2).getPoints());
+        getPoints().addAll(createPolygon(20, PACKET_SIZE / 2).getPoints());
         Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/confidential-one.png").toURI().toString());
         setFill(new ImagePattern(pattern));
     }
 
     private void createConfidentialTwo() {
-        getPoints().addAll(createPolygon(20, PACKET_SIZE * 1.2).getPoints());
+        getPoints().addAll(createPolygon(20, PACKET_SIZE / 2).getPoints());
         Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/confidential-two.png").toURI().toString());
         setFill(new ImagePattern(pattern));
     }
 
     private void createProtected() {
-        Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/protected.png").toURI().toString(), PACKET_SIZE * 3, PACKET_SIZE * 3, true, true);
+        Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/protected.png").toURI().toString(), PACKET_SIZE , PACKET_SIZE, true, true);
         getPoints().addAll(polygonizer.polygonize(pattern).getPoints());
         setFill(new ImagePattern(pattern));
     }
 
     private void createTrojan() {
-        Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/trojan.png").toURI().toString(), PACKET_SIZE * 3, PACKET_SIZE * 3, true, true);
+        Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/trojan.png").toURI().toString(), PACKET_SIZE, PACKET_SIZE, true, true);
         getPoints().addAll(polygonizer.polygonize(pattern).getPoints());
         setFill(new ImagePattern(pattern));
     }
