@@ -40,6 +40,7 @@ public class GameController extends BaseController {
     private final Map<Packet, PacketView> packetToView = new HashMap<>();
     private SystemNode referenceSystemNode;
     private ArrayList<SystemNode> spySystemNodes = new ArrayList<>();
+    private ArrayList<SystemNode> antiTrojansSystemNodes = new ArrayList<>();
 
     private final ArrayList<Packet> movingPackets = new ArrayList<>();
     private final Map<Packet, Packet> potentialCollisions = new HashMap<>();
@@ -166,6 +167,9 @@ public class GameController extends BaseController {
             if (nodeView.getSystemNode().getSystemType() == SystemType.SPY) {
                 spySystemNodes.add(nodeView.getSystemNode());
             }
+            else if (nodeView.getSystemNode().getSystemType() == SystemType.ANTI_TROJAN) {
+                antiTrojansSystemNodes.add(nodeView.getSystemNode());
+            }
 
             systemNodePane.getChildren().add(nodeView);
             systemNodeViews.add(nodeView);
@@ -205,6 +209,8 @@ public class GameController extends BaseController {
         for (Packet packet : movingPackets) {
             movePacketOnWire(packet, deltaTime);
         }
+
+        handleAntiTrojan();
 
         if (!oAiryaman.isEnabled()) {
             handleCollisions();
@@ -445,6 +451,8 @@ public class GameController extends BaseController {
         packetToView.get(packet).update();
     }
 
+
+    //TODO: transfer to Packet model and add new conditions
     private void calculateNewDistance(Packet packet, double deltaTime) {
         double deltaDistance = 0;
         if (packet.getShapeType() == packet.getCurrentWire().getSourcePort().getShapeType()) {
@@ -909,6 +917,25 @@ public class GameController extends BaseController {
         } catch (Exception ignored) {
         }
         logger.info("Won.");
+    }
+
+    private void handleAntiTrojan() {
+        for (SystemNode node : antiTrojansSystemNodes) {
+            if (!node.isActive()) continue;
+            SystemNodeView nodeView = nodeToView.get(node);
+            double x = nodeView.getLayoutX() + (nodeToView.get(node).getWidth() / 2);
+            double y = nodeView.getLayoutY() + (nodeToView.get(node).getHeight() / 2);
+            Point2D location = new Point2D(x, y);
+            for (PacketView packetView : packetViews) {
+                if (packetView.getPacket().isOnWire() && packetView.getPacket().isTrojan()) {
+                    if (packetView.getPacket().getDeviatedLocation().distance(location) < SystemNode.getAntiTrojanRadius()) {
+                        packetView.getPacket().setTrojan(false);
+                        packetView.update();
+                        node.deactivate();
+                    }
+                }
+            }
+        }
     }
 
 }

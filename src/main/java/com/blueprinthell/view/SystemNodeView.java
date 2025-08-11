@@ -21,7 +21,7 @@ public class SystemNodeView extends AnchorPane {
     private static final double NODE_STROKE = 5;
     private static final double NODE_RADIUS = 10;
     private static final double PORT_SPACING = 30;
-    private static final double PACKET_SPACING = 30;
+    private static final double PACKET_SPACING = 40;
     private static final double PORT_PANE_WIDTH = 25;
     private static final double INDICATOR_WIDTH = NODE_WIDTH / 4;
     private static final double INDICATOR_HEIGHT = 10;
@@ -242,9 +242,9 @@ public class SystemNodeView extends AnchorPane {
     }
 
     private void calculateNodeHeight() {
-            double heightByPackets = (systemNode.getPacketQueue().size() + 2) * PACKET_SPACING + INDICATOR_PANEL_HEIGHT;
-            double heightByPorts = (Math.max(systemNode.getInputPorts().size(), systemNode.getOutputPorts().size())) * PORT_SPACING + INDICATOR_PANEL_HEIGHT;
-            nodeHeight = Math.max(heightByPackets, heightByPorts);
+        double heightByPackets = (systemNode.getPacketQueue().size() + 2) * PACKET_SPACING + INDICATOR_PANEL_HEIGHT;
+        double heightByPorts = (Math.max(systemNode.getInputPorts().size(), systemNode.getOutputPorts().size())) * PORT_SPACING + INDICATOR_PANEL_HEIGHT;
+        nodeHeight = Math.max(heightByPackets, heightByPorts);
         if (systemNode.getSystemType() == SystemType.REFERENCE) {
             nodeHeight += RUN_BUTTON_HEIGHT;
         }
