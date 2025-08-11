@@ -308,6 +308,7 @@ public class GameController extends BaseController {
         switch (draggingWire.getWire().getShapeType()) {
             case SQUARE -> draggingWire.markSquare();
             case TRIANGLE -> draggingWire.markTriangle();
+            case HEXAGON -> draggingWire.markHexagon();
         }
 
         wireViews.add(draggingWire);

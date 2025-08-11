@@ -1,5 +1,6 @@
 package com.blueprinthell.view;
 
+import com.blueprinthell.model.ShapeType;
 import com.blueprinthell.model.Wire;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -13,6 +14,7 @@ public class WireView extends Line {
     private static final Color DRAGGING_COLOR = Color.web("#666666");
     private static final Color SQUARE_COLOR = Color.web("#32c65f");
     private static final Color TRIANGLE_COLOR = Color.web("#FFFF00");
+    private static final Color HEXAGON_COLOR = Color.web("#EEEEEE");
 
     public WireView(Wire wire) {
         super(wire.getStartLocation().getX(), wire.getStartLocation().getY(), wire.getEndLocation().getX(), wire.getEndLocation().getY());
@@ -49,8 +51,8 @@ public class WireView extends Line {
         setStroke(TRIANGLE_COLOR);
     }
 
-    public void setWire(Wire wire) {
-        this.wire = wire;
+    public void markHexagon() {
+        setStroke(HEXAGON_COLOR);
     }
 
     public Wire getWire() {

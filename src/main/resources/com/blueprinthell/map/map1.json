@@ -5,13 +5,13 @@
             "id": 0,
             "location": { "X": 200, "Y": 150.0 },
             "inputPorts": [
-                { "type": "TrianglePort", "id": 1,  "isInput": true, "occupied": false, "parentSystemId": 0 },
-                { "type": "SquarePort",   "id": 2,  "isInput": true, "occupied": false, "parentSystemId": 0 }
+                { "shapeType": "TRIANGLE", "id": 1,  "isInput": true, "occupied": false, "parentSystemId": 0 },
+                { "shapeType": "SQUARE",   "id": 2,  "isInput": true, "occupied": false, "parentSystemId": 0 }
             ],
             "outputPorts": [
-                { "type": "TrianglePort", "id": 3,  "isInput": false, "occupied": false, "parentSystemId": 0 },
-                { "type": "SquarePort",   "id": 4,  "isInput": false, "occupied": false, "parentSystemId": 0 },
-                { "type": "TrianglePort", "id": 5,  "isInput": false, "occupied": false, "parentSystemId": 0 }
+                { "shapeType": "HEXAGON", "id": 3,  "isInput": false, "occupied": false, "parentSystemId": 0 },
+                { "shapeType": "SQUARE",   "id": 4,  "isInput": false, "occupied": false, "parentSystemId": 0 },
+                { "shapeType": "TRIANGLE", "id": 5,  "isInput": false, "occupied": false, "parentSystemId": 0 }
             ],
             "isActive": false
         },
@@ -20,13 +20,13 @@
             "id": 1,
             "location": { "X": 500, "Y": 500 },
             "inputPorts": [
-                { "type": "SquarePort",   "id": 4,  "isInput": true,  "occupied": false, "parentSystemId": 1 },
-                { "type": "TrianglePort", "id": 5,  "isInput": true,  "occupied": false, "parentSystemId": 1 },
-                { "type": "SquarePort",   "id": 6,  "isInput": true,  "occupied": false, "parentSystemId": 1 }
+                { "shapeType": "SQUARE",   "id": 4,  "isInput": true,  "occupied": false, "parentSystemId": 1 },
+                { "shapeType": "TRIANGLE", "id": 5,  "isInput": true,  "occupied": false, "parentSystemId": 1 },
+                { "shapeType": "SQUARE",   "id": 6,  "isInput": true,  "occupied": false, "parentSystemId": 1 }
             ],
             "outputPorts": [
-                { "type": "TrianglePort", "id": 7,  "isInput": false, "occupied": false, "parentSystemId": 1 },
-                { "type": "SquarePort",   "id": 8,  "isInput": false, "occupied": false, "parentSystemId": 1 }
+                { "shapeType": "TRIANGLE", "id": 7,  "isInput": false, "occupied": false, "parentSystemId": 1 },
+                { "shapeType": "SQUARE",   "id": 8,  "isInput": false, "occupied": false, "parentSystemId": 1 }
             ],
             "isActive": false
         },
@@ -35,16 +35,16 @@
             "id": 2,
             "location": { "X": 800, "Y": 300.0 },
             "inputPorts": [
-                { "type": "TrianglePort", "id": 9,  "isInput": true,  "occupied": false, "parentSystemId": 2 },
-                { "type": "SquarePort",   "id": 10, "isInput": true,  "occupied": false, "parentSystemId": 2 },
-                { "type": "TrianglePort", "id": 11, "isInput": true,  "occupied": false, "parentSystemId": 2 },
-                { "type": "SquarePort",   "id": 12, "isInput": true,  "occupied": false, "parentSystemId": 2 },
-                { "type": "TrianglePort", "id": 13, "isInput": true,  "occupied": false, "parentSystemId": 2 }
+                { "shapeType": "TRIANGLE", "id": 9,  "isInput": true,  "occupied": false, "parentSystemId": 2 },
+                { "shapeType": "SQUARE",   "id": 10, "isInput": true,  "occupied": false, "parentSystemId": 2 },
+                { "shapeType": "TRIANGLE", "id": 11, "isInput": true,  "occupied": false, "parentSystemId": 2 },
+                { "shapeType": "SQUARE",   "id": 12, "isInput": true,  "occupied": false, "parentSystemId": 2 },
+                { "shapeType": "HEXAGON", "id": 13, "isInput": true,  "occupied": false, "parentSystemId": 2 }
             ],
             "outputPorts": [
-                { "type": "SquarePort",   "id": 14, "isInput": false, "occupied": false, "parentSystemId": 2 },
-                { "type": "TrianglePort", "id": 15, "isInput": false, "occupied": false, "parentSystemId": 2 },
-                { "type": "SquarePort",   "id": 16, "isInput": false, "occupied": false, "parentSystemId": 2 }
+                { "shapeType": "SQUARE",   "id": 14, "isInput": false, "occupied": false, "parentSystemId": 2 },
+                { "shapeType": "TRIANGLE", "id": 15, "isInput": false, "occupied": false, "parentSystemId": 2 },
+                { "shapeType": "SQUARE",   "id": 16, "isInput": false, "occupied": false, "parentSystemId": 2 }
             ],
             "isActive": false
         },
@@ -53,12 +53,12 @@
             "id": 3,
             "location": { "X": 1100, "Y": 600 },
             "inputPorts": [
-                { "type": "TrianglePort", "id": 17, "isInput": true,  "occupied": false, "parentSystemId": 3 }
+                { "shapeType": "TRIANGLE", "id": 17, "isInput": true,  "occupied": false, "parentSystemId": 3 }
             ],
             "outputPorts": [
-                { "type": "SquarePort",   "id": 18, "isInput": false, "occupied": false, "parentSystemId": 3 },
-                { "type": "TrianglePort", "id": 19, "isInput": false, "occupied": false, "parentSystemId": 3 },
-                { "type": "SquarePort",   "id": 20, "isInput": false, "occupied": false, "parentSystemId": 3 }
+                { "shapeType": "SQUARE",   "id": 18, "isInput": false, "occupied": false, "parentSystemId": 3 },
+                { "shapeType": "TRIANGLE", "id": 19, "isInput": false, "occupied": false, "parentSystemId": 3 },
+                { "shapeType": "SQUARE",   "id": 20, "isInput": false, "occupied": false, "parentSystemId": 3 }
             ],
             "isActive": false
         },
@@ -67,10 +67,10 @@
             "id": 4,
             "location": { "X": 1500, "Y": 800 },
             "inputPorts": [
-                { "type": "SquarePort",   "id": 21, "isInput": true,  "occupied": false, "parentSystemId": 4 }
+                { "shapeType": "SQUARE",   "id": 21, "isInput": true,  "occupied": false, "parentSystemId": 4 }
             ],
             "outputPorts": [
-                { "type": "TrianglePort", "id": 22, "isInput": false, "occupied": false, "parentSystemId": 4 }
+                { "shapeType": "TRIANGLE", "id": 22, "isInput": false, "occupied": false, "parentSystemId": 4 }
             ],
             "isActive": false
         }

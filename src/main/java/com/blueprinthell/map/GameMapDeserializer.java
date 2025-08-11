@@ -31,7 +31,6 @@ public class GameMapDeserializer implements JsonDeserializer<GameMap> {
 
             int id = nodeObject.get("id").getAsInt();
             node.setId(id);
-            System.out.println(id);
 
             JsonObject locationObj = nodeObject.getAsJsonObject("location");
             Point2D location = new Point2D(locationObj.get("X").getAsDouble() / 1920 * screenDimensions.getWidth(), locationObj.get("Y").getAsDouble() / 1080 * (screenDimensions.getHeight() - screenDimensions.getHeight() / 8) + screenDimensions.getHeight() / 8);
@@ -142,17 +141,12 @@ public class GameMapDeserializer implements JsonDeserializer<GameMap> {
         ArrayList<Port> ports = new ArrayList<>();
         for (JsonElement portElement : portArray) {
             JsonObject obj = portElement.getAsJsonObject();
-            String type = obj.get("type").getAsString();
             boolean isInput = obj.get("isInput").getAsBoolean();
             int parentSystemId = obj.get("parentSystemId").getAsInt();
             int id = obj.get("id").getAsInt();
             boolean occupied = obj.get("occupied").getAsBoolean();
 
-            ShapeType shapeType = switch (type) {
-                case "SquarePort" -> ShapeType.SQUARE;
-                case "TrianglePort" -> ShapeType.TRIANGLE;
-                default -> throw new JsonParseException("Unknown port type: " + type);
-            };
+            ShapeType shapeType = ShapeType.valueOf(obj.get("shapeType").getAsString());
 
             Port port = new Port(isInput, shapeType, parentSystemId);
             port.setId(id);

@@ -128,7 +128,6 @@ public class SystemNodeView extends AnchorPane {
         for (int i = 0; i < inputPorts.size(); i++) {
             Port port = inputPorts.get(i);
             PortView portView = new PortView(port);
-            portView.setStroke(Color.web("#000000"));
             portView.setLayoutX(-NODE_STROKE / 2);
             portView.setLayoutY(startY + i * PORT_SPACING);
             inputPortViews.add(portView);
@@ -138,7 +137,6 @@ public class SystemNodeView extends AnchorPane {
         for (int i = 0; i < outputPorts.size(); i++) {
             Port port = outputPorts.get(i);
             PortView portView = new PortView(port);
-            portView.setStroke(Color.web("#666666"));
             portView.setLayoutX(PORT_PANE_WIDTH + (NODE_STROKE / 2));
             portView.setLayoutY(startY + i * PORT_SPACING);
             outputPortViews.add(portView);
@@ -183,7 +181,6 @@ public class SystemNodeView extends AnchorPane {
         labelPane.setPadding(new Insets(0, 5, 0, 0));
 
         Label label = new Label(systemNode.getSystemType().name().replace("_", " "));
-        System.out.println(systemNode.getSystemType().name());
         label.getStyleClass().add("monograf-bold");
         label.setStyle(String.format("-fx-font-size: %d", (int) INDICATOR_PANEL_HEIGHT / 2));
         label.setTextFill(Color.WHITE);
