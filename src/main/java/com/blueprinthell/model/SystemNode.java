@@ -11,7 +11,7 @@ public class SystemNode {
     private int id;
     private final Queue<Packet> packetQueue = new LinkedList<>();
     private static final int QUEUE_CAPACITY = 5;
-    private static final double ANTI_TROJAN_RADIUS = 300;
+    private static final double ANTI_TROJAN_RADIUS = 250;
     private ArrayList<Port> inputPorts = new ArrayList<>();
     private ArrayList<Port> outputPorts = new ArrayList<>();
     private Point2D location;
@@ -131,5 +131,6 @@ public class SystemNode {
             protectedPackets.clear();
         }
     }
+
 }
 

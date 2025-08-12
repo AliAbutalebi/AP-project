@@ -1,6 +1,7 @@
 package com.blueprinthell.view;
 
 import com.blueprinthell.model.*;
+import javafx.animation.AnimationTimer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -9,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
@@ -29,7 +31,8 @@ public class SystemNodeView extends AnchorPane {
     private static final double INDICATOR_STROKE = 2;
     private static final double RUN_BUTTON_WIDTH = NODE_WIDTH - 2 * PORT_PANE_WIDTH;
     private static final double RUN_BUTTON_HEIGHT = ScreenDimensions.getInstance().getHeight() / 25;
-    ;
+    private AnimationTimer antiTrojanTimer;
+    private final Circle antiTrojanCircle = new Circle();
 
     private SystemNode systemNode;
     private Pane inputPortPane;
@@ -64,6 +67,10 @@ public class SystemNodeView extends AnchorPane {
         setLayoutX(systemNode.getLocation().getX());
         setLayoutY(systemNode.getLocation().getY());
 
+        if (systemNode.getSystemType() == SystemType.ANTI_TROJAN) {
+            getChildren().add(0, antiTrojanCircle);
+            setupAntiTrojan();
+        }
     }
 
     private void setupBackground() {
@@ -147,7 +154,7 @@ public class SystemNodeView extends AnchorPane {
     }
 
     private void setupPackets() {
-        ArrayList<Packet> packets = new ArrayList(systemNode.getPacketQueue());
+        ArrayList<Packet> packets = new ArrayList<>(systemNode.getPacketQueue());
 
         queuePane = new Pane();
         getChildren().add(queuePane);
@@ -194,6 +201,37 @@ public class SystemNodeView extends AnchorPane {
         getChildren().add(runButton);
         runButton.setLayoutX(PORT_PANE_WIDTH);
         runButton.setLayoutY(INDICATOR_PANEL_HEIGHT);
+    }
+
+    private void setupAntiTrojan() {
+        antiTrojanCircle.setCenterX(background.getWidth() / 2);
+        antiTrojanCircle.setCenterY(background.getHeight() / 2);
+        antiTrojanCircle.setFill(Color.TRANSPARENT);
+        antiTrojanCircle.setStroke(Color.BLUE);
+        antiTrojanCircle.setStrokeWidth(30);
+        antiTrojanCircle.setRadius(0);
+
+        antiTrojanTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                antiTrojanCircle.setRadius(antiTrojanCircle.getRadius() + 2);
+                antiTrojanCircle.setOpacity(1 - (antiTrojanCircle.getRadius() / SystemNode.getAntiTrojanRadius()));
+                if (antiTrojanCircle.getRadius() > SystemNode.getAntiTrojanRadius()) {
+                    antiTrojanCircle.setRadius(0);
+                    antiTrojanCircle.setOpacity(1);
+                }
+            }
+        };
+        antiTrojanTimer.start();
+    }
+
+    public void switchAntiTrojan(boolean isActive) {
+        if (isActive) {
+            antiTrojanTimer.start();
+        } else {
+            antiTrojanTimer.stop();
+            antiTrojanCircle.setRadius(0);
+        }
     }
 
     public void switchIndicator(boolean isReady, boolean isActive) {

@@ -931,11 +931,28 @@ public class GameController extends BaseController {
                     if (packetView.getPacket().getDeviatedLocation().distance(location) < SystemNode.getAntiTrojanRadius()) {
                         packetView.getPacket().setTrojan(false);
                         packetView.update();
-                        node.deactivate();
+                        handleActivation(node);
                     }
                 }
             }
         }
+    }
+
+    private void handleActivation(SystemNode node) {
+        SystemNodeView nodeView = nodeToView.get(node);
+        node.deactivate();
+        nodeView.switchAntiTrojan(false);
+        nodeView.switchIndicator(node.isReady(), node.isActive());
+
+        PauseTransition pauseTransition = new PauseTransition(Duration.seconds(2));
+        pauseTransition.setOnFinished(event -> {
+            node.activate();
+            nodeView.switchAntiTrojan(true);
+            nodeView.switchIndicator(node.isReady(), node.isActive());
+        });
+        pauseTransition.play();
+
+
     }
 
 }
