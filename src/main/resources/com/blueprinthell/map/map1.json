@@ -63,7 +63,7 @@
             "isActive": false
         },
         {
-            "systemType": "SABOTEUR",
+            "systemType": "SPY",
             "id": 4,
             "location": { "X": 1500, "Y": 800 },
             "inputPorts": [
@@ -138,5 +138,5 @@
         }
     ],
     "wires": [],
-    "maxWireLength": 4000
+    "maxWireLength": 10000
 }

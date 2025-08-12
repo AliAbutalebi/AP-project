@@ -444,6 +444,7 @@ public class GameController extends BaseController {
     }
 
     private void movePacketOnWire(Packet packet, double deltaTime) {
+        System.out.println(packet.getId());
         calculateNewDistance(packet, deltaTime);
         double progress = packet.getDistanceOnWire() / packet.getCurrentWire().getLength();
         Point2D newLocation = packet.getCurrentWire().interpolate(progress);
@@ -802,10 +803,17 @@ public class GameController extends BaseController {
         ArrayList<SystemNode> candidates =  new ArrayList<>(spySystemNodes);
         candidates.remove(packet.getParentSystemNode());
         Random random = new Random();
+        SystemNode source = packet.getParentSystemNode();
         SystemNode destination = candidates.get(random.nextInt(candidates.size()));
         packet.getParentSystemNode().getPacketQueue().remove(packet);
         packet.setParentSystemNode(destination);
+
+        packet.getParentSystemNode().getPacketQueue().remove(packet);
+        packet.setParentSystemNode(destination);
         destination.getPacketQueue().add(packet);
+
+        nodeToView.get(source).update();
+        nodeToView.get(destination).update();
     }
 
     private void setupMessagesPane() {

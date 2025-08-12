@@ -12,7 +12,7 @@ public class Packet {
     private int id;
     private boolean isProtected = false;
     private SystemNode protector;
-    private boolean isTrojan = false;
+    private boolean isTrojan = true;
     private double currentSpeed = BASE_SPEED;
     private int noise = 0;
     private double distanceOnWire;
