@@ -406,6 +406,7 @@ public class GameController extends BaseController {
                     packet.setOnWire(true);
                     packet.setCurrentWire(selectedOutputPort.getConnectedWire());
                     packet.setDistanceOnWire(0);
+                    packet.setCurrentSpeed(packet.getBaseSpeed());
 
                     nodeToView.get(packet.getCurrentWire().getSourcePort().getParentSystemNode()).update();
 
@@ -491,7 +492,8 @@ public class GameController extends BaseController {
 
                     logger.info("Packet " + packet.getId() + " arrived at system " + nodeView.getSystemNode().getId() + " using port " + packet.getCurrentWire().getDestinationPort().getId() + ".");
 
-                    packet.setCurrentSpeed(Packet.getBaseSpeed());
+                    if (packet.hasIllegalSpeed()) handleDeactivation(nodeView.getSystemNode());
+
                     packet.setOnWire(false);
                     packet.getCurrentWire().setPacketOnWire(null);
                     packet.setCurrentWire(null);
@@ -505,6 +507,7 @@ public class GameController extends BaseController {
 
                     packet.getParentSystemNode().receivePacket(packet);
                     handleArrivalBehavior(packet);
+
 
                     soundEffectManager.play("packet-arrival");
                 } else {
@@ -875,7 +878,7 @@ public class GameController extends BaseController {
             packetView.getPacket().setLocation(new Point2D(0, 0));
             packetView.getPacket().setDeviation(new Point2D(0, 0));
             packetView.getPacket().setReceived(false);
-            packetView.getPacket().setCurrentSpeed(Packet.getBaseSpeed());
+            packetView.getPacket().setCurrentSpeed(packetView.getPacket().getBaseSpeed());
 
 
             packetView.update();
@@ -937,14 +940,14 @@ public class GameController extends BaseController {
                     if (packetView.getPacket().getDeviatedLocation().distance(location) < SystemNode.getAntiTrojanRadius()) {
                         packetView.getPacket().setTrojan(false);
                         packetView.update();
-                        handleActivation(node);
+                        handleDeactivation(node);
                     }
                 }
             }
         }
     }
 
-    private void handleActivation(SystemNode node) {
+    private void handleDeactivation(SystemNode node) {
         SystemNodeView nodeView = nodeToView.get(node);
         node.deactivate();
         nodeView.switchAntiTrojan(false);
