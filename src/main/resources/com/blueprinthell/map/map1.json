@@ -126,7 +126,7 @@
         },
         {
             "id": 4,
-            "shapeType": "SQUARE",
+            "shapeType": "LARGE_ONE",
             "alive": true,
             "protected": false,
             "noise": 0,

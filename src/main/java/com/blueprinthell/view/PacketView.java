@@ -32,11 +32,18 @@ public class PacketView extends Polygon {
     private void setupShape() {
         if (packet.isProtected()) createProtected();
         else if (packet.isTrojan()) createTrojan();
-        else if (packet.getShapeType() == ShapeType.SQUARE) createSquare();
-        else if (packet.getShapeType() == ShapeType.TRIANGLE) createTriangle();
-        else if (packet.getShapeType() == ShapeType.HEXAGON) createHexagon();
-        else if (packet.getShapeType() == ShapeType.CONFIDENTIAL_ONE) createConfidentialOne();
-        else if (packet.getShapeType() == ShapeType.CONFIDENTIAL_TWO) createConfidentialTwo();
+        else {
+            switch (packet.getShapeType()) {
+                case SQUARE -> createSquare();
+                case TRIANGLE -> createTriangle();
+                case HEXAGON -> createHexagon();
+                case CONFIDENTIAL_ONE -> createConfidentialOne();
+                case CONFIDENTIAL_TWO -> createConfidentialTwo();
+                case LARGE_ONE -> createLargeOne();
+                case LARGE_TWO -> createLargeTwo();
+            }
+        }
+
     }
 
     public void update() {
@@ -106,6 +113,18 @@ public class PacketView extends Polygon {
 
     private void createConfidentialTwo() {
         Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/confidential-two.png").toURI().toString(), PACKET_SIZE, PACKET_SIZE, true, true);
+        getPoints().addAll(polygonizer.polygonize(pattern, PACKET_SIZE).getPoints());
+        setFill(new ImagePattern(pattern));
+    }
+
+    private void createLargeOne() {
+        Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/large-one.png").toURI().toString(), PACKET_SIZE, PACKET_SIZE, true, true);
+        getPoints().addAll(polygonizer.polygonize(pattern, PACKET_SIZE).getPoints());
+        setFill(new ImagePattern(pattern));
+    }
+
+    private void createLargeTwo() {
+        Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/large-two.png").toURI().toString(), PACKET_SIZE, PACKET_SIZE, true, true);
         getPoints().addAll(polygonizer.polygonize(pattern, PACKET_SIZE).getPoints());
         setFill(new ImagePattern(pattern));
     }

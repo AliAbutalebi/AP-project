@@ -11,7 +11,7 @@ public class Packet {
     private int id;
     private boolean isProtected = false;
     private SystemNode protector;
-    private boolean isTrojan = true;
+    private boolean isTrojan = false;
     private boolean passedIncompatiblePort = false;
     private double currentSpeed = BASE_SPEED;
     private int noise = 0;
@@ -201,6 +201,8 @@ public class Packet {
             case HEXAGON -> size = 1;
             case CONFIDENTIAL_ONE -> size = 4;
             case CONFIDENTIAL_TWO -> size = 6;
+            case LARGE_ONE -> size = 8;
+            case LARGE_TWO -> size = 10;
         }
         if (isProtected) return size * 2;
         return size;
