@@ -166,8 +166,7 @@ public class GameController extends BaseController {
             }
             if (nodeView.getSystemNode().getSystemType() == SystemType.SPY) {
                 spySystemNodes.add(nodeView.getSystemNode());
-            }
-            else if (nodeView.getSystemNode().getSystemType() == SystemType.ANTI_TROJAN) {
+            } else if (nodeView.getSystemNode().getSystemType() == SystemType.ANTI_TROJAN) {
                 antiTrojansSystemNodes.add(nodeView.getSystemNode());
             }
 
@@ -429,7 +428,7 @@ public class GameController extends BaseController {
         if (node.getSystemType() != SystemType.SABOTEUR) {
             for (Port outputPort : node.getOutputPorts()) {
                 if (outputPort.getConnectedWire() != null) {
-                    if (outputPort.getConnectedWire().getPacketOnWire() == null) {
+                    if (outputPort.getConnectedWire().getPacketOnWire() == null && outputPort.getConnectedWire().getDestinationPort().getParentSystemNode().isActive()) {
                         if (outputPort.getShapeType() == packet.getShapeType()) return outputPort;
                     }
                 }
@@ -437,14 +436,14 @@ public class GameController extends BaseController {
         }
         for (Port outputPort : node.getOutputPorts()) {
             if (outputPort.getConnectedWire() != null) {
-                if (outputPort.getConnectedWire().getPacketOnWire() == null) return outputPort;
+                if (outputPort.getConnectedWire().getPacketOnWire() == null && outputPort.getConnectedWire().getDestinationPort().getParentSystemNode().isActive())
+                    return outputPort;
             }
         }
         return null;
     }
 
     private void movePacketOnWire(Packet packet, double deltaTime) {
-        System.out.println(packet.getId());
         calculateNewDistance(packet, deltaTime);
         double progress = packet.getDistanceOnWire() / packet.getCurrentWire().getLength();
         Point2D newLocation = packet.getCurrentWire().interpolate(progress);
@@ -791,8 +790,7 @@ public class GameController extends BaseController {
                 if (packet.isProtected()) return;
                 else if (shapeType == ShapeType.CONFIDENTIAL_ONE || shapeType == ShapeType.CONFIDENTIAL_TWO) {
                     packetLoss(packet);
-                }
-                else {
+                } else {
                     spyMigrate(packet);
                 }
             }
@@ -800,7 +798,7 @@ public class GameController extends BaseController {
     }
 
     private void spyMigrate(Packet packet) {
-        ArrayList<SystemNode> candidates =  new ArrayList<>(spySystemNodes);
+        ArrayList<SystemNode> candidates = new ArrayList<>(spySystemNodes);
         candidates.remove(packet.getParentSystemNode());
         Random random = new Random();
         SystemNode source = packet.getParentSystemNode();
@@ -952,7 +950,7 @@ public class GameController extends BaseController {
         nodeView.switchAntiTrojan(false);
         nodeView.switchIndicator(node.isReady(), node.isActive());
 
-        PauseTransition pauseTransition = new PauseTransition(Duration.seconds(2));
+        PauseTransition pauseTransition = new PauseTransition(Duration.seconds(5));
         pauseTransition.setOnFinished(event -> {
             node.activate();
             nodeView.switchAntiTrojan(true);
