@@ -94,7 +94,10 @@ public class SystemNode {
     public void receivePacket(Packet packet) {
         switch (systemType) {
             case SABOTEUR -> {
-                if (packet.isProtected()) return;
+                if (packet.isProtected()) {
+                    packet.setProtected(false);
+                    return;
+                }
                 if (packet.getNoise() == 0) {
                     packet.setNoise(1);
                 }

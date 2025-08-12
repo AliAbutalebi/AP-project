@@ -508,9 +508,9 @@ public class GameController extends BaseController {
                     }
 
                     packet.getParentSystemNode().receivePacket(packet);
+                    packetToView.get(packet).update();
                     handleArrivalBehavior(packet);
-
-
+                    
                     soundEffectManager.play("packet-arrival");
                 } else {
                     packetLoss(packet);
