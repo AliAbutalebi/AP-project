@@ -12,6 +12,7 @@ public class Packet {
     private boolean isProtected = false;
     private SystemNode protector;
     private boolean isTrojan = true;
+    private boolean passedIncompatiblePort = false;
     private double currentSpeed = BASE_SPEED;
     private int noise = 0;
     private double distanceOnWire;
@@ -85,6 +86,14 @@ public class Packet {
         this.isAlive = isAlive;
     }
 
+    public void setPassedIncompatiblePort(boolean passedIncompatiblePort) {
+        this.passedIncompatiblePort = passedIncompatiblePort;
+    }
+
+    public boolean isPassedIncompatiblePort() {
+        return passedIncompatiblePort;
+    }
+
     public Point2D getLocation() {
         return location;
     }
@@ -97,7 +106,8 @@ public class Packet {
         return new Point2D(location.getX() + deviation.getX(), location.getY() + deviation.getY());
     }
 
-    public static double getBaseSpeed() {
+    public double getBaseSpeed() {
+        if (passedIncompatiblePort) return BASE_SPEED * 2;
         return BASE_SPEED;
     }
 

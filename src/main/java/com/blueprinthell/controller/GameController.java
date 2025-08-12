@@ -457,9 +457,9 @@ public class GameController extends BaseController {
     private void calculateNewDistance(Packet packet, double deltaTime) {
         double deltaDistance = 0;
         if (packet.getShapeType() == packet.getCurrentWire().getSourcePort().getShapeType()) {
-            deltaDistance = Packet.getBaseSpeed() * deltaTime;
+            deltaDistance = packet.getBaseSpeed() * deltaTime;
         } else if (packet.getShapeType() == ShapeType.SQUARE) {
-            deltaDistance = Packet.getBaseSpeed() / 2 * deltaTime;
+            deltaDistance = packet.getBaseSpeed() / 2 * deltaTime;
         } else if (packet.getShapeType() == ShapeType.TRIANGLE) {
             deltaDistance = packet.getCurrentSpeed() * deltaTime;
             packet.setCurrentSpeed(packet.getCurrentSpeed() + packet.getAcceleration() * deltaTime);
@@ -493,6 +493,8 @@ public class GameController extends BaseController {
                     logger.info("Packet " + packet.getId() + " arrived at system " + nodeView.getSystemNode().getId() + " using port " + packet.getCurrentWire().getDestinationPort().getId() + ".");
 
                     if (packet.hasIllegalSpeed()) handleDeactivation(nodeView.getSystemNode());
+
+                    packet.setPassedIncompatiblePort(packet.getCurrentWire().getDestinationPort().getShapeType() != packet.getShapeType());
 
                     packet.setOnWire(false);
                     packet.getCurrentWire().setPacketOnWire(null);
