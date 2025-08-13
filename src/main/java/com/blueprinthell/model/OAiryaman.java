@@ -28,6 +28,16 @@ public class OAiryaman implements ShopItem{
     }
 
     @Override
+    public double getDuration() {
+        return 0;
+    }
+
+    @Override
+    public double getCooldown() {
+        return 0;
+    }
+
+    @Override
     public String getDescription() {
         return "Disables packet collisions in the network for 5 seconds.";
     }

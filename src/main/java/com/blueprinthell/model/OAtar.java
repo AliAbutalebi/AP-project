@@ -28,6 +28,16 @@ public class OAtar implements ShopItem {
     }
 
     @Override
+    public double getDuration() {
+        return 0;
+    }
+
+    @Override
+    public double getCooldown() {
+        return 0;
+    }
+
+    @Override
     public String getDescription() {
         return "Disables the effect of Impact Waves for 10 seconds.";
     }

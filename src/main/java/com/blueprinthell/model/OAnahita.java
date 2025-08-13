@@ -26,6 +26,16 @@ public class OAnahita implements ShopItem{
     }
 
     @Override
+    public double getDuration() {
+        return 0;
+    }
+
+    @Override
+    public double getCooldown() {
+        return 0;
+    }
+
+    @Override
     public String getDescription() {
         return "Sets the noise level of all current packets in the network to zero.";
     }
