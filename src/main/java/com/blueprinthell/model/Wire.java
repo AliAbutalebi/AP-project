@@ -5,10 +5,10 @@ import javafx.geometry.Point2D;
 import java.util.ArrayList;
 
 public class Wire {
-    private int id;
+    private final int id;
+    private static int lastId = 0;
     private Port sourcePort;
     private Port destinationPort;
-    private ShapeType shapeType;
     private double length;
     private Packet packetOnWire;
     private Point2D startLocation;
@@ -18,10 +18,7 @@ public class Wire {
     public Wire(Point2D startLocation, Point2D endLocation) {
         this.startLocation = startLocation;
         this.endLocation = endLocation;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        id = lastId++;
     }
 
     public int getId() {
