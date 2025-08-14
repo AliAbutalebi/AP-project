@@ -14,6 +14,7 @@ public class Wire {
     private Point2D startLocation;
     private Point2D endLocation;
     private ArrayList<Point2D> controlPoints;
+    private int passedLargePackets = 0;
 
     public Wire(Point2D startLocation, Point2D endLocation) {
         this.startLocation = startLocation;
@@ -112,4 +113,11 @@ public class Wire {
         return new Point2D(newX, newY);
     }
 
+    public int getPassedLargePackets() {
+        return passedLargePackets;
+    }
+
+    public void setPassedLargePackets(int passedLargePackets) {
+        this.passedLargePackets = passedLargePackets;
+    }
 }

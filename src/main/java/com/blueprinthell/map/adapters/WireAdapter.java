@@ -23,6 +23,7 @@ public class WireAdapter extends TypeAdapter<Wire> {
             point2DAdapter.write(out, point);
         }
         out.endArray();
+        out.name("passedLargePackets").value(wire.getPassedLargePackets());
     }
 
     @Override
