@@ -67,7 +67,7 @@ public class SaveManager extends Thread {
         currentMap = map;
     }
 
-    public JsonArray nodesToJson() {
+    private JsonArray nodesToJson() {
         JsonArray systemNodes = new JsonArray();
         for (SystemNode node : currentMap.getSystemNodes()) {
             systemNodes.add(gson.toJsonTree(node, SystemNode.class));
@@ -75,7 +75,7 @@ public class SaveManager extends Thread {
         return systemNodes;
     }
 
-    public JsonArray packetsToJson() {
+    private JsonArray packetsToJson() {
         JsonArray packets = new JsonArray();
         for (Packet packet : currentMap.getActivePackets()) {
             packets.add(gson.toJsonTree(packet, Packet.class));
@@ -83,7 +83,7 @@ public class SaveManager extends Thread {
         return packets;
     }
 
-    public JsonArray wiresToJson() {
+    private JsonArray wiresToJson() {
         JsonArray wires = new JsonArray();
         for (Wire wire : currentMap.getWires()) {
             wires.add(gson.toJsonTree(wire, Wire.class));
@@ -91,7 +91,7 @@ public class SaveManager extends Thread {
         return wires;
     }
 
-    public JsonPrimitive maxWireLengthToJson() {
+    private JsonPrimitive maxWireLengthToJson() {
         return new JsonPrimitive(currentMap.getMaxWireLength());
     }
 
