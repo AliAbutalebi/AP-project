@@ -13,7 +13,7 @@ public class Wire {
     private Packet packetOnWire;
     private Point2D startLocation;
     private Point2D endLocation;
-    private ArrayList<Point2D> controlPoints;
+    private ArrayList<Point2D> controlPoints = new ArrayList<>();
     private int passedLargePackets = 0;
 
     public Wire(Point2D startLocation, Point2D endLocation) {

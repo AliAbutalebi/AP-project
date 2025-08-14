@@ -4,6 +4,7 @@ import com.blueprinthell.audio.MusicPlayer;
 import com.blueprinthell.audio.SoundEffectManager;
 import com.blueprinthell.log.Logger;
 import com.blueprinthell.map.MapLoader;
+import com.blueprinthell.map.SaveManager;
 import com.blueprinthell.model.*;
 import com.blueprinthell.view.*;
 import javafx.animation.*;
@@ -62,6 +63,8 @@ public class GameController extends BaseController {
 
     private static final MusicPlayer musicPlayer = MusicPlayer.getInstance();
     private static final SoundEffectManager soundEffectManager = SoundEffectManager.getInstance();
+
+    private static final SaveManager saveManager = SaveManager.getInstance();
 
     private static final OAtar oAtar = OAtar.getInstance();
     private static final OAiryaman oAiryaman = OAiryaman.getInstance();
@@ -147,6 +150,8 @@ public class GameController extends BaseController {
     public void setGameMap(GameMap gameMap) {
         this.gameMap = gameMap;
         renderInitialMap();
+        saveManager.setCurrentMap(gameMap);
+
     }
 
     private void renderInitialMap() {
@@ -201,6 +206,8 @@ public class GameController extends BaseController {
         topBarView.getShopButton().setDisable(false);
         topBarView.getTemporalProgressSlider().setDisable(true);
         topBarView.getTemporalProgressSlider().setValue(0);
+
+        saveManager.start();
     }
 
     private void update(double deltaTime) {
@@ -510,7 +517,7 @@ public class GameController extends BaseController {
                     packet.getCurrentSystemNode().receivePacket(packet);
                     packetToView.get(packet).update();
                     handleArrivalBehavior(packet);
-                    
+
                     soundEffectManager.play("packet-arrival");
                 } else {
                     packetLoss(packet);

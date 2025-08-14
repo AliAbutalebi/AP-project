@@ -8,8 +8,6 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 
-import
-
 public class SystemNodeAdapter extends TypeAdapter<SystemNode> {
 
     Point2DAdapter point2DAdapter = new Point2DAdapter();

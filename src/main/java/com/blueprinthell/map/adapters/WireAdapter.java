@@ -17,13 +17,18 @@ public class WireAdapter extends TypeAdapter<Wire> {
         out.name("id").value(wire.getId());
         out.name("sourcePortId").value(wire.getSourcePort().getId());
         out.name("destinationPortId").value(wire.getDestinationPort().getId());
-        out.name("packetOnWireId").value(wire.getPacketOnWire().getId());
+
+        out.name("packetOnWireId");
+        if (wire.getPacketOnWire() != null) out.value(wire.getPacketOnWire().getId());
+        else out.nullValue();
+
         out.name("controlPoints").beginArray();
         for (Point2D point : wire.getControlPoints()) {
             point2DAdapter.write(out, point);
         }
         out.endArray();
         out.name("passedLargePackets").value(wire.getPassedLargePackets());
+        out.endObject();
     }
 
     @Override

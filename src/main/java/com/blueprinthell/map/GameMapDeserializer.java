@@ -140,7 +140,7 @@ public class GameMapDeserializer implements JsonDeserializer<GameMap> {
         for (JsonElement portElement : portArray) {
             JsonObject obj = portElement.getAsJsonObject();
             boolean isInput = obj.get("isInput").getAsBoolean();
-            int parentSystemId = obj.get("parentSystemId").getAsInt();
+            int parentSystemId = obj.get("parentSystemNodeId").getAsInt();
             int id = obj.get("id").getAsInt();
             boolean occupied = obj.get("occupied").getAsBoolean();
 
