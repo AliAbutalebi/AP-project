@@ -70,7 +70,7 @@ public class GameMapDeserializer implements JsonDeserializer<GameMap> {
                 packet.setProtected(p.get("protected").getAsBoolean());
                 packet.setNoise(p.get("noise").getAsInt());
                 packet.setCurrentSpeed(p.get("currentSpeed").getAsDouble());
-                packet.setDistanceOnWire(p.get("progressOnWire").getAsDouble());
+                packet.setProgressOnWire(p.get("progressOnWire").getAsDouble());
 
                 boolean onWire = p.get("onWire").getAsBoolean();
                 packet.setOnWire(onWire);
@@ -79,11 +79,11 @@ public class GameMapDeserializer implements JsonDeserializer<GameMap> {
                     packet.setCurrentWire(null);
                 }
 
-                int systemNodeId = p.get("locationSystemNodeId").getAsInt();
+                int systemNodeId = p.get("currentSystemNodeId").getAsInt();
                 SystemNode node = idToSystemNode.get(systemNodeId);
                 if (node != null) {
                     node.getPacketQueue().add(packet);
-                    packet.setParentSystemNode(node);
+                    packet.setCurrentSystemNode(node);
                 }
 
                 activePackets.add(packet);
@@ -117,7 +117,7 @@ public class GameMapDeserializer implements JsonDeserializer<GameMap> {
                 }
 
                 Wire wire = new Wire(start, end);
-                wire.setId(wireId);
+                // wire.setId(wireId);
                 wire.setSourcePort(sourcePort);
                 wire.setDestinationPort(destinationPort);
 

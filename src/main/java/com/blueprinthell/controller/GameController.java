@@ -399,13 +399,13 @@ public class GameController extends BaseController {
             if (packet != null && !packet.isReceived()) {
                 Port selectedOutputPort = findPort(node, packet);
                 if (selectedOutputPort != null) {
-                    packet.getParentSystemNode().getPacketQueue().remove(packet);
-                    packet.getParentSystemNode().sendPacket(packet);
-                    packet.setParentSystemNode(null);
+                    packet.getCurrentSystemNode().getPacketQueue().remove(packet);
+                    packet.getCurrentSystemNode().sendPacket(packet);
+                    packet.setCurrentSystemNode(null);
 
                     packet.setOnWire(true);
                     packet.setCurrentWire(selectedOutputPort.getConnectedWire());
-                    packet.setDistanceOnWire(0);
+                    packet.setProgressOnWire(0);
                     packet.setCurrentSpeed(packet.getBaseSpeed());
 
                     nodeToView.get(packet.getCurrentWire().getSourcePort().getParentSystemNode()).update();
@@ -446,7 +446,7 @@ public class GameController extends BaseController {
 
     private void movePacketOnWire(Packet packet, double deltaTime) {
         calculateNewDistance(packet, deltaTime);
-        double progress = packet.getDistanceOnWire() / packet.getCurrentWire().getLength();
+        double progress = packet.getProgressOnWire() / packet.getCurrentWire().getLength();
         Point2D newLocation = packet.getCurrentWire().interpolate(progress);
         packet.setLocation(newLocation);
         packetToView.get(packet).update();
@@ -464,17 +464,17 @@ public class GameController extends BaseController {
             deltaDistance = packet.getCurrentSpeed() * deltaTime;
             packet.setCurrentSpeed(packet.getCurrentSpeed() + packet.getAcceleration() * deltaTime);
         }
-        packet.setDistanceOnWire(packet.getDistanceOnWire() + deltaDistance);
+        packet.setProgressOnWire(packet.getProgressOnWire() + deltaDistance);
     }
 
     private void checkArrivals() {
         ArrayList<Packet> arrived = new ArrayList<>();
         for (Packet packet : movingPackets) {
-            if (packet.getDistanceOnWire() >= packet.getCurrentWire().getLength()) {
+            if (packet.getProgressOnWire() >= packet.getCurrentWire().getLength()) {
                 if (packet.getCurrentWire().getDestinationPort().getParentSystemNode().getPacketQueue().size() < SystemNode.getQueueCapacity()) {
                     arrived.add(packet);
 
-                    packet.setParentSystemNode(packet.getCurrentWire().getDestinationPort().getParentSystemNode());
+                    packet.setCurrentSystemNode(packet.getCurrentWire().getDestinationPort().getParentSystemNode());
                     packet.getCurrentWire().getDestinationPort().getParentSystemNode().getPacketQueue().add(packet);
 
                     packet.getCurrentWire().getDestinationPort().receivePacket(packet);
@@ -499,15 +499,15 @@ public class GameController extends BaseController {
                     packet.setOnWire(false);
                     packet.getCurrentWire().setPacketOnWire(null);
                     packet.setCurrentWire(null);
-                    packet.setDistanceOnWire(0);
+                    packet.setProgressOnWire(0);
                     hud.addCoins(packet.getPacketCoins());
                     hudView.update();
 
-                    if (packet.getParentSystemNode().getSystemType() == SystemType.REFERENCE && !scrubbing) {
+                    if (packet.getCurrentSystemNode().getSystemType() == SystemType.REFERENCE && !scrubbing) {
                         handleWin();
                     }
 
-                    packet.getParentSystemNode().receivePacket(packet);
+                    packet.getCurrentSystemNode().receivePacket(packet);
                     packetToView.get(packet).update();
                     handleArrivalBehavior(packet);
                     
@@ -790,7 +790,7 @@ public class GameController extends BaseController {
 
     private void handleArrivalBehavior(Packet packet) {
         ShapeType shapeType = packet.getShapeType();
-        switch (packet.getParentSystemNode().getSystemType()) {
+        switch (packet.getCurrentSystemNode().getSystemType()) {
             case SPY -> {
                 if (packet.isProtected()) return;
                 else if (shapeType == ShapeType.CONFIDENTIAL_ONE || shapeType == ShapeType.CONFIDENTIAL_TWO) {
@@ -804,15 +804,15 @@ public class GameController extends BaseController {
 
     private void spyMigrate(Packet packet) {
         ArrayList<SystemNode> candidates = new ArrayList<>(spySystemNodes);
-        candidates.remove(packet.getParentSystemNode());
+        candidates.remove(packet.getCurrentSystemNode());
         Random random = new Random();
-        SystemNode source = packet.getParentSystemNode();
+        SystemNode source = packet.getCurrentSystemNode();
         SystemNode destination = candidates.get(random.nextInt(candidates.size()));
-        packet.getParentSystemNode().getPacketQueue().remove(packet);
-        packet.setParentSystemNode(destination);
+        packet.getCurrentSystemNode().getPacketQueue().remove(packet);
+        packet.setCurrentSystemNode(destination);
 
-        packet.getParentSystemNode().getPacketQueue().remove(packet);
-        packet.setParentSystemNode(destination);
+        packet.getCurrentSystemNode().getPacketQueue().remove(packet);
+        packet.setCurrentSystemNode(destination);
         destination.getPacketQueue().add(packet);
 
         nodeToView.get(source).update();
@@ -855,9 +855,9 @@ public class GameController extends BaseController {
     private void resetGame() {
 
         for (PacketView packetView : packetViews) {
-            if (packetView.getPacket().getParentSystemNode() != null) {
-                packetView.getPacket().getParentSystemNode().getPacketQueue().remove(packetView.getPacket());
-                nodeToView.get(packetView.getPacket().getParentSystemNode()).update();
+            if (packetView.getPacket().getCurrentSystemNode() != null) {
+                packetView.getPacket().getCurrentSystemNode().getPacketQueue().remove(packetView.getPacket());
+                nodeToView.get(packetView.getPacket().getCurrentSystemNode()).update();
             }
 
             if (movingPackets.contains(packetView.getPacket())) {
@@ -867,7 +867,7 @@ public class GameController extends BaseController {
 
             packetView.getPacket().setNoise(0);
 
-            packetView.getPacket().setParentSystemNode(referenceSystemNode);
+            packetView.getPacket().setCurrentSystemNode(referenceSystemNode);
             referenceSystemNode.getPacketQueue().add(packetView.getPacket());
             nodeToView.get(referenceSystemNode).update();
 
@@ -876,7 +876,7 @@ public class GameController extends BaseController {
             }
 
             packetView.getPacket().setCurrentWire(null);
-            packetView.getPacket().setDistanceOnWire(0);
+            packetView.getPacket().setProgressOnWire(0);
             packetView.getPacket().setLocation(new Point2D(0, 0));
             packetView.getPacket().setDeviation(new Point2D(0, 0));
             packetView.getPacket().setReceived(false);

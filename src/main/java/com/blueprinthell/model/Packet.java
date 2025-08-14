@@ -15,14 +15,14 @@ public class Packet {
     private boolean passedIncompatiblePort = false;
     private double currentSpeed = BASE_SPEED;
     private int noise = 0;
-    private double distanceOnWire;
+    private double progressOnWire;
     private ShapeType shapeType;
     private boolean onWire;
     private Wire currentWire;
     private boolean isAlive = true;
     private Point2D deviation = new Point2D(0, 0);
     private Point2D location = new Point2D(0, 0);
-    private SystemNode parentSystemNode;
+    private SystemNode currentSystemNode;
     private boolean colliding = false;
     private boolean received = false;
 
@@ -46,12 +46,12 @@ public class Packet {
         this.noise = noise;
     }
 
-    public double getDistanceOnWire() {
-        return distanceOnWire;
+    public double getProgressOnWire() {
+        return progressOnWire;
     }
 
-    public void setDistanceOnWire(double distanceOnWire) {
-        this.distanceOnWire = distanceOnWire;
+    public void setProgressOnWire(double progressOnWire) {
+        this.progressOnWire = progressOnWire;
     }
 
     public Point2D getDeviation() {
@@ -142,12 +142,12 @@ public class Packet {
          return getSize();
     }
 
-    public SystemNode getParentSystemNode() {
-        return parentSystemNode;
+    public SystemNode getCurrentSystemNode() {
+        return currentSystemNode;
     }
 
-    public void setParentSystemNode(SystemNode parentSystemNode) {
-        this.parentSystemNode = parentSystemNode;
+    public void setCurrentSystemNode(SystemNode currentSystemNode) {
+        this.currentSystemNode = currentSystemNode;
     }
 
     public boolean isColliding() {

@@ -83,12 +83,12 @@ public class Port {
     }
 
     public void sendPacket(Packet packet) {
-        packet.setParentSystemNode(null);
+        packet.setCurrentSystemNode(null);
         getConnectedWire().setPacketOnWire(packet);
     }
 
     public void receivePacket(Packet packet) {
-        packet.setParentSystemNode(getParentSystemNode());
+        packet.setCurrentSystemNode(getParentSystemNode());
         getConnectedWire().setPacketOnWire(null);
     }
 }
