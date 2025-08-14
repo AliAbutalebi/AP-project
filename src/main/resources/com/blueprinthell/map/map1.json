@@ -13,7 +13,7 @@
                 { "shapeType": "SQUARE",   "id": 4,  "isInput": false, "occupied": false, "parentSystemId": 0 },
                 { "shapeType": "TRIANGLE", "id": 5,  "isInput": false, "occupied": false, "parentSystemId": 0 }
             ],
-            "isActive": false
+            "isActive": true
         },
         {
             "systemType": "NORMAL",
@@ -28,7 +28,7 @@
                 { "shapeType": "TRIANGLE", "id": 7,  "isInput": false, "occupied": false, "parentSystemId": 1 },
                 { "shapeType": "SQUARE",   "id": 8,  "isInput": false, "occupied": false, "parentSystemId": 1 }
             ],
-            "isActive": false
+            "isActive": true
         },
         {
             "systemType": "ANTI_TROJAN",
@@ -46,7 +46,7 @@
                 { "shapeType": "TRIANGLE", "id": 15, "isInput": false, "occupied": false, "parentSystemId": 2 },
                 { "shapeType": "SQUARE",   "id": 16, "isInput": false, "occupied": false, "parentSystemId": 2 }
             ],
-            "isActive": false
+            "isActive": true
         },
         {
             "systemType": "SPY",
@@ -60,7 +60,7 @@
                 { "shapeType": "TRIANGLE", "id": 19, "isInput": false, "occupied": false, "parentSystemId": 3 },
                 { "shapeType": "SQUARE",   "id": 20, "isInput": false, "occupied": false, "parentSystemId": 3 }
             ],
-            "isActive": false
+            "isActive": true
         },
         {
             "systemType": "SPY",
@@ -72,7 +72,7 @@
             "outputPorts": [
                 { "shapeType": "TRIANGLE", "id": 22, "isInput": false, "occupied": false, "parentSystemId": 4 }
             ],
-            "isActive": false
+            "isActive": true
         }
     ],
     "packets": [
@@ -81,60 +81,70 @@
             "shapeType": "HEXAGON",
             "alive": true,
             "protected": false,
+            "protectorId": null,
+            "trojan": false,
             "noise": 0,
             "currentSpeed": 0,
             "onWire": false,
             "progressOnWire": 0,
-            "currentWire": null,
-            "locationSystemNodeId": 0
+            "currentWireId": null,
+            "currentSystemNodeId": 0
         },
         {
             "id": 1,
             "shapeType": "CONFIDENTIAL_ONE",
             "alive": true,
             "protected": false,
+            "protectorId": null,
+            "trojan": false,
             "noise": 0,
             "currentSpeed": 0,
             "onWire": false,
             "progressOnWire": 0,
-            "currentWire": null,
-            "locationSystemNodeId": 0
+            "currentWireId": null,
+            "currentSystemNodeId": 0
         },
         {
             "id": 2,
             "shapeType": "TRIANGLE",
             "alive": true,
             "protected": false,
+            "protectorId": null,
+            "trojan": false,
             "noise": 0,
             "currentSpeed": 0,
             "onWire": false,
             "progressOnWire": 0,
-            "currentWire": null,
-            "locationSystemNodeId": 0
+            "currentWireId": null,
+            "currentSystemNodeId": 0
         },
         {
             "id": 3,
             "shapeType": "SQUARE",
             "alive": true,
-            "protected": true,
+            "protected": false,
+            "protectorId": null,
+            "trojan": false,
             "noise": 0,
             "currentSpeed": 0,
             "onWire": false,
             "progressOnWire": 0,
-            "currentWire": null,
-            "locationSystemNodeId": 0
+            "currentWireId": null,
+            "currentSystemNodeId": 0
         },
         {
             "id": 4,
             "shapeType": "LARGE_ONE",
             "alive": true,
             "protected": false,
+            "protectorId": null,
+            "trojan": false,
             "noise": 0,
             "currentSpeed": 0,
             "onWire": false,
             "progressOnWire": 0,
-            "currentWire": null,
-            "locationSystemNodeId": 0
+            "currentWireId": null,
+            "currentSystemNodeId": 0
         }
     ],
     "wires": [],
