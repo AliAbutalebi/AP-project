@@ -216,7 +216,7 @@ public class SystemNodeView extends AnchorPane {
             @Override
             public void handle(long now) {
                 antiTrojanCircle.setRadius(antiTrojanCircle.getRadius() + 2);
-                antiTrojanCircle.setOpacity(1 - (antiTrojanCircle.getRadius() / SystemNode.getAntiTrojanRadius()));
+                antiTrojanCircle.setOpacity((1 - (antiTrojanCircle.getRadius() / SystemNode.getAntiTrojanRadius())) / 2);
                 if (antiTrojanCircle.getRadius() > SystemNode.getAntiTrojanRadius()) {
                     antiTrojanCircle.setRadius(0);
                     antiTrojanCircle.setOpacity(1);

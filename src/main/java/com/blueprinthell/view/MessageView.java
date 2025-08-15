@@ -40,6 +40,7 @@ public class MessageView extends StackPane {
         label.setPrefSize(MESSAGE_WIDTH * 0.95, MESSAGE_HEIGHT * 0.9);
         label.setAlignment(Pos.CENTER);
         label.getStyleClass().add("monograf-bold");
+        label.setStyle(String.format("-fx-font-size: %.2f;", MESSAGE_HEIGHT / 4));
         label.setWrapText(true);
 
         setTimer(time);
