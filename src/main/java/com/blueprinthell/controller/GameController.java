@@ -105,7 +105,6 @@ public class GameController extends BaseController {
         setupTopBarView();
         setupShopButtons();
         resume();
-
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -356,7 +355,7 @@ public class GameController extends BaseController {
     }
 
     private boolean isInvalidConnection(Port from, Port to) {
-        return from == to || from.isInput() || !to.isInput() || from.getParentSystemId() == to.getParentSystemId() || from.isOccupied() || to.isOccupied();
+        return from == to || from.isInput() || !to.isInput() || from.getParentSystemNodeId() == to.getParentSystemNodeId() || from.isOccupied() || to.isOccupied();
     }
 
     private void removeWire(WireView wireView) {

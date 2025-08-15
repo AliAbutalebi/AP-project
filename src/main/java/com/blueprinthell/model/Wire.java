@@ -5,16 +5,21 @@ import javafx.geometry.Point2D;
 import java.util.ArrayList;
 
 public class Wire {
-    private final int id;
+    private int id;
     private static int lastId = 0;
     private Port sourcePort;
+    private int sourcePortId;
     private Port destinationPort;
+    private int destinationPortId;
     private double length;
     private Packet packetOnWire;
+    private int packetOnWireId;
     private Point2D startLocation;
     private Point2D endLocation;
     private ArrayList<Point2D> controlPoints = new ArrayList<>();
     private int passedLargePackets = 0;
+
+    public Wire() {}
 
     public Wire(Point2D startLocation, Point2D endLocation) {
         this.startLocation = startLocation;
@@ -24,6 +29,10 @@ public class Wire {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setSourcePort(Port sourcePort) {
@@ -117,5 +126,29 @@ public class Wire {
 
     public void setPassedLargePackets(int passedLargePackets) {
         this.passedLargePackets = passedLargePackets;
+    }
+
+    public int getSourcePortId() {
+        return sourcePortId;
+    }
+
+    public void setSourcePortId(int sourcePortId) {
+        this.sourcePortId = sourcePortId;
+    }
+
+    public int getDestinationPortId() {
+        return destinationPortId;
+    }
+
+    public void setDestinationPortId(int destinationPortId) {
+        this.destinationPortId = destinationPortId;
+    }
+
+    public int getPacketOnWireId() {
+        return packetOnWireId;
+    }
+
+    public void setPacketOnWireId(int packetOnWireId) {
+        this.packetOnWireId = packetOnWireId;
     }
 }

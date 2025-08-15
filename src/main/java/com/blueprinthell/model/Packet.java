@@ -11,6 +11,7 @@ public class Packet {
     private int id;
     private boolean isProtected = false;
     private SystemNode protector;
+    private int protectorId;
     private boolean isTrojan = false;
     private boolean passedIncompatiblePort = false;
     private double currentSpeed = BASE_SPEED;
@@ -19,12 +20,16 @@ public class Packet {
     private ShapeType shapeType;
     private boolean onWire;
     private Wire currentWire;
+    private int currentWireId;
     private boolean isAlive = true;
     private Point2D deviation = new Point2D(0, 0);
     private Point2D location = new Point2D(0, 0);
     private SystemNode currentSystemNode;
+    private int currentSystemNodeId;
     private boolean colliding = false;
     private boolean received = false;
+
+    public Packet() {}
 
     public Packet(ShapeType shapeType) {
         this.shapeType = shapeType;
@@ -214,6 +219,30 @@ public class Packet {
 
     public void setTrojan(boolean trojan) {
         isTrojan = trojan;
+    }
+
+    public int getCurrentSystemNodeId() {
+        return currentSystemNodeId;
+    }
+
+    public void setCurrentSystemNodeId(int currentSystemNodeId) {
+        this.currentSystemNodeId = currentSystemNodeId;
+    }
+
+    public int getProtectorId() {
+        return protectorId;
+    }
+
+    public void setProtectorId(int protectorId) {
+        this.protectorId = protectorId;
+    }
+
+    public int getCurrentWireId() {
+        return currentWireId;
+    }
+
+    public void setCurrentWireId(int currentWireId) {
+        this.currentWireId = currentWireId;
     }
 }
 

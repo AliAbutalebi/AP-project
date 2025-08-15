@@ -3,6 +3,7 @@ package com.blueprinthell.map.adapters;
 import com.blueprinthell.model.Wire;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import javafx.geometry.Point2D;
 
@@ -33,6 +34,43 @@ public class WireAdapter extends TypeAdapter<Wire> {
 
     @Override
     public Wire read(JsonReader in) throws IOException {
-        return null;
+        Wire wire = new Wire();
+
+        in.beginObject();
+        while (in.hasNext()) {
+            String name = in.nextName();
+            switch (name) {
+                case "id":
+                    wire.setId(in.nextInt());
+                    break;
+                case "sourcePortId":
+                    wire.setSourcePortId(in.nextInt());
+                    break;
+                case "destinationPortId":
+                    wire.setDestinationPortId(in.nextInt());
+                    break;
+                case "packetOnWireId": {
+                    if (in.peek() != JsonToken.NULL) wire.setPacketOnWireId(in.nextInt());
+                    else in.nextNull();
+                    break;
+                }
+                case "controlPoints": {
+                    in.beginArray();
+                    while (in.hasNext()) {
+                        wire.getControlPoints().add(point2DAdapter.read(in));
+                    }
+                    in.endArray();
+                    break;
+                }
+                case "passedLargePackets":
+                    wire.setPassedLargePackets(in.nextInt());
+                    break;
+                default:
+                    in.skipValue();
+                    break;
+            }
+        }
+        in.endObject();
+        return wire;
     }
 }

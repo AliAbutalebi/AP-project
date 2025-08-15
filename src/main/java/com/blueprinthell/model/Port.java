@@ -8,14 +8,17 @@ public class Port {
     private ShapeType shapeType;
     private boolean occupied = false;
     private Wire connectedWire;
-    private int parentSystemId;
+    private int connectedWireId;
+    private int parentSystemNodeId;
     private SystemNode parentSystemNode;
     private Point2D location;
+
+    public Port() {}
 
     public Port(boolean isInput, ShapeType shapeType, int parentSystemId) {
         this.isInput = isInput;
         this.shapeType = shapeType;
-        this.parentSystemId = parentSystemId;
+        this.parentSystemNodeId = parentSystemId;
     }
 
     public void setId(int id) {
@@ -50,12 +53,12 @@ public class Port {
         return connectedWire;
     }
 
-    public void setParentSystemId(int parentSystemId) {
-        this.parentSystemId = parentSystemId;
+    public void setParentSystemNodeId(int parentSystemNodeId) {
+        this.parentSystemNodeId = parentSystemNodeId;
     }
 
-    public int getParentSystemId() {
-        return parentSystemId;
+    public int getParentSystemNodeId() {
+        return parentSystemNodeId;
     }
 
     public void setParentSystemNode(SystemNode parentSystemNode) {
@@ -90,6 +93,14 @@ public class Port {
     public void receivePacket(Packet packet) {
         packet.setCurrentSystemNode(getParentSystemNode());
         getConnectedWire().setPacketOnWire(null);
+    }
+
+    public int getConnectedWireId() {
+        return connectedWireId;
+    }
+
+    public void setConnectedWireId(int connectedWireId) {
+        this.connectedWireId = connectedWireId;
     }
 }
 

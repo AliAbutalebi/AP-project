@@ -2,6 +2,7 @@ package com.blueprinthell.map.adapters;
 
 import com.blueprinthell.model.Port;
 import com.blueprinthell.model.SystemNode;
+import com.blueprinthell.model.SystemType;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
@@ -39,6 +40,46 @@ public class SystemNodeAdapter extends TypeAdapter<SystemNode> {
 
     @Override
     public SystemNode read(JsonReader in) throws IOException {
-        return null;
+        SystemNode systemNode = new SystemNode();
+
+        in.beginObject();
+        while (in.hasNext()) {
+            String name = in.nextName();
+            switch (name) {
+                case "systemType":
+                    systemNode.setSystemType(SystemType.valueOf(in.nextString()));
+                    break;
+                case "id":
+                    systemNode.setId(in.nextInt());
+                    break;
+                case "location":
+                    systemNode.setLocation(point2DAdapter.read(in));
+                    break;
+                case "inputPorts": {
+                    in.beginArray();
+                    while (in.hasNext()) {
+                        systemNode.getInputPorts().add(portAdapter.read(in));
+                    }
+                    in.endArray();
+                    break;
+                }
+                case "outputPorts": {
+                    in.beginArray();
+                    while (in.hasNext()) {
+                        systemNode.getOutputPorts().add(portAdapter.read(in));
+                    }
+                    in.endArray();
+                    break;
+                }
+                case "isActive":
+                    systemNode.setActive(in.nextBoolean());
+                    break;
+                default:
+                    in.skipValue();
+                    break;
+            }
+        }
+        in.endObject();
+        return systemNode;
     }
 }

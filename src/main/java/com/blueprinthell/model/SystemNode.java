@@ -79,6 +79,10 @@ public class SystemNode {
         return isActive;
     }
 
+    public void setActive(boolean active) {
+        this.isActive = active;
+    }
+
     public boolean tryReceivePacket(Packet packet) {
         return packetQueue.size() < QUEUE_CAPACITY;
     }

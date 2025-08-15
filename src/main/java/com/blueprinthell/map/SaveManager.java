@@ -22,8 +22,9 @@ public class SaveManager extends Thread {
             .registerTypeAdapter(SystemNode.class, new SystemNodeAdapter())
             .registerTypeAdapter(Packet.class, new PacketAdapter())
             .registerTypeAdapter(Wire.class, new WireAdapter())
+            .serializeNulls()
             .create();
-    private static final Gson prettyGson = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson prettyGson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
     private static boolean running = true;
     private static final int SLEEP_INTERVAL = 2;
 
