@@ -49,7 +49,7 @@ public class SaveManager extends Thread {
         }
     }
 
-    private void save() {
+    public void save() {
         JsonObject save = new JsonObject();
         save.add("systemNodes", nodesToJson());
         save.add("packets", packetsToJson());

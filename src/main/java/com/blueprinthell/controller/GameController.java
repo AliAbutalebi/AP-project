@@ -272,7 +272,7 @@ public class GameController extends BaseController {
             return;
         }
         draggingWire.getWire().setEndLocation(new Point2D(event.getX(), event.getY()));
-        draggingWire.updateView();
+        draggingWire.update();
 
         PortView hoveredPortView = findHoveredPort(event.getX(), event.getY());
         if (hoveredPortView != null) {
@@ -307,6 +307,7 @@ public class GameController extends BaseController {
         hudView.update();
         checkActiveNode();
         soundEffectManager.play("click");
+        saveManager.save();
     }
 
     private void finalizeWireConnection(PortView from, PortView to) {
@@ -316,12 +317,6 @@ public class GameController extends BaseController {
         from.getPort().setOccupied(true);
         to.getPort().setConnectedWire(draggingWire.getWire());
         to.getPort().setOccupied(true);
-
-        switch (draggingWire.getWire().getShapeType()) {
-            case SQUARE -> draggingWire.markSquare();
-            case TRIANGLE -> draggingWire.markTriangle();
-            case HEXAGON -> draggingWire.markHexagon();
-        }
 
         wireViews.add(draggingWire);
         wireToView.put(draggingWire.getWire(), draggingWire);
@@ -353,7 +348,7 @@ public class GameController extends BaseController {
 
     private void clearDraggingWire() {
         if (draggingWire != null) {
-            draggingWire.updateView();
+            draggingWire.update();
             wirePane.getChildren().remove(draggingWire);
             draggingWire = null;
             startingPortView = null;
@@ -625,6 +620,7 @@ public class GameController extends BaseController {
     }
 
     private void handleImpacts(Point2D impactCenter) {
+        ArrayList<Packet> lostPackets = new ArrayList<>();
         for (Packet packet : movingPackets) {
             packet.absorbImpact(impactCenter);
             packetToView.get(packet).update();
@@ -632,10 +628,12 @@ public class GameController extends BaseController {
             newImpactView(impactCenter);
 
             if (!packetToView.get(packet).contains(packet.getLocation())) {
-                packetLoss(packet);
+                lostPackets.add(packet);
             }
             logger.info("Packet " + packet.getId() + " absorbed impact.");
         }
+
+        for (Packet packet : lostPackets) packetLoss(packet);
     }
 
     private void handlePacketLoss(Packet packet) {
