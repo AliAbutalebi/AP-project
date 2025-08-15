@@ -210,6 +210,7 @@ public class SystemNodeView extends AnchorPane {
         antiTrojanCircle.setStroke(Color.BLUE);
         antiTrojanCircle.setStrokeWidth(30);
         antiTrojanCircle.setRadius(0);
+        antiTrojanCircle.setMouseTransparent(true);
 
         antiTrojanTimer = new AnimationTimer() {
             @Override

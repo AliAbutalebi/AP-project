@@ -967,8 +967,6 @@ public class GameController extends BaseController {
             nodeView.switchIndicator(node.isReady(), node.isActive());
         });
         pauseTransition.play();
-
-
     }
 
 }
