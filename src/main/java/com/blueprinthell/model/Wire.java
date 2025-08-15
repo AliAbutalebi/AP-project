@@ -46,9 +46,7 @@ public class Wire {
         return startLocation.distance(endLocation);
     }
 
-    public double getSlope() {
-        return (getEndLocation().getY() - getStartLocation().getY()) / (getEndLocation().getX() - getStartLocation().getX());
-    }
+    public void setLength(double length) {this.length = length;}
 
     public void setPacketOnWire(Packet packetOnWire) {
         this.packetOnWire = packetOnWire;
