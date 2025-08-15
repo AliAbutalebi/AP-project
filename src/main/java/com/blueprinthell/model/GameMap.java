@@ -6,7 +6,7 @@ public class GameMap {
     private String mapName;
     private ArrayList<SystemNode> systemNodes;
     private ArrayList<Wire> wires;
-    private ArrayList<Packet> activePackets;
+    private ArrayList<Packet> packets;
 
     private double maxWireLength; //TODO: double-check for making maxWireLength final
 
@@ -42,12 +42,12 @@ public class GameMap {
         return wires;
     }
 
-    public void setActivePackets(ArrayList<Packet> activePackets) {
-        this.activePackets = activePackets;
+    public void setPackets(ArrayList<Packet> packets) {
+        this.packets = packets;
     }
 
-    public ArrayList<Packet> getActivePackets() {
-        return activePackets;
+    public ArrayList<Packet> getPackets() {
+        return packets;
     }
 
     public void resetPackets(ArrayList<Packet> snapshot) {

@@ -154,7 +154,7 @@ public class GameController extends BaseController {
     }
 
     private void renderInitialMap() {
-        for (Packet packet : gameMap.getActivePackets()) {
+        for (Packet packet : gameMap.getPackets()) {
             PacketView packetView = new PacketView(packet);
             packetViews.add(packetView);
             packetToView.put(packet, packetView);

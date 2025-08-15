@@ -78,7 +78,7 @@ public class SaveManager extends Thread {
 
     private JsonArray packetsToJson() {
         JsonArray packets = new JsonArray();
-        for (Packet packet : currentMap.getActivePackets()) {
+        for (Packet packet : currentMap.getPackets()) {
             packets.add(gson.toJsonTree(packet, Packet.class));
         }
         return packets;

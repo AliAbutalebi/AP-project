@@ -89,7 +89,7 @@ public class GameMapDeserializer implements JsonDeserializer<GameMap> {
                 activePackets.add(packet);
             }
 
-            gameMap.setActivePackets(activePackets);
+            gameMap.setPackets(activePackets);
         }
 
         if (rootObject.has("wires")) {

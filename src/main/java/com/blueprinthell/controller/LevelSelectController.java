@@ -66,7 +66,7 @@ public class LevelSelectController extends BaseController {
             systemNodeCount.setStyle(String.format("-fx-font-size: %d;", (int) MAP_HEIGHT / 20));
             mapContentPane.getChildren().add(systemNodeCount);
 
-            Label packetCount = new Label(MapLoader.loadMap(mapFile).getActivePackets().size() + " Packets");
+            Label packetCount = new Label(MapLoader.loadMap(mapFile).getPackets().size() + " Packets");
             packetCount.getStyleClass().add("space-mono");
             packetCount.setStyle(String.format("-fx-font-size: %d;", (int) MAP_HEIGHT / 20));
             mapContentPane.getChildren().add(packetCount);
