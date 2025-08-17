@@ -12,7 +12,7 @@ public class MapValidator {
     private static final MapValidator instance = new MapValidator();
 
     private static final String MASTER_KEY = "HailArianHemmati";
-    private boolean active = true;
+    private boolean active = false;
 
     public static MapValidator getInstance() {
         return instance;

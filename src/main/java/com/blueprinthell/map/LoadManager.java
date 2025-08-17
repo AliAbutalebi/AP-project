@@ -79,9 +79,11 @@ public class LoadManager {
     private void syncNodesAndPackets(GameMap currentMap) {
         for (Packet packet : currentMap.getPackets()) {
             for (SystemNode systemNode : currentMap.getSystemNodes()) {
-                if (packet.getProtectorId() == systemNode.getId()) {
-                    packet.setProtector(systemNode);
-                    packet.setProtected(true);
+                if (packet.isProtected()) {
+                    if (packet.getProtectorId() == systemNode.getId()) {
+                        packet.setProtector(systemNode);
+                        packet.setProtected(true);
+                    }
                 }
                 if (packet.isOnWire()) continue;
                 if (packet.getCurrentSystemNodeId() == systemNode.getId()) {
