@@ -41,6 +41,7 @@ public class PacketView extends Polygon {
                 case CONFIDENTIAL_TWO -> createConfidentialTwo();
                 case LARGE_ONE -> createLargeOne();
                 case LARGE_TWO -> createLargeTwo();
+                case BIT_PACKET -> createBitPacket();
             }
         }
 
@@ -139,6 +140,11 @@ public class PacketView extends Polygon {
         Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/trojan.png").toURI().toString(), PACKET_SIZE, PACKET_SIZE, true, true);
         getPoints().addAll(polygonizer.polygonize(pattern, PACKET_SIZE).getPoints());
         setFill(new ImagePattern(pattern));
+    }
+
+    private void createBitPacket() {
+        getPoints().addAll(createPolygon(5, PACKET_SIZE / 2).getPoints());
+        setFill(Color.RED);
     }
 
     private Polygon createPolygon(int n, double area) {

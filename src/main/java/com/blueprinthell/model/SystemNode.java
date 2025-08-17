@@ -139,5 +139,13 @@ public class SystemNode {
         }
     }
 
+    public int getQueueSize() {
+        int n = 0;
+        for (Packet packet : packetQueue) {
+            if (packet.getShapeType() != ShapeType.BIT_PACKET) n++;
+        }
+        return n;
+    }
+
 }
 

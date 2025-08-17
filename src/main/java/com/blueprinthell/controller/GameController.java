@@ -20,6 +20,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Shape;
 import javafx.util.Duration;
 import org.kordamp.ikonli.fontawesome6.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -466,6 +467,10 @@ public class GameController extends BaseController {
             deltaDistance = packet.getCurrentSpeed() * deltaTime;
             packet.setCurrentSpeed(packet.getCurrentSpeed() + packet.getAcceleration() * deltaTime);
         }
+        else {
+            deltaDistance = packet.getBaseSpeed() / 2 * deltaTime;
+            //TODO: add condition for new packet types.
+        }
         packet.setProgressOnWire(packet.getProgressOnWire() + deltaDistance);
     }
 
@@ -473,7 +478,7 @@ public class GameController extends BaseController {
         ArrayList<Packet> arrived = new ArrayList<>();
         for (Packet packet : movingPackets) {
             if (packet.getProgressOnWire() >= packet.getCurrentWire().getLength()) {
-                if (packet.getCurrentWire().getDestinationPort().getParentSystemNode().getPacketQueue().size() < SystemNode.getQueueCapacity()) {
+                if (packet.getCurrentWire().getDestinationPort().getParentSystemNode().getQueueSize() < SystemNode.getQueueCapacity()) {
                     arrived.add(packet);
 
                     packet.setCurrentSystemNode(packet.getCurrentWire().getDestinationPort().getParentSystemNode());
@@ -804,6 +809,10 @@ public class GameController extends BaseController {
                     spyMigrate(packet);
                 }
             }
+            case DISTRIBUTOR -> {
+                ShapeType type = packet.getShapeType();
+                if (type == ShapeType.LARGE_ONE || type == ShapeType.LARGE_TWO) handleDistributorNode(packet);
+            }
         }
     }
 
@@ -969,5 +978,29 @@ public class GameController extends BaseController {
         pauseTransition.play();
     }
 
+    private void handleDistributorNode(Packet packet) {
+        SystemNode node = packet.getCurrentSystemNode();
+        for (int i = 0; i < packet.getSize(); i++) {
+            Packet bitPacket = new Packet();
+            bitPacket.setShapeType(ShapeType.BIT_PACKET);
+            bitPacket.setParentLargePacket(packet);
+            bitPacket.setId(packetViews.size());
+            bitPacket.setOnWire(false);
+            bitPacket.setCurrentWire(null);
+            bitPacket.setCurrentSystemNode(node);
+            node.getPacketQueue().add(bitPacket);
+
+            PacketView packetView = new PacketView(bitPacket);
+            packetViews.add(packetView);
+            packetToView.put(bitPacket, packetView);
+            gameMap.getPackets().add(bitPacket);
+        }
+
+        node.getPacketQueue().remove(packet);
+        packetViews.remove(packetToView.get(packet));
+        packetToView.remove(packet);
+
+        nodeToView.get(node).update();
+    }
 }
 

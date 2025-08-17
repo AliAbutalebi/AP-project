@@ -32,7 +32,7 @@ public class SystemNodeView extends AnchorPane {
     private static final double RUN_BUTTON_WIDTH = NODE_WIDTH - 2 * PORT_PANE_WIDTH;
     private static final double RUN_BUTTON_HEIGHT = ScreenDimensions.getInstance().getHeight() / 25;
     private AnimationTimer antiTrojanTimer;
-    private final Circle antiTrojanCircle = new Circle();
+    private Circle antiTrojanCircle;
 
     private SystemNode systemNode;
     private Pane inputPortPane;
@@ -68,7 +68,6 @@ public class SystemNodeView extends AnchorPane {
         setLayoutY(systemNode.getLocation().getY());
 
         if (systemNode.getSystemType() == SystemType.ANTI_TROJAN) {
-            getChildren().add(0, antiTrojanCircle);
             setupAntiTrojan();
         }
     }
@@ -204,6 +203,8 @@ public class SystemNodeView extends AnchorPane {
     }
 
     private void setupAntiTrojan() {
+        antiTrojanCircle = new Circle();
+        getChildren().add(0, antiTrojanCircle);
         antiTrojanCircle.setCenterX(background.getWidth() / 2);
         antiTrojanCircle.setCenterY(background.getHeight() / 2);
         antiTrojanCircle.setFill(Color.TRANSPARENT);
@@ -266,6 +267,12 @@ public class SystemNodeView extends AnchorPane {
         updateSystemNodeSize();
         setupPackets();
         switchIndicator(systemNode.isReady(), systemNode.isActive());
+
+        if (systemNode.getSystemType() == SystemType.ANTI_TROJAN) {
+            antiTrojanTimer.stop();
+            getChildren().remove(antiTrojanCircle);
+            setupAntiTrojan();
+        }
     }
 
     private void updateSystemNodeSize() {
