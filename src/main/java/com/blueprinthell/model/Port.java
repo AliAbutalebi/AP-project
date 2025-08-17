@@ -2,6 +2,8 @@ package com.blueprinthell.model;
 
 import javafx.geometry.Point2D;
 
+import java.util.Random;
+
 public class Port {
     private int id;
     private boolean isInput;
@@ -101,6 +103,16 @@ public class Port {
 
     public void setConnectedWireId(int connectedWireId) {
         this.connectedWireId = connectedWireId;
+    }
+
+    public void setRandomShapeType() {
+        ShapeType[] types = new ShapeType[] {ShapeType.SQUARE, ShapeType.TRIANGLE, ShapeType.HEXAGON};
+        Random rand = new Random();
+        ShapeType newType = types[rand.nextInt(types.length)];
+        while (newType == shapeType) {
+            newType = types[rand.nextInt(types.length)];
+        }
+        this.shapeType = newType;
     }
 }
 

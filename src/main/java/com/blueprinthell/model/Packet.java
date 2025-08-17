@@ -26,6 +26,8 @@ public class Packet {
     private Point2D location = new Point2D(0, 0);
     private SystemNode currentSystemNode;
     private int currentSystemNodeId;
+    private Packet parentLargePacket;
+    private int parentLargePacketId;
     private boolean colliding = false;
     private boolean received = false;
 
@@ -243,6 +245,22 @@ public class Packet {
 
     public void setCurrentWireId(int currentWireId) {
         this.currentWireId = currentWireId;
+    }
+
+    public Packet getParentLargePacket() {
+        return parentLargePacket;
+    }
+
+    public void setParentLargePacket(Packet parentLargePacket) {
+        this.parentLargePacket = parentLargePacket;
+    }
+
+    public int getParentLargePacketId() {
+        return parentLargePacketId;
+    }
+
+    public void setParentLargePacketId(int parentLargePacketId) {
+        this.parentLargePacketId = parentLargePacketId;
     }
 }
 

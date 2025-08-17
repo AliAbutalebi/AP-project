@@ -268,7 +268,14 @@ public class SystemNodeView extends AnchorPane {
         setupPackets();
         switchIndicator(systemNode.isReady(), systemNode.isActive());
 
-        if (systemNode.getSystemType() == SystemType.ANTI_TROJAN) {
+        for (PortView portView : inputPortViews) {
+            portView.update();
+        }
+        for (PortView portView : outputPortViews) {
+            portView.update();
+        }
+
+        if (systemNode.getSystemType() == SystemType.ANTI_TROJAN && systemNode.isActive()) {
             antiTrojanTimer.stop();
             getChildren().remove(antiTrojanCircle);
             setupAntiTrojan();

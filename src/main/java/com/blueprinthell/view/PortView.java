@@ -32,8 +32,9 @@ public class PortView extends Polygon {
         }
     }
 
-    public void updateView() {
-
+    public void update() {
+        getPoints().clear();
+        setupShape();
     }
 
     public Port getPort() {

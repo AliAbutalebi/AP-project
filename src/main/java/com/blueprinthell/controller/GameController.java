@@ -466,8 +466,7 @@ public class GameController extends BaseController {
         } else if (packet.getShapeType() == ShapeType.TRIANGLE) {
             deltaDistance = packet.getCurrentSpeed() * deltaTime;
             packet.setCurrentSpeed(packet.getCurrentSpeed() + packet.getAcceleration() * deltaTime);
-        }
-        else {
+        } else {
             deltaDistance = packet.getBaseSpeed() / 2 * deltaTime;
             //TODO: add condition for new packet types.
         }
@@ -489,13 +488,12 @@ public class GameController extends BaseController {
                     SystemNodeView nodeView = nodeToView.get(packet.getCurrentWire().getDestinationPort().getParentSystemNode());
                     PacketView packetView = packetToView.get(packet);
                     packetPane.getChildren().remove(packetView);
-                    nodeView.update();
 
                     if (nodeView.getSystemNode().getSystemType() == SystemType.REFERENCE) {
                         packet.setReceived(true);
                     }
 
-                    nodeToView.get(packet.getCurrentWire().getDestinationPort().getParentSystemNode()).update();
+                    nodeView.update();
 
                     logger.info("Packet " + packet.getId() + " arrived at system " + nodeView.getSystemNode().getId() + " using port " + packet.getCurrentWire().getDestinationPort().getId() + ".");
 
@@ -503,12 +501,22 @@ public class GameController extends BaseController {
 
                     packet.setPassedIncompatiblePort(packet.getCurrentWire().getDestinationPort().getShapeType() != packet.getShapeType());
 
+                    Wire passedWire = packet.getCurrentWire();
+
                     packet.setOnWire(false);
                     packet.getCurrentWire().setPacketOnWire(null);
                     packet.setCurrentWire(null);
                     packet.setProgressOnWire(0);
                     hud.addCoins(packet.getPacketCoins());
                     hudView.update();
+
+                    if (packet.getShapeType() == ShapeType.LARGE_ONE || packet.getShapeType() == ShapeType.LARGE_TWO) {
+                        passedWire.getDestinationPort().setRandomShapeType();
+
+                        passedWire.setPassedLargePackets(passedWire.getPassedLargePackets() + 1);
+                        if (passedWire.getPassedLargePackets() > Wire.getPssedLargePacketLimit())
+                            removeWire(wireToView.get(passedWire));
+                    }
 
                     if (packet.getCurrentSystemNode().getSystemType() == SystemType.REFERENCE && !scrubbing) {
                         handleWin();
@@ -518,6 +526,7 @@ public class GameController extends BaseController {
                     packetToView.get(packet).update();
                     handleArrivalBehavior(packet);
 
+                    nodeView.update();
                     soundEffectManager.play("packet-arrival");
                 } else {
                     packetLoss(packet);
