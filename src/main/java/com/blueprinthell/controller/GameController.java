@@ -188,6 +188,8 @@ public class GameController extends BaseController {
         }
 
         for (Wire wire : gameMap.getWires()) {
+            wire.setStartLocation(wire.getSourcePort().getLocation());
+            wire.setEndLocation(wire.getDestinationPort().getLocation());
             WireView wireView = new WireView(wire);
             wirePane.getChildren().add(wireView);
             wireViews.add(wireView);

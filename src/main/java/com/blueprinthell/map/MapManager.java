@@ -28,11 +28,12 @@ public class MapManager {
     }
 
     private void listMaps() {
-        if (vanillaFiles.length == 0) return;
 
-        for (int i = 0; i < vanillaFiles.length; i++) {
-            File[] mapFiles = new File[]{vanillaFiles[i], autoSaveFiles[i]};
-            maps.put(Integer.parseInt(vanillaFiles[i].getName().replace("map", "")
+        for (File vanillaFile : vanillaFiles) {
+            File[] mapFiles = new File[]{vanillaFile, null};
+            File autoSaveFile = hasSameName(mapFiles[0]);
+            if (autoSaveFile != null) mapFiles[1] = autoSaveFile;
+            maps.put(Integer.parseInt(vanillaFile.getName().replace("map", "")
                     .replace(".json", "")), mapFiles);
         }
     }
@@ -43,6 +44,7 @@ public class MapManager {
 
     public int getLevel() {
         return currentLevel;
+
     }
 
     public GameMap getVanillaMap(int level) {
@@ -87,5 +89,17 @@ public class MapManager {
 
     public int getMapCount() {
         return maps.size();
+    }
+
+    public boolean hasAutoSave() {
+        return maps.get(currentLevel)[1] != null;
+    }
+
+    private File hasSameName(File file) {
+        for (File file2 : autoSaveFiles) {
+            if (file.getName().equals(file2.getName())) {return file2;
+                }
+        }
+        return null;
     }
 }
