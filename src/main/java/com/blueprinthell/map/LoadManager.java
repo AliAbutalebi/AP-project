@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class LoadManager {
     private static final LoadManager instance = new LoadManager();
+    private static final MapValidator mapValidator = MapValidator.getInstance();
     private final Gson gson = new GsonBuilder()
             .registerTypeAdapter(SystemNode.class, new SystemNodeAdapter())
             .registerTypeAdapter(Packet.class, new PacketAdapter())
@@ -27,8 +28,8 @@ public class LoadManager {
         JsonObject jsonObject;
         try (Reader reader = new FileReader(file)) {
             JsonElement root = JsonParser.parseReader(reader);
-            jsonObject = root.getAsJsonObject();
-        } catch (IOException e) {
+            jsonObject = mapValidator.decrypt(root.getAsJsonObject());
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
         GameMap currentMap = new GameMap();

@@ -15,6 +15,7 @@ import java.io.IOException;
 
 public class SaveManager extends Thread {
     private static final SaveManager instance = new SaveManager();
+    private static final MapValidator mapValidator = MapValidator.getInstance();
     private static File currentAutoSaveFile;
     private static GameMap currentMap;
     private static final Gson gson = new GsonBuilder()
@@ -57,8 +58,8 @@ public class SaveManager extends Thread {
         save.add("maxWireLength", maxWireLengthToJson());
 
         try (FileWriter writer = new FileWriter(currentAutoSaveFile)) {
-            prettyGson.toJson(save, writer);
-        } catch (IOException e) {
+            prettyGson.toJson(mapValidator.encrypt(save), writer);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
