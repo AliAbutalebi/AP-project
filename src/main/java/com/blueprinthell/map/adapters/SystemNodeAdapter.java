@@ -58,7 +58,9 @@ public class SystemNodeAdapter extends TypeAdapter<SystemNode> {
                 case "inputPorts": {
                     in.beginArray();
                     while (in.hasNext()) {
-                        systemNode.getInputPorts().add(portAdapter.read(in));
+                        Port port = portAdapter.read(in);
+                        port.setParentSystemNode(systemNode);
+                        systemNode.getInputPorts().add(port);
                     }
                     in.endArray();
                     break;
@@ -66,7 +68,9 @@ public class SystemNodeAdapter extends TypeAdapter<SystemNode> {
                 case "outputPorts": {
                     in.beginArray();
                     while (in.hasNext()) {
-                        systemNode.getOutputPorts().add(portAdapter.read(in));
+                        Port port = portAdapter.read(in);
+                        port.setParentSystemNode(systemNode);
+                        systemNode.getOutputPorts().add(port);
                     }
                     in.endArray();
                     break;

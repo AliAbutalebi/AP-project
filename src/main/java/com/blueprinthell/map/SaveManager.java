@@ -15,7 +15,6 @@ import java.io.IOException;
 
 public class SaveManager extends Thread {
     private static final SaveManager instance = new SaveManager();
-    private static File[] autoSaveFiles;
     private static File currentAutoSaveFile;
     private static GameMap currentMap;
     private static final Gson gson = new GsonBuilder()
@@ -29,7 +28,6 @@ public class SaveManager extends Thread {
     private static final int SLEEP_INTERVAL = 2;
 
     private SaveManager() {
-        autoSaveFiles = new File("./src/main/resources/com/blueprinthell/save/autosave").listFiles();
     }
 
     public static SaveManager getInstance() {
@@ -52,16 +50,21 @@ public class SaveManager extends Thread {
 
     public void save() {
         JsonObject save = new JsonObject();
+        save.add("level", new JsonPrimitive(currentMap.getLevel()));
         save.add("systemNodes", nodesToJson());
         save.add("packets", packetsToJson());
         save.add("wires", wiresToJson());
         save.add("maxWireLength", maxWireLengthToJson());
 
-        try (FileWriter writer = new FileWriter(autoSaveFiles[0])) {
+        try (FileWriter writer = new FileWriter(currentAutoSaveFile)) {
             prettyGson.toJson(save, writer);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setAutoSaveFile(File file) {
+        currentAutoSaveFile = file;
     }
 
     public void setCurrentMap(GameMap map) {

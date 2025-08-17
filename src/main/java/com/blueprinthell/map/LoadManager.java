@@ -6,16 +6,15 @@ import com.blueprinthell.map.adapters.WireAdapter;
 import com.blueprinthell.model.*;
 import com.google.gson.*;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.util.ArrayList;
 
 public class LoadManager {
     private static final LoadManager instance = new LoadManager();
-    private static GameMap currentMap;
-    private Gson gson = new GsonBuilder().registerTypeAdapter(SystemNode.class, new SystemNodeAdapter()).registerTypeAdapter(Packet.class, new PacketAdapter()).registerTypeAdapter(Wire.class, new WireAdapter()).serializeNulls().create();
+    private final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(SystemNode.class, new SystemNodeAdapter())
+            .registerTypeAdapter(Packet.class, new PacketAdapter())
+            .registerTypeAdapter(Wire.class, new WireAdapter()).serializeNulls().create();
 
     private LoadManager() {
     }
@@ -24,22 +23,21 @@ public class LoadManager {
         return instance;
     }
 
-    public GameMap load() {
-        JsonObject jsonObject = new JsonObject();
-        try (Reader reader = new FileReader("packets.json")) {
+    public GameMap load(File file) {
+        JsonObject jsonObject;
+        try (Reader reader = new FileReader(file)) {
             JsonElement root = JsonParser.parseReader(reader);
             jsonObject = root.getAsJsonObject();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        currentMap = new GameMap();
+        GameMap currentMap = new GameMap();
+        currentMap.setLevel(jsonObject.get("level").getAsInt());
         currentMap.setSystemNodes(jsonToNodes(jsonObject.getAsJsonArray("systemNodes")));
         currentMap.setPackets(jsonToPackets(jsonObject.getAsJsonArray("packets")));
         currentMap.setWires(jsonToWires(jsonObject.getAsJsonArray("wires")));
         currentMap.setMaxWireLength(jsonToMaxWireLength(jsonObject.getAsJsonPrimitive("maxWireLength")));
-        sync();
+        sync(currentMap);
         return currentMap;
     }
 
@@ -71,19 +69,20 @@ public class LoadManager {
         return jsonPrimitive.getAsDouble();
     }
 
-    private void sync() {
-        syncNodesAndWires();
-        syncNodesAndPackets();
-        syncPacketsAndWires();
+    private void sync(GameMap currentMap) {
+        syncNodesAndWires(currentMap);
+        syncNodesAndPackets(currentMap);
+        syncPacketsAndWires(currentMap);
     }
 
-    private void syncNodesAndPackets() {
+    private void syncNodesAndPackets(GameMap currentMap) {
         for (Packet packet : currentMap.getPackets()) {
             for (SystemNode systemNode : currentMap.getSystemNodes()) {
                 if (packet.getProtectorId() == systemNode.getId()) {
                     packet.setProtector(systemNode);
                     packet.setProtected(true);
                 }
+                if (packet.isOnWire()) continue;
                 if (packet.getCurrentSystemNodeId() == systemNode.getId()) {
                     packet.setCurrentSystemNode(systemNode);
                     systemNode.getPacketQueue().add(packet);
@@ -93,10 +92,11 @@ public class LoadManager {
         }
     }
 
-    private void syncNodesAndWires() {
+    private void syncNodesAndWires(GameMap currentMap) {
         for (Wire wire : currentMap.getWires()) {
             for (SystemNode node : currentMap.getSystemNodes()) {
                 for (Port port : node.getInputPorts()) {
+                    if (!port.isOccupied()) continue;
                     if (wire.getDestinationPortId() == port.getId()) {
                         wire.setDestinationPort(port);
                         port.setConnectedWire(wire);
@@ -105,6 +105,7 @@ public class LoadManager {
                     }
                 }
                 for (Port port : node.getOutputPorts()) {
+                    if (!port.isOccupied()) continue;
                     if (wire.getSourcePortId() == port.getId()) {
                         wire.setSourcePort(port);
                         port.setConnectedWire(wire);
@@ -116,9 +117,10 @@ public class LoadManager {
         }
     }
 
-    private void syncPacketsAndWires() {
+    private void syncPacketsAndWires(GameMap currentMap) {
         for (Wire wire : currentMap.getWires()) {
             for (Packet packet : currentMap.getPackets()) {
+                if (!packet.isOnWire()) continue;
                 if (wire.getPacketOnWireId() == packet.getId()) {
                     wire.setPacketOnWire(packet);
                     packet.setCurrentWire(wire);

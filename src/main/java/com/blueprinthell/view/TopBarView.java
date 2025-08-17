@@ -171,7 +171,7 @@ public class TopBarView extends AnchorPane {
         this.gameController = gameController;
     }
 
-    public void updateMapTitle(String mapTitle) {
-        mapTitleLabel.setText(mapTitle.toUpperCase());
+    public void updateMapTitle(int mapLevel) {
+        mapTitleLabel.setText("MAP" + mapLevel);
     }
 }

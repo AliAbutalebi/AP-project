@@ -22,6 +22,10 @@ public class Point2DAdapter extends TypeAdapter<Point2D> {
 
     @Override
     public Point2D read(JsonReader in) throws IOException {
+        if (in.peek() == com.google.gson.stream.JsonToken.NULL) {
+            in.nextNull();
+            return null;
+        }
         double x = 0, y = 0;
         in.beginObject();
         while (in.hasNext()) {

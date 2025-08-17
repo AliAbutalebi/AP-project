@@ -3,8 +3,7 @@ package com.blueprinthell.controller;
 import com.blueprinthell.audio.MusicPlayer;
 import com.blueprinthell.audio.SoundEffectManager;
 import com.blueprinthell.log.Logger;
-import com.blueprinthell.map.MapLoader;
-import com.blueprinthell.map.SaveManager;
+import com.blueprinthell.map.MapManager;
 import com.blueprinthell.model.*;
 import com.blueprinthell.view.*;
 import javafx.animation.*;
@@ -64,7 +63,7 @@ public class GameController extends BaseController {
     private static final MusicPlayer musicPlayer = MusicPlayer.getInstance();
     private static final SoundEffectManager soundEffectManager = SoundEffectManager.getInstance();
 
-    private static final SaveManager saveManager = SaveManager.getInstance();
+    private static final MapManager mapManager = MapManager.getInstance();
 
     private static final OAtar oAtar = OAtar.getInstance();
     private static final OAiryaman oAiryaman = OAiryaman.getInstance();
@@ -96,7 +95,7 @@ public class GameController extends BaseController {
     public void initialize() {
         musicPlayer.play();
         drawGrid();
-        setGameMap(MapLoader.loadLevelMap(MapLoader.getSelectedMap()));
+        setGameMap(mapManager.load());
         rootPane.setOnMouseDragged(this::onWireDragged);
         rootPane.setOnMouseReleased(this::onWireReleased);
         setupHUD();
@@ -149,7 +148,7 @@ public class GameController extends BaseController {
     public void setGameMap(GameMap gameMap) {
         this.gameMap = gameMap;
         renderInitialMap();
-        saveManager.setCurrentMap(gameMap);
+        mapManager.save(gameMap);
 
     }
 
@@ -206,7 +205,7 @@ public class GameController extends BaseController {
         topBarView.getTemporalProgressSlider().setDisable(true);
         topBarView.getTemporalProgressSlider().setValue(0);
 
-        saveManager.start();
+        mapManager.startAutoSave(gameMap);
     }
 
     private void update(double deltaTime) {
@@ -306,7 +305,7 @@ public class GameController extends BaseController {
         hudView.update();
         checkActiveNode();
         soundEffectManager.play("click");
-        saveManager.save();
+        mapManager.save(gameMap);
     }
 
     private void finalizeWireConnection(PortView from, PortView to) {
@@ -738,7 +737,7 @@ public class GameController extends BaseController {
         topBarView = TopBarView.getInstance();
         systemNodePane.getChildren().add(topBarView);
         topBarView.setGameController(this);
-        topBarView.updateMapTitle(gameMap.getMapName());
+        topBarView.updateMapTitle(gameMap.getLevel());
     }
 
     public void handleTemporalProgress() {

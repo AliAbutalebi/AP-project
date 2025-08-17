@@ -1,76 +1,236 @@
 {
+    "level": 1,
     "systemNodes": [
         {
             "systemType": "REFERENCE",
             "id": 0,
-            "location": { "X": 200, "Y": 150.0 },
+            "location": {
+                "X": 160.0,
+                "Y": 213.0
+            },
             "inputPorts": [
-                { "shapeType": "TRIANGLE", "id": 1,  "isInput": true, "occupied": false, "parentSystemNodeId": 0 },
-                { "shapeType": "SQUARE",   "id": 2,  "isInput": true, "occupied": false, "parentSystemNodeId": 0 }
+                {
+                    "shapeType": "TRIANGLE",
+                    "id": 1,
+                    "isInput": true,
+                    "occupied": false,
+                    "parentSystemNodeId": 0
+                },
+                {
+                    "shapeType": "SQUARE",
+                    "id": 2,
+                    "isInput": true,
+                    "occupied": false,
+                    "parentSystemNodeId": 0
+                }
             ],
             "outputPorts": [
-                { "shapeType": "HEXAGON", "id": 3,  "isInput": false, "occupied": false, "parentSystemNodeId": 0 },
-                { "shapeType": "SQUARE",   "id": 4,  "isInput": false, "occupied": false, "parentSystemNodeId": 0 },
-                { "shapeType": "TRIANGLE", "id": 5,  "isInput": false, "occupied": false, "parentSystemNodeId": 0 }
+                {
+                    "shapeType": "HEXAGON",
+                    "id": 3,
+                    "isInput": false,
+                    "occupied": false,
+                    "parentSystemNodeId": 0
+                },
+                {
+                    "shapeType": "SQUARE",
+                    "id": 4,
+                    "isInput": false,
+                    "occupied": false,
+                    "parentSystemNodeId": 0
+                },
+                {
+                    "shapeType": "TRIANGLE",
+                    "id": 5,
+                    "isInput": false,
+                    "occupied": false,
+                    "parentSystemNodeId": 0
+                }
             ],
             "isActive": true
         },
         {
             "systemType": "NORMAL",
             "id": 1,
-            "location": { "X": 500, "Y": 500 },
+            "location": {
+                "X": 400.0,
+                "Y": 458.0
+            },
             "inputPorts": [
-                { "shapeType": "SQUARE",   "id": 4,  "isInput": true,  "occupied": false, "parentSystemNodeId": 1 },
-                { "shapeType": "TRIANGLE", "id": 5,  "isInput": true,  "occupied": false, "parentSystemNodeId": 1 },
-                { "shapeType": "SQUARE",   "id": 6,  "isInput": true,  "occupied": false, "parentSystemNodeId": 1 }
+                {
+                    "shapeType": "SQUARE",
+                    "id": 4,
+                    "isInput": true,
+                    "occupied": false,
+                    "parentSystemNodeId": 1
+                },
+                {
+                    "shapeType": "TRIANGLE",
+                    "id": 5,
+                    "isInput": true,
+                    "occupied": false,
+                    "parentSystemNodeId": 1
+                },
+                {
+                    "shapeType": "SQUARE",
+                    "id": 6,
+                    "isInput": true,
+                    "occupied": false,
+                    "parentSystemNodeId": 1
+                }
             ],
             "outputPorts": [
-                { "shapeType": "TRIANGLE", "id": 7,  "isInput": false, "occupied": false, "parentSystemNodeId": 1 },
-                { "shapeType": "SQUARE",   "id": 8,  "isInput": false, "occupied": false, "parentSystemNodeId": 1 }
+                {
+                    "shapeType": "TRIANGLE",
+                    "id": 7,
+                    "isInput": false,
+                    "occupied": false,
+                    "parentSystemNodeId": 1
+                },
+                {
+                    "shapeType": "SQUARE",
+                    "id": 8,
+                    "isInput": false,
+                    "occupied": false,
+                    "parentSystemNodeId": 1
+                }
             ],
             "isActive": true
         },
         {
             "systemType": "ANTI_TROJAN",
             "id": 2,
-            "location": { "X": 800, "Y": 300.0 },
+            "location": {
+                "X": 640.0,
+                "Y": 318.0
+            },
             "inputPorts": [
-                { "shapeType": "TRIANGLE", "id": 9,  "isInput": true,  "occupied": false, "parentSystemNodeId": 2 },
-                { "shapeType": "SQUARE",   "id": 10, "isInput": true,  "occupied": false, "parentSystemNodeId": 2 },
-                { "shapeType": "TRIANGLE", "id": 11, "isInput": true,  "occupied": false, "parentSystemNodeId": 2 },
-                { "shapeType": "SQUARE",   "id": 12, "isInput": true,  "occupied": false, "parentSystemNodeId": 2 },
-                { "shapeType": "HEXAGON", "id": 13, "isInput": true,  "occupied": false, "parentSystemNodeId": 2 }
+                {
+                    "shapeType": "TRIANGLE",
+                    "id": 9,
+                    "isInput": true,
+                    "occupied": false,
+                    "parentSystemNodeId": 2
+                },
+                {
+                    "shapeType": "SQUARE",
+                    "id": 10,
+                    "isInput": true,
+                    "occupied": false,
+                    "parentSystemNodeId": 2
+                },
+                {
+                    "shapeType": "TRIANGLE",
+                    "id": 11,
+                    "isInput": true,
+                    "occupied": false,
+                    "parentSystemNodeId": 2
+                },
+                {
+                    "shapeType": "SQUARE",
+                    "id": 12,
+                    "isInput": true,
+                    "occupied": false,
+                    "parentSystemNodeId": 2
+                },
+                {
+                    "shapeType": "HEXAGON",
+                    "id": 13,
+                    "isInput": true,
+                    "occupied": false,
+                    "parentSystemNodeId": 2
+                }
             ],
             "outputPorts": [
-                { "shapeType": "SQUARE",   "id": 14, "isInput": false, "occupied": false, "parentSystemNodeId": 2 },
-                { "shapeType": "TRIANGLE", "id": 15, "isInput": false, "occupied": false, "parentSystemNodeId": 2 },
-                { "shapeType": "SQUARE",   "id": 16, "isInput": false, "occupied": false, "parentSystemNodeId": 2 }
+                {
+                    "shapeType": "SQUARE",
+                    "id": 14,
+                    "isInput": false,
+                    "occupied": false,
+                    "parentSystemNodeId": 2
+                },
+                {
+                    "shapeType": "TRIANGLE",
+                    "id": 15,
+                    "isInput": false,
+                    "occupied": false,
+                    "parentSystemNodeId": 2
+                },
+                {
+                    "shapeType": "SQUARE",
+                    "id": 16,
+                    "isInput": false,
+                    "occupied": false,
+                    "parentSystemNodeId": 2
+                }
             ],
             "isActive": true
         },
         {
             "systemType": "SPY",
             "id": 3,
-            "location": { "X": 1100, "Y": 600 },
+            "location": {
+                "X": 880.0,
+                "Y": 528.0
+            },
             "inputPorts": [
-                { "shapeType": "TRIANGLE", "id": 17, "isInput": true,  "occupied": false, "parentSystemNodeId": 3 }
+                {
+                    "shapeType": "TRIANGLE",
+                    "id": 17,
+                    "isInput": true,
+                    "occupied": false,
+                    "parentSystemNodeId": 3
+                }
             ],
             "outputPorts": [
-                { "shapeType": "SQUARE",   "id": 18, "isInput": false, "occupied": false, "parentSystemNodeId": 3 },
-                { "shapeType": "TRIANGLE", "id": 19, "isInput": false, "occupied": false, "parentSystemNodeId": 3 },
-                { "shapeType": "SQUARE",   "id": 20, "isInput": false, "occupied": false, "parentSystemNodeId": 3 }
+                {
+                    "shapeType": "SQUARE",
+                    "id": 18,
+                    "isInput": false,
+                    "occupied": false,
+                    "parentSystemNodeId": 3
+                },
+                {
+                    "shapeType": "TRIANGLE",
+                    "id": 19,
+                    "isInput": false,
+                    "occupied": false,
+                    "parentSystemNodeId": 3
+                },
+                {
+                    "shapeType": "SQUARE",
+                    "id": 20,
+                    "isInput": false,
+                    "occupied": false,
+                    "parentSystemNodeId": 3
+                }
             ],
             "isActive": true
         },
         {
             "systemType": "SPY",
             "id": 4,
-            "location": { "X": 1500, "Y": 800 },
+            "location": {
+                "X": 1200.0,
+                "Y": 668.0
+            },
             "inputPorts": [
-                { "shapeType": "SQUARE",   "id": 21, "isInput": true,  "occupied": false, "parentSystemNodeId": 4 }
+                {
+                    "shapeType": "SQUARE",
+                    "id": 21,
+                    "isInput": true,
+                    "occupied": false,
+                    "parentSystemNodeId": 4
+                }
             ],
             "outputPorts": [
-                { "shapeType": "TRIANGLE", "id": 22, "isInput": false, "occupied": false, "parentSystemNodeId": 4 }
+                {
+                    "shapeType": "TRIANGLE",
+                    "id": 22,
+                    "isInput": false,
+                    "occupied": false,
+                    "parentSystemNodeId": 4
+                }
             ],
             "isActive": true
         }
@@ -81,72 +241,87 @@
             "shapeType": "HEXAGON",
             "alive": true,
             "protected": false,
-            "protectorId": null,
             "trojan": false,
             "noise": 0,
-            "currentSpeed": 0,
+            "currentSpeed": 0.0,
             "onWire": false,
-            "progressOnWire": 0,
-            "currentWireId": null,
-            "currentSystemNodeId": 0
+            "progressOnWire": 0.0,
+            "deviation": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "currentSystemNodeId": 0,
+            "received": false
         },
         {
             "id": 1,
             "shapeType": "CONFIDENTIAL_ONE",
             "alive": true,
             "protected": false,
-            "protectorId": null,
             "trojan": false,
             "noise": 0,
-            "currentSpeed": 0,
+            "currentSpeed": 0.0,
             "onWire": false,
-            "progressOnWire": 0,
-            "currentWireId": null,
-            "currentSystemNodeId": 0
+            "progressOnWire": 0.0,
+            "deviation": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "currentSystemNodeId": 0,
+            "received": false
         },
         {
             "id": 2,
             "shapeType": "TRIANGLE",
             "alive": true,
             "protected": false,
-            "protectorId": null,
             "trojan": false,
             "noise": 0,
-            "currentSpeed": 0,
+            "currentSpeed": 0.0,
             "onWire": false,
-            "progressOnWire": 0,
-            "currentWireId": null,
-            "currentSystemNodeId": 0
+            "progressOnWire": 0.0,
+            "deviation": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "currentSystemNodeId": 0,
+            "received": false
         },
         {
             "id": 3,
             "shapeType": "SQUARE",
             "alive": true,
             "protected": false,
-            "protectorId": null,
             "trojan": false,
             "noise": 0,
-            "currentSpeed": 0,
+            "currentSpeed": 0.0,
             "onWire": false,
-            "progressOnWire": 0,
-            "currentWireId": null,
-            "currentSystemNodeId": 0
+            "progressOnWire": 0.0,
+            "deviation": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "currentSystemNodeId": 0,
+            "received": false
         },
         {
             "id": 4,
             "shapeType": "LARGE_ONE",
             "alive": true,
             "protected": false,
-            "protectorId": null,
             "trojan": false,
             "noise": 0,
-            "currentSpeed": 0,
+            "currentSpeed": 0.0,
             "onWire": false,
-            "progressOnWire": 0,
-            "currentWireId": null,
-            "currentSystemNodeId": 0
+            "progressOnWire": 0.0,
+            "deviation": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "currentSystemNodeId": 0,
+            "received": false
         }
     ],
     "wires": [],
-    "maxWireLength": 10000
+    "maxWireLength": 10000.0
 }

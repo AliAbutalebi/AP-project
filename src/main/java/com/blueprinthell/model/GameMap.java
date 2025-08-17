@@ -3,19 +3,19 @@ package com.blueprinthell.model;
 import java.util.ArrayList;
 
 public class GameMap {
-    private String mapName;
+    private int level;
     private ArrayList<SystemNode> systemNodes;
     private ArrayList<Wire> wires;
     private ArrayList<Packet> packets;
 
     private double maxWireLength; //TODO: double-check for making maxWireLength final
 
-    public void setMapName(String mapName) {
-        this.mapName = mapName;
+    public void setLevel(int level) {
+        this.level = level;
     }
 
-    public String getMapName() {
-        return mapName;
+    public int getLevel() {
+        return level;
     }
 
     public void setSystemNodes(ArrayList<SystemNode> systemNodes) {

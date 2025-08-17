@@ -1,6 +1,7 @@
 package com.blueprinthell.controller;
 
-import com.blueprinthell.map.MapLoader;
+import com.blueprinthell.map.MapManager;
+import com.blueprinthell.model.GameMap;
 import com.blueprinthell.model.ScenePath;
 import com.blueprinthell.model.ScreenDimensions;
 import javafx.fxml.FXML;
@@ -18,6 +19,7 @@ import java.io.File;
 
 public class LevelSelectController extends BaseController {
 
+    private static final MapManager mapManager = MapManager.getInstance();
     private static final ScreenDimensions screenDimensions = ScreenDimensions.getInstance();
 
     private static final double MAP_WIDTH = screenDimensions.getWidth() / 4;
@@ -33,8 +35,8 @@ public class LevelSelectController extends BaseController {
 
     @FXML
     public void initialize() {
-        for (int i = 0; i < MapLoader.getMapFiles().length; i++) {
-            File mapFile = MapLoader.getMapFiles()[i];
+        for (int i = 0; i < mapManager.getMapCount(); i++) {
+            GameMap map = mapManager.getVanillaMap(i + 1);
 
             StackPane mapPane = new StackPane();
             mapPane.setPrefSize(MAP_WIDTH, MAP_HEIGHT);
@@ -56,17 +58,17 @@ public class LevelSelectController extends BaseController {
             mapContentPane.setSpacing(10);
             mapPane.getChildren().add(mapContentPane);
 
-            Label mapNameLabel = new Label(MapLoader.loadMap(mapFile).getMapName().toUpperCase());
+            Label mapNameLabel = new Label("MAP" + map.getLevel());
             mapNameLabel.getStyleClass().add("monograf-bold");
             mapNameLabel.setStyle(String.format("-fx-font-size: %d;", (int) MAP_HEIGHT / 4));
             mapContentPane.getChildren().add(mapNameLabel);
 
-            Label systemNodeCount = new Label(MapLoader.loadMap(mapFile).getSystemNodes().size() + " System Nodes");
+            Label systemNodeCount = new Label(map.getSystemNodes().size() + " System Nodes");
             systemNodeCount.getStyleClass().add("space-mono");
             systemNodeCount.setStyle(String.format("-fx-font-size: %d;", (int) MAP_HEIGHT / 20));
             mapContentPane.getChildren().add(systemNodeCount);
 
-            Label packetCount = new Label(MapLoader.loadMap(mapFile).getPackets().size() + " Packets");
+            Label packetCount = new Label(map.getPackets().size() + " Packets");
             packetCount.getStyleClass().add("space-mono");
             packetCount.setStyle(String.format("-fx-font-size: %d;", (int) MAP_HEIGHT / 20));
             mapContentPane.getChildren().add(packetCount);
@@ -77,7 +79,7 @@ public class LevelSelectController extends BaseController {
             mapContentPane.getChildren().add(selectMapButton);
             int finalI = i;
             selectMapButton.setOnAction(e -> {
-                MapLoader.setSelectedMap(finalI);
+                mapManager.setLevel(finalI + 1);
             });
 
         }

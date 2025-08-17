@@ -92,6 +92,7 @@ public class PacketAdapter extends TypeAdapter<Packet> {
                     break;
                 case "deviation":
                     packet.setDeviation(point2DAdapter.read(in));
+                    break;
                 case "currentSystemNodeId": {
                     if (!packet.isOnWire()) packet.setCurrentSystemNodeId(in.nextInt());
                     else in.nextNull();
