@@ -478,8 +478,11 @@ public class GameController extends BaseController {
         ArrayList<Packet> arrived = new ArrayList<>();
         for (Packet packet : movingPackets) {
             if (!packet.isReturning() && packet.getProgressOnWire() >= packet.getCurrentWire().getLength()) {
-                if (!packet.getCurrentWire().getDestinationPort().getParentSystemNode().isActive()) packet.setReturning(true);
-                if (packet.getCurrentWire().getDestinationPort().getParentSystemNode().getQueueSize() < SystemNode.getQueueCapacity()) {
+                if (!packet.getCurrentWire().getDestinationPort().getParentSystemNode().isActive())
+                    packet.setReturning(true);
+                else if (packet.getShapeType() == ShapeType.BIT_PACKET && packet.getCurrentWire().getDestinationPort().getParentSystemNode().getSystemType() == SystemType.REFERENCE)
+                    packetLoss(packet);
+                else if (packet.getCurrentWire().getDestinationPort().getParentSystemNode().getQueueSize() < SystemNode.getQueueCapacity()) {
                     arrived.add(packet);
 
                     packet.getCurrentWire().getDestinationPort().getParentSystemNode().getPacketQueue().add(packet);

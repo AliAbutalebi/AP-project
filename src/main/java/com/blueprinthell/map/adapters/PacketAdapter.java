@@ -44,6 +44,8 @@ public class PacketAdapter extends TypeAdapter<Packet> {
         if (packet.getShapeType() == ShapeType.BIT_PACKET) out.value(packet.getParentLargePacket().getId());
         else out.nullValue();
 
+        out.name("returning").value(packet.isReturning());
+
         out.name("received").value(packet.isReceived());
         out.endObject();
     }
@@ -107,6 +109,9 @@ public class PacketAdapter extends TypeAdapter<Packet> {
                     else in.nextNull();
                     break;
                 }
+                case "returning":
+                    packet.setReturning(in.nextBoolean());
+                    break;
                 case "received":
                     packet.setReceived(in.nextBoolean());
                     break;
