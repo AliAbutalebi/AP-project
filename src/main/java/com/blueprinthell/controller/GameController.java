@@ -215,7 +215,7 @@ public class GameController extends BaseController {
     private void update(double deltaTime) {
         packetFromSystemsToWires();
         for (Packet packet : movingPackets) {
-            movePacketOnWire(packet, deltaTime);
+            movePacketOnWire(packet, deltaTime, packet.isReturning());
         }
 
         handleAntiTrojan();
@@ -449,17 +449,15 @@ public class GameController extends BaseController {
         return null;
     }
 
-    private void movePacketOnWire(Packet packet, double deltaTime) {
-        calculateNewDistance(packet, deltaTime);
+    private void movePacketOnWire(Packet packet, double deltaTime, boolean isReturn) {
+        calculateNewDistance(packet, deltaTime, isReturn);
         double progress = packet.getProgressOnWire() / packet.getCurrentWire().getLength();
         Point2D newLocation = packet.getCurrentWire().interpolate(progress);
         packet.setLocation(newLocation);
         packetToView.get(packet).update();
     }
 
-
-    //TODO: transfer to Packet model and add new conditions
-    private void calculateNewDistance(Packet packet, double deltaTime) {
+    private void calculateNewDistance(Packet packet, double deltaTime, boolean isReturn) {
         double deltaDistance = 0;
         if (packet.getShapeType() == packet.getCurrentWire().getSourcePort().getShapeType()) {
             deltaDistance = packet.getBaseSpeed() * deltaTime;
@@ -472,17 +470,18 @@ public class GameController extends BaseController {
             deltaDistance = packet.getBaseSpeed() / 2 * deltaTime;
             //TODO: add condition for new packet types.
         }
+        if (isReturn) deltaDistance *= -1;
         packet.setProgressOnWire(packet.getProgressOnWire() + deltaDistance);
     }
 
     private void checkArrivals() {
         ArrayList<Packet> arrived = new ArrayList<>();
         for (Packet packet : movingPackets) {
-            if (packet.getProgressOnWire() >= packet.getCurrentWire().getLength()) {
+            if (!packet.isReturning() && packet.getProgressOnWire() >= packet.getCurrentWire().getLength()) {
+                if (!packet.getCurrentWire().getDestinationPort().getParentSystemNode().isActive()) packet.setReturning(true);
                 if (packet.getCurrentWire().getDestinationPort().getParentSystemNode().getQueueSize() < SystemNode.getQueueCapacity()) {
                     arrived.add(packet);
 
-                    packet.setCurrentSystemNode(packet.getCurrentWire().getDestinationPort().getParentSystemNode());
                     packet.getCurrentWire().getDestinationPort().getParentSystemNode().getPacketQueue().add(packet);
 
                     packet.getCurrentWire().getDestinationPort().receivePacket(packet);
@@ -524,7 +523,6 @@ public class GameController extends BaseController {
                         handleWin();
                     }
 
-                    packet.getCurrentSystemNode().receivePacket(packet);
                     packetToView.get(packet).update();
                     handleArrivalBehavior(packet);
 
@@ -533,6 +531,31 @@ public class GameController extends BaseController {
                 } else {
                     packetLoss(packet);
                 }
+            }
+
+            if (packet.isReturning() && packet.getProgressOnWire() <= 0) {
+                arrived.add(packet);
+
+                packet.getCurrentWire().getSourcePort().getParentSystemNode().getPacketQueue().add(packet);
+
+                packet.getCurrentWire().getSourcePort().receivePacket(packet);
+
+                SystemNodeView nodeView = nodeToView.get(packet.getCurrentWire().getSourcePort().getParentSystemNode());
+                PacketView packetView = packetToView.get(packet);
+                packetPane.getChildren().remove(packetView);
+
+                logger.info("Packet " + packet.getId() + " returned to system " + nodeView.getSystemNode().getId() + " using port " + packet.getCurrentWire().getDestinationPort().getId() + ".");
+
+                packet.setOnWire(false);
+                packet.getCurrentWire().setPacketOnWire(null);
+                packet.setCurrentWire(null);
+                packet.setProgressOnWire(0);
+                packet.setReturning(false);
+
+                packetToView.get(packet).update();
+                handleArrivalBehavior(packet);
+                nodeView.update();
+                soundEffectManager.play("packet-arrival");
             }
         }
         movingPackets.removeAll(arrived);

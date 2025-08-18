@@ -29,6 +29,7 @@ public class Packet {
     private Packet parentLargePacket;
     private int parentLargePacketId;
     private boolean colliding = false;
+    private boolean returning = false;
     private boolean received = false;
 
     public Packet() {}
@@ -261,6 +262,14 @@ public class Packet {
 
     public void setParentLargePacketId(int parentLargePacketId) {
         this.parentLargePacketId = parentLargePacketId;
+    }
+
+    public boolean isReturning() {
+        return returning;
+    }
+
+    public void setReturning(boolean returning) {
+        this.returning = returning;
     }
 }
 
