@@ -5,6 +5,7 @@ import javafx.geometry.Point2D;
 import java.util.ArrayList;
 
 public class Wire {
+    private static final int PASSED_LARGE_PACKET_LIMIT = 3;
     private int id;
     private static int lastId = 0;
     private Port sourcePort;
@@ -26,6 +27,8 @@ public class Wire {
         this.endLocation = endLocation;
         id = lastId++;
     }
+
+    public static int getPssedLargePacketLimit() {return PASSED_LARGE_PACKET_LIMIT;}
 
     public int getId() {
         return id;

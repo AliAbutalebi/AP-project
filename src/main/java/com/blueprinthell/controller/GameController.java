@@ -39,6 +39,7 @@ public class GameController extends BaseController {
     private final Map<SystemNode, SystemNodeView> nodeToView = new HashMap<>();
     private final Map<Wire, WireView> wireToView = new HashMap<>();
     private final Map<Packet, PacketView> packetToView = new HashMap<>();
+    private final HashMap<Packet, PacketView> erasedLargePackets = new HashMap<>();
     private SystemNode referenceSystemNode;
     private ArrayList<SystemNode> spySystemNodes = new ArrayList<>();
     private ArrayList<SystemNode> antiTrojansSystemNodes = new ArrayList<>();
@@ -822,6 +823,9 @@ public class GameController extends BaseController {
                 ShapeType type = packet.getShapeType();
                 if (type == ShapeType.LARGE_ONE || type == ShapeType.LARGE_TWO) handleDistributorNode(packet);
             }
+            case MERGER -> {
+                if (packet.getShapeType() == ShapeType.BIT_PACKET) handleMergerNode(packet);
+            }
         }
     }
 
@@ -1005,11 +1009,37 @@ public class GameController extends BaseController {
             gameMap.getPackets().add(bitPacket);
         }
 
+        erasedLargePackets.put(packet, packetToView.get(packet));
+
         node.getPacketQueue().remove(packet);
         packetViews.remove(packetToView.get(packet));
         packetToView.remove(packet);
 
         nodeToView.get(node).update();
+    }
+
+    private void handleMergerNode(Packet packet) {
+        Packet parentPacket = packet.getParentLargePacket();
+        ArrayList<Packet> bitPackets = new ArrayList<>();
+        for (Packet queuePacket : packet.getCurrentSystemNode().getPacketQueue()) {
+            if (queuePacket.getShapeType() != ShapeType.BIT_PACKET) continue;
+            if (queuePacket.getParentLargePacket().equals(parentPacket)) bitPackets.add(queuePacket);
+        }
+        if (bitPackets.size() == parentPacket.getSize()) {
+            packetViews.removeAll(bitPackets);
+            for (Packet bitPacket : bitPackets) {
+                packetToView.remove(bitPacket);
+            }
+            gameMap.getPackets().removeAll(bitPackets);
+            packet.getCurrentSystemNode().getPacketQueue().removeAll(bitPackets);
+
+            packet.getCurrentSystemNode().getPacketQueue().add(parentPacket);
+            packetViews.add(erasedLargePackets.get(parentPacket));
+            packetToView.put(parentPacket, erasedLargePackets.get(parentPacket));
+            parentPacket.setCurrentSystemNode(packet.getCurrentSystemNode());
+
+            erasedLargePackets.remove(parentPacket);
+        }
     }
 }
 
