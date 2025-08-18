@@ -95,6 +95,10 @@ public class SystemNode {
         return systemType;
     }
 
+    public ArrayList<Packet> getProtectedPackets() {
+        return protectedPackets;
+    }
+
     public void receivePacket(Packet packet) {
         switch (systemType) {
             case SABOTEUR -> {

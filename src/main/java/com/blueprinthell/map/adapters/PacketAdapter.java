@@ -40,6 +40,10 @@ public class PacketAdapter extends TypeAdapter<Packet> {
         if (!packet.isOnWire()) out.value(packet.getCurrentSystemNode().getId());
         else out.nullValue();
 
+        out.name("parentLargePacketId");
+        if (packet.getShapeType() == ShapeType.BIT_PACKET) out.value(packet.getParentLargePacket().getId());
+        else out.nullValue();
+
         out.name("received").value(packet.isReceived());
         out.endObject();
     }
@@ -95,6 +99,11 @@ public class PacketAdapter extends TypeAdapter<Packet> {
                     break;
                 case "currentSystemNodeId": {
                     if (!packet.isOnWire()) packet.setCurrentSystemNodeId(in.nextInt());
+                    else in.nextNull();
+                    break;
+                }
+                case "parentLargePacketId": {
+                    if (packet.getShapeType() == ShapeType.BIT_PACKET) packet.setParentLargePacketId(in.nextInt());
                     else in.nextNull();
                     break;
                 }

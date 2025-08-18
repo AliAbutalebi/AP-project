@@ -74,6 +74,7 @@ public class LoadManager {
         syncNodesAndWires(currentMap);
         syncNodesAndPackets(currentMap);
         syncPacketsAndWires(currentMap);
+        syncPacketAndPacket(currentMap);
     }
 
     private void syncNodesAndPackets(GameMap currentMap) {
@@ -83,6 +84,7 @@ public class LoadManager {
                     if (packet.getProtectorId() == systemNode.getId()) {
                         packet.setProtector(systemNode);
                         packet.setProtected(true);
+                        systemNode.getProtectedPackets().add(packet);
                     }
                 }
                 if (packet.isOnWire()) continue;
@@ -130,6 +132,17 @@ public class LoadManager {
                     packet.setOnWire(true);
                     break;
                 }
+            }
+        }
+    }
+
+    private void syncPacketAndPacket(GameMap currentMap) {
+        for (Packet packet1 : currentMap.getPackets()) {
+            if (packet1.getShapeType() != ShapeType.BIT_PACKET) continue;
+            for (Packet packet2 : currentMap.getPackets()) {
+                if (packet2.getShapeType() != ShapeType.LARGE_ONE && packet2.getShapeType() != ShapeType.LARGE_TWO)
+                    continue;
+                if (packet1.getParentLargePacketId() == packet2.getId()) packet1.setParentLargePacket(packet2);
             }
         }
     }

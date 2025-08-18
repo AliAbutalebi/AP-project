@@ -143,7 +143,7 @@ public class PacketView extends Polygon {
     }
 
     private void createBitPacket() {
-        getPoints().addAll(createPolygon(5, PACKET_SIZE / 2).getPoints());
+        getPoints().addAll(createPolygon(5, PACKET_SIZE / 3).getPoints());
         setFill(Color.RED);
     }
 

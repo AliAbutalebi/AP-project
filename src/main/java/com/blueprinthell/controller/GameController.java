@@ -101,6 +101,7 @@ public class GameController extends BaseController {
         rootPane.setOnMouseDragged(this::onWireDragged);
         rootPane.setOnMouseReleased(this::onWireReleased);
         setupHUD();
+        renderInitialMap();
         hud.setPacketsCount(packetViews.size());
         setupMessagesPane();
         setupTopBarView();
@@ -149,7 +150,6 @@ public class GameController extends BaseController {
 
     public void setGameMap(GameMap gameMap) {
         this.gameMap = gameMap;
-        renderInitialMap();
         mapManager.save(gameMap);
 
     }
@@ -198,7 +198,7 @@ public class GameController extends BaseController {
             wireToView.put(wire, wireView);
         }
 
-        // checkRunButton();
+        checkRunButton();
     }
 
     private void startGameLoop(ActionEvent event) {
@@ -308,6 +308,7 @@ public class GameController extends BaseController {
         hud.setRemainingWireLength(hud.getRemainingWireLength() - targetPortView.getPort().getConnectedWire().getLength());
         hudView.update();
         checkActiveNode();
+        checkRunButton();
         soundEffectManager.play("click");
         mapManager.save(gameMap);
     }
@@ -393,7 +394,7 @@ public class GameController extends BaseController {
             }
             nodeView.update();
         }
-        // checkRunButton();
+        checkRunButton();
     }
 
     private void packetFromSystemsToWires() {
@@ -738,9 +739,15 @@ public class GameController extends BaseController {
 
     private void checkRunButton() {
         for (SystemNodeView nodeView : systemNodeViews) {
-            if (!nodeView.getSystemNode().isReady()) {
-                nodeToView.get(referenceSystemNode).getRunButton().setDisable(true);
-                return;
+//            if (!nodeView.getSystemNode().isReady()) {
+//                nodeToView.get(referenceSystemNode).getRunButton().setDisable(true);
+//                return;
+//            }
+            for (WireView wireView : wireViews) {
+                if (wireView.intersects(nodeView.getBoundsInLocal())) {
+                    nodeToView.get(referenceSystemNode).getRunButton().setDisable(true);
+                    return;
+                }
             }
         }
         if (hud.getRemainingWireLength() < 0) {
