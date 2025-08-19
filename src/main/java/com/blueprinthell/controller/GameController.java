@@ -159,6 +159,7 @@ public class GameController extends BaseController {
             PacketView packetView = new PacketView(packet);
             packetViews.add(packetView);
             packetToView.put(packet, packetView);
+            packet.setPacketView(packetView);
         }
 
         for (SystemNode node : gameMap.getSystemNodes()) {
@@ -913,44 +914,41 @@ public class GameController extends BaseController {
     }
 
     private void resetGame() {
+        for (SystemNodeView nodeView : systemNodeViews) {
+            nodeView.getSystemNode().reset();
+        }
+
+        for (WireView wireView : wireViews) {
+            wireView.getWire().reset();
+        }
 
         for (PacketView packetView : packetViews) {
-            if (packetView.getPacket().getCurrentSystemNode() != null) {
-                packetView.getPacket().getCurrentSystemNode().getPacketQueue().remove(packetView.getPacket());
-                nodeToView.get(packetView.getPacket().getCurrentSystemNode()).update();
-            }
+            Packet packet = packetView.getPacket();
 
-            if (movingPackets.contains(packetView.getPacket())) {
-                movingPackets.remove(packetView.getPacket());
-                packetPane.getChildren().remove(packetView);
-            }
+            if (packet.isOnWire()) packetPane.getChildren().remove(packetView);
 
-            packetView.getPacket().setNoise(0);
+            packet.reset();
 
-            packetView.getPacket().setCurrentSystemNode(referenceSystemNode);
-            referenceSystemNode.getPacketQueue().add(packetView.getPacket());
-            nodeToView.get(referenceSystemNode).update();
+            packet.setCurrentSystemNode(referenceSystemNode);
+            referenceSystemNode.getPacketQueue().add(packet);
+        }
 
-            if (packetView.getPacket().getCurrentWire() != null) {
-                packetView.getPacket().getCurrentWire().setPacketOnWire(null);
-            }
+        movingPackets.clear();
+        potentialCollisions.clear();
 
-            packetView.getPacket().setCurrentWire(null);
-            packetView.getPacket().setProgressOnWire(0);
-            packetView.getPacket().setLocation(new Point2D(0, 0));
-            packetView.getPacket().setDeviation(new Point2D(0, 0));
-            packetView.getPacket().setReceived(false);
-            packetView.getPacket().setCurrentSpeed(packetView.getPacket().getBaseSpeed());
-
-
+        for (SystemNodeView nodeView : systemNodeViews) {
+            nodeView.update();
+        }
+        for (WireView wireView : wireViews) {
+            wireView.update();
+        }
+        for  (PacketView packetView : packetViews) {
             packetView.update();
         }
 
         hud.setLostPackets(0);
         hud.setCoins(0);
         hud.setTemporalProgress(0);
-
-
     }
 
     public void setScrubbing(boolean scrubbing) {
@@ -1040,6 +1038,7 @@ public class GameController extends BaseController {
             packetViews.add(packetView);
             packetToView.put(bitPacket, packetView);
             gameMap.getPackets().add(bitPacket);
+            bitPacket.setPacketView(packetView);
         }
 
         erasedLargePackets.put(packet, packetToView.get(packet));

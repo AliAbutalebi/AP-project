@@ -169,7 +169,7 @@ public class SystemNodeView extends AnchorPane {
 
         for (int i = 0; i < packets.size(); i++) {
             Packet packet = packets.get(i);
-            PacketView packetView = new PacketView(packet);
+            PacketView packetView = (PacketView) (packet.getPacketView());
             packetView.setLayoutX(queuePane.getPrefWidth() / 2);
             packetView.setLayoutY((i + 2) * PACKET_SPACING);
             packetViews.add(packetView);

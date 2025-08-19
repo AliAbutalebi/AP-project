@@ -154,4 +154,8 @@ public class Wire {
     public void setPacketOnWireId(int packetOnWireId) {
         this.packetOnWireId = packetOnWireId;
     }
+
+    public void reset() {
+        setPassedLargePackets(0);
+    }
 }

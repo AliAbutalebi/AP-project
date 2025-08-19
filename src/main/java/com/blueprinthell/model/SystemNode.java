@@ -151,5 +151,10 @@ public class SystemNode {
         return n;
     }
 
+    public void reset() {
+        getPacketQueue().clear();
+        setActive(true);
+    }
+
 }
 

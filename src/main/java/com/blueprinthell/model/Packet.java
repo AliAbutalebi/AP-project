@@ -1,6 +1,7 @@
 package com.blueprinthell.model;
 
 import javafx.geometry.Point2D;
+import javafx.scene.shape.Polygon;
 
 public class Packet {
 
@@ -31,6 +32,7 @@ public class Packet {
     private boolean colliding = false;
     private boolean returning = false;
     private boolean received = false;
+    private Polygon packetView;
 
     public Packet() {}
 
@@ -270,6 +272,33 @@ public class Packet {
 
     public void setReturning(boolean returning) {
         this.returning = returning;
+    }
+
+    public Polygon getPacketView() {
+        return packetView;
+    }
+
+    public void setPacketView(Polygon packetView) {
+        this.packetView = packetView;
+    }
+
+    public void reset() {
+        if (isOnWire()) {
+            setOnWire(false);
+            setProgressOnWire(0);
+            getCurrentWire().setPacketOnWire(null);
+            setCurrentWire(null);
+        }
+
+        setNoise(0);
+        setReturning(false);
+        setReceived(false);
+        setLocation(new Point2D(0, 0));
+        setDeviation(new Point2D(0, 0));
+        setPassedIncompatiblePort(false);
+        setAlive(true);
+        setColliding(false);
+        setCurrentSpeed(getBaseSpeed());
     }
 }
 
