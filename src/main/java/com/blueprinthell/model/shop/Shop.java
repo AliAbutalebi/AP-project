@@ -1,4 +1,4 @@
-package com.blueprinthell.model;
+package com.blueprinthell.model.shop;
 
 import java.util.Arrays;
 import java.util.List;

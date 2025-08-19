@@ -4,15 +4,14 @@ import com.blueprinthell.audio.SoundEffectManager;
 import com.blueprinthell.controller.GameController;
 import com.blueprinthell.log.Logger;
 import com.blueprinthell.model.*;
-import javafx.application.Application;
+import com.blueprinthell.model.shop.Shop;
+import com.blueprinthell.model.shop.ShopItem;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 import org.kordamp.ikonli.fontawesome6.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 

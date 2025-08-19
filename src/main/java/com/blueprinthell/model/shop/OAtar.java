@@ -1,6 +1,6 @@
-package com.blueprinthell.model;
+package com.blueprinthell.model.shop;
 
-import com.blueprinthell.controller.GameController;
+import com.blueprinthell.model.HUD;
 
 public class OAtar implements ShopItem {
     private static final OAtar instance = new OAtar();

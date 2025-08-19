@@ -1,6 +1,4 @@
-package com.blueprinthell.model;
-
-import com.blueprinthell.controller.GameController;
+package com.blueprinthell.model.shop;
 
 public interface ShopItem {
     String getName();

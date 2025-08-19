@@ -15,4 +15,5 @@ module com.blueprinthell {
     opens com.blueprinthell.model to com.google.gson;
     exports com.blueprinthell;
     exports com.blueprinthell.controller to javafx.fxml;
+    opens com.blueprinthell.model.shop to com.google.gson;
 }

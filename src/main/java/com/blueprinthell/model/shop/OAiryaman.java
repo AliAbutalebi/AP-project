@@ -1,8 +1,8 @@
-package com.blueprinthell.model;
+package com.blueprinthell.model.shop;
 
-import com.blueprinthell.controller.GameController;
+import com.blueprinthell.model.HUD;
 
-public class OAiryaman implements ShopItem{
+public class OAiryaman implements ShopItem {
     private static final OAiryaman instance = new OAiryaman();
     private static double remainingTime = 5;
     private static boolean enabled = false;
