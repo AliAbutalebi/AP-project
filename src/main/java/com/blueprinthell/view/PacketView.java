@@ -120,13 +120,13 @@ public class PacketView extends Polygon {
 
     private void createLargeOne() {
         Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/large-one.png").toURI().toString(), PACKET_SIZE, PACKET_SIZE, true, true);
-        getPoints().addAll(polygonizer.polygonize(pattern, PACKET_SIZE).getPoints());
+        getPoints().addAll(polygonizer.polygonize(pattern, PACKET_SIZE * 2).getPoints());
         setFill(new ImagePattern(pattern));
     }
 
     private void createLargeTwo() {
         Image pattern = new Image(new File("./src/main/resources/com/blueprinthell/image/packets/large-two.png").toURI().toString(), PACKET_SIZE, PACKET_SIZE, true, true);
-        getPoints().addAll(polygonizer.polygonize(pattern, PACKET_SIZE).getPoints());
+        getPoints().addAll(polygonizer.polygonize(pattern, PACKET_SIZE * 2).getPoints());
         setFill(new ImagePattern(pattern));
     }
 
