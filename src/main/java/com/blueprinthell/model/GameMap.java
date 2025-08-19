@@ -50,9 +50,4 @@ public class GameMap {
         return packets;
     }
 
-    public void resetPackets(ArrayList<Packet> snapshot) {
-
-    }
-
-
 }

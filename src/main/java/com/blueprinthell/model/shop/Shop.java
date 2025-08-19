@@ -1,16 +1,14 @@
 package com.blueprinthell.model.shop;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Shop {
     private static final Shop instance = new Shop();
 
-    private static final OAtar oAtar = OAtar.getInstance();
-    private static final OAiryaman oAiryaman = OAiryaman.getInstance();
-    private static final OAnahita oAnahita = OAnahita.getInstance();
-
-    private static final List<ShopItem> items = Arrays.asList(oAtar, oAiryaman, oAnahita);
+    private final ArrayList<ItemType> itemTypes = new ArrayList<>(Arrays.asList(ItemType.values()));
+    private final ArrayList<ShopItem2> purchasedItems = new ArrayList<>();
 
     private Shop() {
 
@@ -20,9 +18,20 @@ public class Shop {
         return instance;
     }
 
-    public List<ShopItem> getItems() {
-        return items;
+    public List<ItemType> getItemTypes() {
+        return itemTypes;
     }
 
+    public List<ShopItem2> getPurchasedItems() {return purchasedItems;}
 
+    public boolean isActive(ItemType itemType) {
+        for (ShopItem2 shopItem : purchasedItems) {
+            if (shopItem.getType().equals(itemType)) {
+                if (shopItem.isActive()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
