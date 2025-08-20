@@ -166,9 +166,13 @@ public class ShopView extends StackPane {
             box.getChildren().add(itemActivateButton);
             itemActivateButton.getStyleClass().add("monograf-bold");
             itemActivateButton.setStyle(String.format("-fx-font-size: %d;", (int) BUTTON_HEIGHT / 3));
-            if (shop.isActive(item)) {
+            if (shop.canActivate(item)) {
                 itemActivateButton.setDisable(true);
                 itemActivateButton.setText("ACTIVATED");
+            }
+            else if (shop.isCoolingDown(item)) {
+                itemActivateButton.setDisable(true);
+                itemActivateButton.setText("COOLING DOWN");
             }
             else if (hud.getCoins() < item.getPrice()) {
                 itemActivateButton.setDisable(true);

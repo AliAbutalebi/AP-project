@@ -50,7 +50,7 @@
             "isActive": true
         },
         {
-            "systemType": "NORMAL",
+            "systemType": "DISTRIBUTOR",
             "id": 1,
             "location": {
                 "X": 400.0,
@@ -167,7 +167,7 @@
             "isActive": true
         },
         {
-            "systemType": "SPY",
+            "systemType": "MERGER",
             "id": 3,
             "location": {
                 "X": 880.0,
@@ -238,7 +238,7 @@
     "packets": [
         {
             "id": 0,
-            "shapeType": "HEXAGON",
+            "shapeType": "LARGE_TWO",
             "alive": true,
             "protected": false,
             "trojan": false,

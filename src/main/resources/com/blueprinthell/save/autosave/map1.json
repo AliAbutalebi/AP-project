@@ -31,8 +31,8 @@
           "shapeType": "HEXAGON",
           "id": 3,
           "isInput": false,
-          "occupied": false,
-          "connectedWireId": null,
+          "occupied": true,
+          "connectedWireId": 0,
           "parentSystemNodeId": 0
         },
         {
@@ -47,15 +47,15 @@
           "shapeType": "TRIANGLE",
           "id": 5,
           "isInput": false,
-          "occupied": false,
-          "connectedWireId": null,
+          "occupied": true,
+          "connectedWireId": 1,
           "parentSystemNodeId": 0
         }
       ],
       "isActive": true
     },
     {
-      "systemType": "NORMAL",
+      "systemType": "DISTRIBUTOR",
       "id": 1,
       "location": {
         "X": 400.0,
@@ -63,7 +63,7 @@
       },
       "inputPorts": [
         {
-          "shapeType": "SQUARE",
+          "shapeType": "HEXAGON",
           "id": 4,
           "isInput": true,
           "occupied": false,
@@ -105,7 +105,7 @@
           "parentSystemNodeId": 1
         }
       ],
-      "isActive": true
+      "isActive": false
     },
     {
       "systemType": "ANTI_TROJAN",
@@ -116,11 +116,11 @@
       },
       "inputPorts": [
         {
-          "shapeType": "TRIANGLE",
+          "shapeType": "HEXAGON",
           "id": 9,
           "isInput": true,
-          "occupied": false,
-          "connectedWireId": null,
+          "occupied": true,
+          "connectedWireId": 1,
           "parentSystemNodeId": 2
         },
         {
@@ -148,11 +148,11 @@
           "parentSystemNodeId": 2
         },
         {
-          "shapeType": "HEXAGON",
+          "shapeType": "TRIANGLE",
           "id": 13,
           "isInput": true,
-          "occupied": false,
-          "connectedWireId": null,
+          "occupied": true,
+          "connectedWireId": 0,
           "parentSystemNodeId": 2
         }
       ],
@@ -185,7 +185,7 @@
       "isActive": true
     },
     {
-      "systemType": "SPY",
+      "systemType": "MERGER",
       "id": 3,
       "location": {
         "X": 880.0,
@@ -262,13 +262,13 @@
   "packets": [
     {
       "id": 0,
-      "shapeType": "HEXAGON",
+      "shapeType": "LARGE_TWO",
       "alive": true,
       "protected": false,
       "protectorId": null,
       "trojan": false,
       "noise": 0,
-      "currentSpeed": 0.0,
+      "currentSpeed": 200.0,
       "onWire": false,
       "progressOnWire": 0.0,
       "currentWireId": null,
@@ -276,7 +276,9 @@
         "X": 0.0,
         "Y": 0.0
       },
-      "currentSystemNodeId": 0,
+      "currentSystemNodeId": 1,
+      "parentLargePacketId": null,
+      "returning": false,
       "received": false
     },
     {
@@ -287,7 +289,7 @@
       "protectorId": null,
       "trojan": false,
       "noise": 0,
-      "currentSpeed": 0.0,
+      "currentSpeed": 200.0,
       "onWire": false,
       "progressOnWire": 0.0,
       "currentWireId": null,
@@ -295,7 +297,9 @@
         "X": 0.0,
         "Y": 0.0
       },
-      "currentSystemNodeId": 0,
+      "currentSystemNodeId": 1,
+      "parentLargePacketId": null,
+      "returning": false,
       "received": false
     },
     {
@@ -306,7 +310,7 @@
       "protectorId": null,
       "trojan": false,
       "noise": 0,
-      "currentSpeed": 0.0,
+      "currentSpeed": 586.9646799999999,
       "onWire": false,
       "progressOnWire": 0.0,
       "currentWireId": null,
@@ -314,7 +318,9 @@
         "X": 0.0,
         "Y": 0.0
       },
-      "currentSystemNodeId": 0,
+      "currentSystemNodeId": 2,
+      "parentLargePacketId": null,
+      "returning": false,
       "received": false
     },
     {
@@ -325,7 +331,7 @@
       "protectorId": null,
       "trojan": false,
       "noise": 0,
-      "currentSpeed": 0.0,
+      "currentSpeed": 100.0,
       "onWire": false,
       "progressOnWire": 0.0,
       "currentWireId": null,
@@ -333,7 +339,9 @@
         "X": 0.0,
         "Y": 0.0
       },
-      "currentSystemNodeId": 0,
+      "currentSystemNodeId": 2,
+      "parentLargePacketId": null,
+      "returning": false,
       "received": false
     },
     {
@@ -344,7 +352,7 @@
       "protectorId": null,
       "trojan": false,
       "noise": 0,
-      "currentSpeed": 0.0,
+      "currentSpeed": 100.0,
       "onWire": false,
       "progressOnWire": 0.0,
       "currentWireId": null,
@@ -352,10 +360,239 @@
         "X": 0.0,
         "Y": 0.0
       },
-      "currentSystemNodeId": 0,
+      "currentSystemNodeId": 2,
+      "parentLargePacketId": null,
+      "returning": false,
+      "received": false
+    },
+    {
+      "id": 5,
+      "shapeType": "BIT_PACKET",
+      "alive": true,
+      "protected": false,
+      "protectorId": null,
+      "trojan": false,
+      "noise": 0,
+      "currentSpeed": 100.0,
+      "onWire": false,
+      "progressOnWire": 0.0,
+      "currentWireId": null,
+      "deviation": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "currentSystemNodeId": 1,
+      "parentLargePacketId": 0,
+      "returning": false,
+      "received": false
+    },
+    {
+      "id": 6,
+      "shapeType": "BIT_PACKET",
+      "alive": true,
+      "protected": false,
+      "protectorId": null,
+      "trojan": false,
+      "noise": 0,
+      "currentSpeed": 100.0,
+      "onWire": false,
+      "progressOnWire": 0.0,
+      "currentWireId": null,
+      "deviation": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "currentSystemNodeId": 1,
+      "parentLargePacketId": 0,
+      "returning": false,
+      "received": false
+    },
+    {
+      "id": 7,
+      "shapeType": "BIT_PACKET",
+      "alive": true,
+      "protected": false,
+      "protectorId": null,
+      "trojan": false,
+      "noise": 0,
+      "currentSpeed": 100.0,
+      "onWire": false,
+      "progressOnWire": 0.0,
+      "currentWireId": null,
+      "deviation": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "currentSystemNodeId": 1,
+      "parentLargePacketId": 0,
+      "returning": false,
+      "received": false
+    },
+    {
+      "id": 8,
+      "shapeType": "BIT_PACKET",
+      "alive": true,
+      "protected": false,
+      "protectorId": null,
+      "trojan": false,
+      "noise": 0,
+      "currentSpeed": 100.0,
+      "onWire": false,
+      "progressOnWire": 0.0,
+      "currentWireId": null,
+      "deviation": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "currentSystemNodeId": 1,
+      "parentLargePacketId": 0,
+      "returning": false,
+      "received": false
+    },
+    {
+      "id": 9,
+      "shapeType": "BIT_PACKET",
+      "alive": true,
+      "protected": false,
+      "protectorId": null,
+      "trojan": false,
+      "noise": 0,
+      "currentSpeed": 100.0,
+      "onWire": false,
+      "progressOnWire": 0.0,
+      "currentWireId": null,
+      "deviation": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "currentSystemNodeId": 1,
+      "parentLargePacketId": 0,
+      "returning": false,
+      "received": false
+    },
+    {
+      "id": 10,
+      "shapeType": "BIT_PACKET",
+      "alive": true,
+      "protected": false,
+      "protectorId": null,
+      "trojan": false,
+      "noise": 0,
+      "currentSpeed": 100.0,
+      "onWire": false,
+      "progressOnWire": 0.0,
+      "currentWireId": null,
+      "deviation": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "currentSystemNodeId": 1,
+      "parentLargePacketId": 0,
+      "returning": false,
+      "received": false
+    },
+    {
+      "id": 11,
+      "shapeType": "BIT_PACKET",
+      "alive": true,
+      "protected": false,
+      "protectorId": null,
+      "trojan": false,
+      "noise": 0,
+      "currentSpeed": 100.0,
+      "onWire": false,
+      "progressOnWire": 0.0,
+      "currentWireId": null,
+      "deviation": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "currentSystemNodeId": 1,
+      "parentLargePacketId": 0,
+      "returning": false,
+      "received": false
+    },
+    {
+      "id": 12,
+      "shapeType": "BIT_PACKET",
+      "alive": true,
+      "protected": false,
+      "protectorId": null,
+      "trojan": false,
+      "noise": 0,
+      "currentSpeed": 100.0,
+      "onWire": false,
+      "progressOnWire": 0.0,
+      "currentWireId": null,
+      "deviation": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "currentSystemNodeId": 1,
+      "parentLargePacketId": 0,
+      "returning": false,
+      "received": false
+    },
+    {
+      "id": 13,
+      "shapeType": "BIT_PACKET",
+      "alive": true,
+      "protected": false,
+      "protectorId": null,
+      "trojan": false,
+      "noise": 0,
+      "currentSpeed": 100.0,
+      "onWire": false,
+      "progressOnWire": 0.0,
+      "currentWireId": null,
+      "deviation": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "currentSystemNodeId": 1,
+      "parentLargePacketId": 0,
+      "returning": false,
+      "received": false
+    },
+    {
+      "id": 14,
+      "shapeType": "BIT_PACKET",
+      "alive": true,
+      "protected": false,
+      "protectorId": null,
+      "trojan": false,
+      "noise": 0,
+      "currentSpeed": 100.0,
+      "onWire": false,
+      "progressOnWire": 0.0,
+      "currentWireId": null,
+      "deviation": {
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "currentSystemNodeId": 1,
+      "parentLargePacketId": 0,
+      "returning": false,
       "received": false
     }
   ],
-  "wires": [],
+  "wires": [
+    {
+      "id": 0,
+      "sourcePortId": 3,
+      "destinationPortId": 13,
+      "packetOnWireId": null,
+      "controlPoints": [],
+      "passedLargePackets": 1
+    },
+    {
+      "id": 1,
+      "sourcePortId": 5,
+      "destinationPortId": 9,
+      "packetOnWireId": null,
+      "controlPoints": [],
+      "passedLargePackets": 1
+    }
+  ],
   "maxWireLength": 10000.0
 }

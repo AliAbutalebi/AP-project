@@ -5,9 +5,7 @@ import com.blueprinthell.audio.SoundEffectManager;
 import com.blueprinthell.log.Logger;
 import com.blueprinthell.map.MapManager;
 import com.blueprinthell.model.*;
-import com.blueprinthell.model.shop.OAiryaman;
-import com.blueprinthell.model.shop.OAnahita;
-import com.blueprinthell.model.shop.OAtar;
+import com.blueprinthell.model.shop.*;
 import com.blueprinthell.view.*;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
@@ -60,6 +58,7 @@ public class GameController extends BaseController {
     private static final ScreenDimensions screenDimensions = ScreenDimensions.getInstance();
     private HUD hud;
     private HUDView hudView;
+    private final Shop shop = Shop.getInstance();
 
 
     private final ShopView shopView = ShopView.getInstance();
@@ -68,10 +67,6 @@ public class GameController extends BaseController {
     private static final SoundEffectManager soundEffectManager = SoundEffectManager.getInstance();
 
     private static final MapManager mapManager = MapManager.getInstance();
-
-    private static final OAtar oAtar = OAtar.getInstance();
-    private static final OAiryaman oAiryaman = OAiryaman.getInstance();
-    private static final OAnahita oAnahita = OAnahita.getInstance();
 
     @FXML
     private AnchorPane rootPane;
@@ -217,35 +212,28 @@ public class GameController extends BaseController {
 
     private void update(double deltaTime) {
         packetFromSystemsToWires();
+
         for (Packet packet : movingPackets) {
             movePacketOnWire(packet, deltaTime, packet.isReturning());
         }
 
+        if (shop.isActive(ItemType.OAIRYAMAN)) {
+            handleCollisions();
+        }
+
         handleAntiTrojan();
 
-        if (!oAiryaman.isEnabled()) {
-            handleCollisions();
+        shop.tick(deltaTime);
+
+        if (shop.isActive(ItemType.OANAHITA)) {
+            for (PacketView packetView : packetViews) {
+                packetView.getPacket().setNoise(0);
+                packetView.update();
+            }
         }
 
         checkArrivals();
 
-        if (oAtar.isEnabled()) {
-            if (oAtar.isExpired()) {
-                oAtar.disable();
-                oAiryaman.resetRemainingTime();
-            } else {
-                oAtar.updateRemainingTime(deltaTime);
-            }
-        }
-
-        if (oAiryaman.isEnabled()) {
-            if (oAiryaman.isExpired()) {
-                oAiryaman.disable();
-                oAiryaman.resetRemainingTime();
-            } else {
-                oAiryaman.updateRemainingTime(deltaTime);
-            }
-        }
     }
 
     private void savePortLocation(PortView portView) {
@@ -643,8 +631,9 @@ public class GameController extends BaseController {
                 packetToView.get(entry.getValue()).applyCollision();
 
                 soundEffectManager.play("packet-collision");
+
                 logger.info("Packets " + packet1.getId() + " and " + packet2.getId() + " collided.");
-                if (!oAtar.isEnabled()) {
+                if (shop.isActive(ItemType.OATAR)) {
                     handleImpacts(getImpactCenter(packet1, packet2));
                 }
 

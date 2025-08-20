@@ -8,7 +8,7 @@ public class Shop {
     private static final Shop instance = new Shop();
 
     private final ArrayList<ItemType> itemTypes = new ArrayList<>(Arrays.asList(ItemType.values()));
-    private final ArrayList<ShopItem2> purchasedItems = new ArrayList<>();
+    private final ArrayList<ShopItem> activeItems = new ArrayList<>();
 
     private Shop() {
 
@@ -22,16 +22,42 @@ public class Shop {
         return itemTypes;
     }
 
-    public List<ShopItem2> getPurchasedItems() {return purchasedItems;}
+    public List<ShopItem> getActiveItems() {return activeItems;}
 
-    public boolean isActive(ItemType itemType) {
-        for (ShopItem2 shopItem : purchasedItems) {
-            if (shopItem.getType().equals(itemType)) {
-                if (shopItem.isActive()) {
-                    return true;
-                }
+    public boolean isActive(ItemType type) {
+        for (ShopItem item : activeItems) {
+            if (item.getType().equals(type) && item.isActive()) return true;
+        }
+        return false;
+    }
+
+    public boolean canActivate(ItemType type) {
+        switch (type) {
+            case OATAR, OAIRYAMAN, OANAHITA, AERGIA -> {
+                return isActive(type);
             }
         }
         return false;
+    }
+
+    public boolean isCoolingDown(ItemType type) {
+        for (ShopItem item : activeItems) {
+            if (item.getType().equals(type)) {
+                if (item.isCooldown()) return true;
+            }
+        }
+        return false;
+    }
+
+    public void tick(double deltaTime) {
+        ArrayList<ShopItem> outdatedItems = new ArrayList<>();
+        for (ShopItem item : activeItems) {
+            item.tick(deltaTime);
+
+            if (!item.isActive() && !item.isCooldown()) {
+                outdatedItems.add(item);
+            }
+        }
+        activeItems.removeAll(outdatedItems);
     }
 }
