@@ -2,15 +2,23 @@ package com.blueprinthell.view;
 
 import com.blueprinthell.model.HUD;
 import com.blueprinthell.model.ScreenDimensions;
+import com.blueprinthell.model.shop.Shop;
+import com.blueprinthell.model.shop.ShopItem;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+
+import java.io.File;
 
 public class HUDView extends AnchorPane {
     private static final double WIDTH = ScreenDimensions.getInstance().getWidth() / 3;
@@ -21,8 +29,9 @@ public class HUDView extends AnchorPane {
     private static final double CONTENT_SPACING = 35;
     private static HUDView instance;
     private HUD hud;
+    private Shop shop = Shop.getInstance();
     private Rectangle background;
-    private Pane titlePane;
+    private HBox titlePane;
     private Pane contentPane = new Pane();
 
     private HUDView() {
@@ -46,34 +55,46 @@ public class HUDView extends AnchorPane {
         background.setStroke(BORDER_COLOR);
         background.setStrokeWidth(5);
         getChildren().add(background);
+
+        Line line = new Line();
+        line.setStroke(BORDER_COLOR);
+        line.setStrokeWidth(3);
+        getChildren().add(line);
+        line.setStartX(0);
+        line.setStartY(TITLE_PANE_HEIGHT);
+        line.setEndX(WIDTH);
+        line.setEndY(TITLE_PANE_HEIGHT);
     }
 
     private void setupTitle() {
-        titlePane = new Pane();
+        titlePane = new HBox();
         titlePane.setPrefSize(WIDTH, TITLE_PANE_HEIGHT);
+        titlePane.setMinWidth(WIDTH);
+        titlePane.setAlignment(Pos.CENTER_LEFT);
+        titlePane.setSpacing(30);
+        titlePane.setPadding(new Insets(0, 20, 0, 40));
         getChildren().add(titlePane);
         titlePane.setLayoutX(0);
         titlePane.setLayoutY(0);
         setLeftAnchor(titlePane, 0.0);
         setRightAnchor(titlePane, 0.0);
+        setTopAnchor(titlePane, 0.0);
 
         Label hudTitle = new Label("HUD");
         hudTitle.getStyleClass().add("hud-title");
         hudTitle.setTextFill(Color.web("#333333"));
         titlePane.getChildren().add(hudTitle);
-        hudTitle.setLayoutX(20);
-        Platform.runLater(() -> {
-            hudTitle.setLayoutY(titlePane.getHeight() / 2 - hudTitle.getHeight() / 2);
-        });
 
-        Line line = new Line();
-        line.setStroke(BORDER_COLOR);
-        line.setStrokeWidth(3);
-        titlePane.getChildren().add(line);
-        line.setStartX(0);
-        line.setStartY(TITLE_PANE_HEIGHT);
-        line.setEndX(WIDTH);
-        line.setEndY(TITLE_PANE_HEIGHT);
+        HBox activeItemsPane = new HBox();
+        HBox.setHgrow(activeItemsPane, Priority.ALWAYS);
+        activeItemsPane.setPrefHeight(TITLE_PANE_HEIGHT);
+        titlePane.getChildren().add(activeItemsPane);
+        activeItemsPane.setAlignment(Pos.CENTER_RIGHT);
+        activeItemsPane.setSpacing(20);
+
+        for (ShopItem item : shop.getActiveItems()) {
+            activeItemsPane.getChildren().add(getItemIcon(item));
+        }
     }
 
     private void setupContent() {
@@ -150,7 +171,42 @@ public class HUDView extends AnchorPane {
 
     public void update() {
         hud.update();
+        titlePane.getChildren().clear();
         contentPane.getChildren().clear();
+        setupTitle();
         setupContent();
+    }
+
+    private ImageView getItemIcon(ShopItem item) {
+        ImageView itemIcon = new ImageView();
+        itemIcon.setPreserveRatio(true);
+        itemIcon.setFitHeight(TITLE_PANE_HEIGHT / 2);
+
+        switch (item.getType()) {
+            case OATAR -> {
+                itemIcon.setImage(new Image(new File("./src/main/resources/com/blueprinthell/image/shop-items/oatar.png").toURI().toString()));
+            }
+            case OAIRYAMAN -> {
+                itemIcon.setImage(new Image(new File("./src/main/resources/com/blueprinthell/image/shop-items/oairyaman.png").toURI().toString()));
+            }
+            case OANAHITA -> {
+                itemIcon.setImage(new Image(new File("./src/main/resources/com/blueprinthell/image/shop-items/oanahita.png").toURI().toString()));
+            }
+            case AERGIA -> {
+                itemIcon.setImage(new Image(new File("./src/main/resources/com/blueprinthell/image/shop-items/aergia.png").toURI().toString()));
+            }
+            case SISYPHUS -> {
+                itemIcon.setImage(new Image(new File("./src/main/resources/com/blueprinthell/image/shop-items/sisyphus.png").toURI().toString()));
+            }
+            case ELIPHAS -> {
+                itemIcon.setImage(new Image(new File("./src/main/resources/com/blueprinthell/image/shop-items/eliphas.png").toURI().toString()));
+            }
+        }
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(-1.0);
+        colorAdjust.setContrast(1.0);
+
+        itemIcon.setEffect(colorAdjust);
+        return itemIcon;
     }
 }

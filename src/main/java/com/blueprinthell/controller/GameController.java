@@ -220,7 +220,7 @@ public class GameController extends BaseController {
             movePacketOnWire(packet, deltaTime, packet.isReturning());
         }
 
-        if (shop.isActive(ItemType.OAIRYAMAN)) {
+        if (!shop.isActive(ItemType.OAIRYAMAN)) {
             handleCollisions();
         }
 
@@ -601,7 +601,7 @@ public class GameController extends BaseController {
                 else if (potentialCollisions.containsKey(packet2) && potentialCollisions.get(packet2).equals(packet1))
                     continue;
                 else {
-                    double PACKET_PROXIMITY = 20;
+                    double PACKET_PROXIMITY = 50;
                     if (packet1.getLocation().distance(packet2.getLocation()) < PACKET_PROXIMITY) {
                         potentialCollisions.put(packet1, packet2);
                     }
@@ -634,7 +634,7 @@ public class GameController extends BaseController {
                 soundEffectManager.play("packet-collision");
 
                 logger.info("Packets " + packet1.getId() + " and " + packet2.getId() + " collided.");
-                if (shop.isActive(ItemType.OATAR)) {
+                if (!shop.isActive(ItemType.OATAR)) {
                     handleImpacts(getImpactCenter(packet1, packet2));
                 }
 
@@ -814,6 +814,7 @@ public class GameController extends BaseController {
 
     private void returnFromShopView() {
         rootPane.getChildren().remove(shopView);
+        hudView.update();
         if (shop.isActive(ItemType.SISYPHUS)) handleSisyphus();
         else resume();
     }
@@ -1013,6 +1014,7 @@ public class GameController extends BaseController {
             nodeView.switchIndicator(node.isReady(), node.isActive());
         });
         pauseTransition.play();
+        logger.info("System "  + node.getId() + " deactivated.");
     }
 
     private void handleDistributorNode(Packet packet) {

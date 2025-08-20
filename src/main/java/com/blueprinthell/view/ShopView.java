@@ -36,12 +36,12 @@ public class ShopView extends StackPane {
     private static final Logger logger = Logger.getInstance();
 
     private static final double SHOP_WIDTH = screenDimensions.getWidth() * 0.8;
-    private static final double SHOP_HEIGHT = screenDimensions.getHeight() * 0.9;
+    private static final double SHOP_HEIGHT = screenDimensions.getHeight() * 0.95;
     private static final double TITLE_HEIGHT = SHOP_HEIGHT / 10;
     private static final double ITEM_WIDTH = SHOP_WIDTH / 5;
-    private static final double ITEM_HEIGHT = SHOP_HEIGHT / 2.8;
+    private static final double ITEM_HEIGHT = SHOP_HEIGHT / 2.6;
     private static final double BUTTON_WIDTH = ITEM_WIDTH * 0.8;
-    private static final double BUTTON_HEIGHT = SHOP_HEIGHT / 10;
+    private static final double BUTTON_HEIGHT = SHOP_HEIGHT / 15;
     private static final Color BACKGROUND_COLOR = Color.web("#E6E6E6");
     private static final Color BORDER_COLOR = Color.web("#B3B3B3");
     private static final Color ITEM_BACKGROUND_COLOR = Color.web("#666666");
@@ -89,7 +89,7 @@ public class ShopView extends StackPane {
         contentPane = new VBox();
         contentPane.setMaxSize(SHOP_WIDTH, SHOP_HEIGHT);
         getChildren().add(contentPane);
-        contentPane.setSpacing(50);
+        contentPane.setSpacing(30);
 
         HBox titlePane = new HBox();
         titlePane.setAlignment(Pos.CENTER);
@@ -105,7 +105,6 @@ public class ShopView extends StackPane {
     private void setupItems() {
         itemsPane.setAlignment(Pos.CENTER);
         itemsPane.setPrefSize(SHOP_WIDTH, ITEM_HEIGHT);
-        // itemsPane.setSpacing(50);
         itemsPane.setHgap(20);
         itemsPane.setVgap(20);
 
@@ -133,6 +132,7 @@ public class ShopView extends StackPane {
             StackPane iconPane = new StackPane();
             iconPane.setAlignment(Pos.CENTER);
             ImageView icon = new ImageView(getItemIcon(item));
+            icon.setSmooth(true);
             iconPane.getChildren().add(icon);
             box.getChildren().add(iconPane);
 
@@ -141,7 +141,7 @@ public class ShopView extends StackPane {
             itemName.setAlignment(Pos.CENTER);
             itemName.getStyleClass().add("monograf-bold");
             itemName.setTextFill(TEXT_COLOR);
-            itemName.setStyle(String.format("-fx-font-size: %d;", (int) ITEM_HEIGHT / 15));
+            itemName.setStyle(String.format("-fx-font-size: %d;", (int) ITEM_HEIGHT / 18));
             box.getChildren().add(itemName);
 
             Label itemDescription = new Label(item.getDescription());
@@ -150,7 +150,7 @@ public class ShopView extends StackPane {
             itemDescription.setAlignment(Pos.CENTER);
             itemDescription.getStyleClass().add("monograf-regular");
             itemDescription.setTextFill(TEXT_COLOR);
-            itemDescription.setStyle(String.format("-fx-font-size: %d;", (int) ITEM_HEIGHT / 28));
+            itemDescription.setStyle(String.format("-fx-font-size: %d;", (int) ITEM_HEIGHT / 25));
             itemDescription.setWrapText(true);
             box.getChildren().add(itemDescription);
 
@@ -178,7 +178,7 @@ public class ShopView extends StackPane {
             else if (hud.getCoins() < item.getPrice()) {
                 itemActivateButton.setDisable(true);
                 itemActivateButton.setText("INSUFFICIENT COINS");
-                itemActivateButton.setStyle(String.format("-fx-font-size: %d;", (int) BUTTON_HEIGHT / 7));
+                itemActivateButton.setStyle(String.format("-fx-font-size: %d;", (int) BUTTON_HEIGHT / 5));
             }
             itemActivateButton.setOnAction(event -> {
                 shop.getActiveItems().add(new ShopItem(item));

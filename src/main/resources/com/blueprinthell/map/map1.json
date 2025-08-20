@@ -238,7 +238,7 @@
     "packets": [
         {
             "id": 0,
-            "shapeType": "LARGE_TWO",
+            "shapeType": "TRIANGLE",
             "alive": true,
             "protected": false,
             "trojan": false,
@@ -255,7 +255,7 @@
         },
         {
             "id": 1,
-            "shapeType": "CONFIDENTIAL_ONE",
+            "shapeType": "SQUARE",
             "alive": true,
             "protected": false,
             "trojan": false,
