@@ -49,6 +49,14 @@ public class Shop {
         return false;
     }
 
+    public ShopItem getItem(ItemType itemType) {
+        for (int i = activeItems.size() - 1; i >= 0; i--) {
+            ShopItem item = activeItems.get(i);
+            if (item.getType().equals(itemType)) return item;
+        }
+        return null;
+    }
+
     public void tick(double deltaTime) {
         ArrayList<ShopItem> outdatedItems = new ArrayList<>();
         for (ShopItem item : activeItems) {

@@ -44,6 +44,8 @@ public class GameController extends BaseController {
     private ArrayList<SystemNode> spySystemNodes = new ArrayList<>();
     private ArrayList<SystemNode> antiTrojansSystemNodes = new ArrayList<>();
 
+    private SystemNodeView sisyphusNodeView;
+
     private final ArrayList<Packet> movingPackets = new ArrayList<>();
     private final Map<Packet, Packet> potentialCollisions = new HashMap<>();
 
@@ -130,6 +132,7 @@ public class GameController extends BaseController {
                                 gameLoop.stop();
                             }
                         } else {
+                            shop.tick(deltaTime);
                             update(deltaTime);
 
                             if (topBarView.getTemporalProgressSlider().getValue() < topBarView.getTemporalProgressSlider().getMax()) {
@@ -222,8 +225,6 @@ public class GameController extends BaseController {
         }
 
         handleAntiTrojan();
-
-        shop.tick(deltaTime);
 
         if (shop.isActive(ItemType.OANAHITA)) {
             for (PacketView packetView : packetViews) {
@@ -813,7 +814,8 @@ public class GameController extends BaseController {
 
     private void returnFromShopView() {
         rootPane.getChildren().remove(shopView);
-        resume();
+        if (shop.isActive(ItemType.SISYPHUS)) handleSisyphus();
+        else resume();
     }
 
     private void pause() {
@@ -1064,5 +1066,67 @@ public class GameController extends BaseController {
             erasedLargePackets.remove(parentPacket);
         }
     }
+
+    private void handleSisyphus() {
+
+        for (SystemNodeView nodeView : systemNodeViews) {
+            nodeView.setOnMouseClicked(e -> {
+                System.out.println("clicked");
+                sisyphusNodeView = nodeView;
+                sisyphusNodeView.markSelected();
+            });
+
+            nodeView.setOnMouseDragged(e -> {
+                System.out.println("dragged");
+
+                nodeView.getSystemNode().setLocation(new Point2D(e.getSceneX(), e.getSceneY()));
+                nodeView.update();
+                for (PortView portView : nodeView.getInputPortViews()) {
+                    savePortLocation(portView);
+                    portView.update();
+
+                    if (portView.getPort().isOccupied()) {
+                        portView.getPort().getConnectedWire().setEndLocation(portView.getPort().getLocation());
+                        wireToView.get(portView.getPort().getConnectedWire()).update();
+                    }
+                }
+
+                for (PortView portView : nodeView.getOutputPortViews()) {
+                    savePortLocation(portView);
+                    portView.update();
+
+                    if (portView.getPort().isOccupied()) {
+                        portView.getPort().getConnectedWire().setStartLocation(portView.getPort().getLocation());
+                        wireToView.get(portView.getPort().getConnectedWire()).update();
+                    }
+                }
+
+                nodeView.markSelected();
+            });
+
+            nodeView.setOnMouseReleased(e -> {
+                System.out.println("released");
+                nodeView.markNormal();
+
+                sisyphusNodeView = null;
+
+                for (SystemNodeView nodeView2 : systemNodeViews) {
+                    nodeView2.setOnMouseClicked(null);
+                    nodeView2.setOnMouseDragged(null);
+                    nodeView2.setOnMouseDragReleased(null);
+                }
+
+                resume();
+
+                shop.getItem(ItemType.SISYPHUS).setActive(false);
+            });
+        }
+
+
+
+
+    }
+
+
 }
 

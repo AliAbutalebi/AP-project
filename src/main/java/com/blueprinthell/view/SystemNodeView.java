@@ -81,6 +81,7 @@ public class SystemNodeView extends AnchorPane {
         background.setStrokeWidth(NODE_STROKE);
         background.setArcWidth(NODE_RADIUS);
         background.setArcHeight(NODE_RADIUS);
+        background.setMouseTransparent(true);
 
         indicatorPane = new Pane();
         indicatorPanel = new Rectangle(NODE_WIDTH, INDICATOR_PANEL_HEIGHT);
@@ -88,6 +89,7 @@ public class SystemNodeView extends AnchorPane {
         indicatorPanel.setStroke(Color.web("#666666"));
         indicatorPanel.setArcWidth(NODE_RADIUS);
         indicatorPanel.setArcHeight(NODE_RADIUS);
+        indicatorPane.setMouseTransparent(true);
 
         indicatorPane.getChildren().add(indicatorPanel);
         getChildren().add(0, background);
@@ -159,6 +161,7 @@ public class SystemNodeView extends AnchorPane {
         getChildren().add(queuePane);
         queuePane.setLayoutX(PORT_PANE_WIDTH);
         queuePane.setPrefWidth(RUN_BUTTON_WIDTH);
+        queuePane.setMouseTransparent(true);
         if (systemNode.getSystemType() == SystemType.REFERENCE) {
             queuePane.setLayoutY(INDICATOR_HEIGHT + RUN_BUTTON_HEIGHT);
             queuePane.setPrefHeight(nodeHeight - INDICATOR_HEIGHT - RUN_BUTTON_HEIGHT);
@@ -264,6 +267,8 @@ public class SystemNodeView extends AnchorPane {
 
     public void update() {
         queuePane.getChildren().clear();
+        setLayoutX(systemNode.getLocation().getX());
+        setLayoutY(systemNode.getLocation().getY());
         updateSystemNodeSize();
         setupPackets();
         switchIndicator(systemNode.isReady(), systemNode.isActive());
@@ -301,5 +306,13 @@ public class SystemNodeView extends AnchorPane {
         if (systemNode.getSystemType() == SystemType.REFERENCE) {
             nodeHeight += RUN_BUTTON_HEIGHT;
         }
+    }
+
+    public void markSelected() {
+        background.setStroke(Color.WHITE);
+    }
+
+    public void markNormal() {
+        background.setStroke(Color.web("#666666"));
     }
 }

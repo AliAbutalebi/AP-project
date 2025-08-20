@@ -9,8 +9,7 @@ public class ShopItem {
 
     public ShopItem(ItemType type) {
         this.type = type;
-        this.remainingDuration = 0;
-        this.remainingCooldown = 0;
+        activate();
     }
 
     public void activate() {
@@ -22,16 +21,18 @@ public class ShopItem {
     }
 
     public void tick(double deltaTime) {
-        if (active) {
-            remainingDuration -= deltaTime;
-            if (remainingDuration <= 0) {
-                active = false;
-                cooldown = true;
+        if (type.getDuration() != 0) {
+            if (active) {
+                remainingDuration -= deltaTime;
+                if (remainingDuration <= 0) {
+                    active = false;
+                    cooldown = true;
+                }
+            } else if (remainingCooldown > 0) {
+                remainingCooldown -= deltaTime;
+            } else if (remainingCooldown <= 0) {
+                cooldown = false;
             }
-        } else if (remainingCooldown > 0) {
-            remainingCooldown -= deltaTime;
-        } else if (remainingCooldown <= 0) {
-            cooldown = false;
         }
     }
 
@@ -41,6 +42,10 @@ public class ShopItem {
 
     public boolean isActive() {
         return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public boolean isCooldown() {

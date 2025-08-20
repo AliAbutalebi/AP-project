@@ -48,7 +48,7 @@
           "id": 5,
           "isInput": false,
           "occupied": true,
-          "connectedWireId": 1,
+          "connectedWireId": 3,
           "parentSystemNodeId": 0
         }
       ],
@@ -58,16 +58,16 @@
       "systemType": "DISTRIBUTOR",
       "id": 1,
       "location": {
-        "X": 400.0,
-        "Y": 458.0
+        "X": 180.8,
+        "Y": 450.4
       },
       "inputPorts": [
         {
-          "shapeType": "HEXAGON",
+          "shapeType": "TRIANGLE",
           "id": 4,
           "isInput": true,
-          "occupied": false,
-          "connectedWireId": null,
+          "occupied": true,
+          "connectedWireId": 1,
           "parentSystemNodeId": 1
         },
         {
@@ -92,8 +92,8 @@
           "shapeType": "TRIANGLE",
           "id": 7,
           "isInput": false,
-          "occupied": false,
-          "connectedWireId": null,
+          "occupied": true,
+          "connectedWireId": 2,
           "parentSystemNodeId": 1
         },
         {
@@ -111,24 +111,24 @@
       "systemType": "ANTI_TROJAN",
       "id": 2,
       "location": {
-        "X": 640.0,
-        "Y": 318.0
+        "X": 713.6,
+        "Y": 177.6
       },
       "inputPorts": [
         {
-          "shapeType": "HEXAGON",
+          "shapeType": "SQUARE",
           "id": 9,
           "isInput": true,
           "occupied": true,
-          "connectedWireId": 1,
+          "connectedWireId": 0,
           "parentSystemNodeId": 2
         },
         {
           "shapeType": "SQUARE",
           "id": 10,
           "isInput": true,
-          "occupied": false,
-          "connectedWireId": null,
+          "occupied": true,
+          "connectedWireId": 3,
           "parentSystemNodeId": 2
         },
         {
@@ -143,16 +143,16 @@
           "shapeType": "SQUARE",
           "id": 12,
           "isInput": true,
-          "occupied": false,
-          "connectedWireId": null,
+          "occupied": true,
+          "connectedWireId": 2,
           "parentSystemNodeId": 2
         },
         {
-          "shapeType": "TRIANGLE",
+          "shapeType": "HEXAGON",
           "id": 13,
           "isInput": true,
-          "occupied": true,
-          "connectedWireId": 0,
+          "occupied": false,
+          "connectedWireId": null,
           "parentSystemNodeId": 2
         }
       ],
@@ -161,8 +161,8 @@
           "shapeType": "SQUARE",
           "id": 14,
           "isInput": false,
-          "occupied": false,
-          "connectedWireId": null,
+          "occupied": true,
+          "connectedWireId": 1,
           "parentSystemNodeId": 2
         },
         {
@@ -289,7 +289,7 @@
       "protectorId": null,
       "trojan": false,
       "noise": 0,
-      "currentSpeed": 200.0,
+      "currentSpeed": 100.0,
       "onWire": false,
       "progressOnWire": 0.0,
       "currentWireId": null,
@@ -297,7 +297,7 @@
         "X": 0.0,
         "Y": 0.0
       },
-      "currentSystemNodeId": 1,
+      "currentSystemNodeId": 2,
       "parentLargePacketId": null,
       "returning": false,
       "received": false
@@ -310,7 +310,7 @@
       "protectorId": null,
       "trojan": false,
       "noise": 0,
-      "currentSpeed": 586.9646799999999,
+      "currentSpeed": 620.4993799999997,
       "onWire": false,
       "progressOnWire": 0.0,
       "currentWireId": null,
@@ -381,7 +381,7 @@
         "X": 0.0,
         "Y": 0.0
       },
-      "currentSystemNodeId": 1,
+      "currentSystemNodeId": 2,
       "parentLargePacketId": 0,
       "returning": false,
       "received": false
@@ -402,7 +402,7 @@
         "X": 0.0,
         "Y": 0.0
       },
-      "currentSystemNodeId": 1,
+      "currentSystemNodeId": 2,
       "parentLargePacketId": 0,
       "returning": false,
       "received": false
@@ -423,7 +423,7 @@
         "X": 0.0,
         "Y": 0.0
       },
-      "currentSystemNodeId": 1,
+      "currentSystemNodeId": 2,
       "parentLargePacketId": 0,
       "returning": false,
       "received": false
@@ -444,7 +444,7 @@
         "X": 0.0,
         "Y": 0.0
       },
-      "currentSystemNodeId": 1,
+      "currentSystemNodeId": 2,
       "parentLargePacketId": 0,
       "returning": false,
       "received": false
@@ -465,7 +465,7 @@
         "X": 0.0,
         "Y": 0.0
       },
-      "currentSystemNodeId": 1,
+      "currentSystemNodeId": 2,
       "parentLargePacketId": 0,
       "returning": false,
       "received": false
@@ -479,14 +479,14 @@
       "trojan": false,
       "noise": 0,
       "currentSpeed": 100.0,
-      "onWire": false,
-      "progressOnWire": 0.0,
-      "currentWireId": null,
+      "onWire": true,
+      "progressOnWire": 420.9525500000005,
+      "currentWireId": 2,
       "deviation": {
         "X": 0.0,
         "Y": 0.0
       },
-      "currentSystemNodeId": 1,
+      "currentSystemNodeId": null,
       "parentLargePacketId": 0,
       "returning": false,
       "received": false
@@ -580,18 +580,34 @@
     {
       "id": 0,
       "sourcePortId": 3,
-      "destinationPortId": 13,
+      "destinationPortId": 9,
+      "packetOnWireId": null,
+      "controlPoints": [],
+      "passedLargePackets": 2
+    },
+    {
+      "id": 1,
+      "sourcePortId": 14,
+      "destinationPortId": 4,
       "packetOnWireId": null,
       "controlPoints": [],
       "passedLargePackets": 1
     },
     {
-      "id": 1,
+      "id": 2,
+      "sourcePortId": 7,
+      "destinationPortId": 12,
+      "packetOnWireId": 10,
+      "controlPoints": [],
+      "passedLargePackets": 0
+    },
+    {
+      "id": 3,
       "sourcePortId": 5,
-      "destinationPortId": 9,
+      "destinationPortId": 10,
       "packetOnWireId": null,
       "controlPoints": [],
-      "passedLargePackets": 1
+      "passedLargePackets": 0
     }
   ],
   "maxWireLength": 10000.0

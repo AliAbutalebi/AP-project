@@ -6,6 +6,7 @@ import com.blueprinthell.log.Logger;
 import com.blueprinthell.model.*;
 import com.blueprinthell.model.shop.ItemType;
 import com.blueprinthell.model.shop.Shop;
+import com.blueprinthell.model.shop.ShopItem;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -180,7 +181,7 @@ public class ShopView extends StackPane {
                 itemActivateButton.setStyle(String.format("-fx-font-size: %d;", (int) BUTTON_HEIGHT / 7));
             }
             itemActivateButton.setOnAction(event -> {
-
+                shop.getActiveItems().add(new ShopItem(item));
                 soundEffectManager.play("click");
                 GameController.newMessage(item.getName() + " Activated.", 3);
                 update();
