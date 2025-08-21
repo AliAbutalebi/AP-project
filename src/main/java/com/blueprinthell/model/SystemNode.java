@@ -83,10 +83,6 @@ public class SystemNode {
         this.isActive = active;
     }
 
-    public boolean tryReceivePacket(Packet packet) {
-        return packetQueue.size() < QUEUE_CAPACITY;
-    }
-
     public void setSystemType(SystemType systemType) {
         this.systemType = systemType;
     }

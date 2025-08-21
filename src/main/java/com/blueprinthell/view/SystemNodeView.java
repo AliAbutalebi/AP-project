@@ -231,6 +231,7 @@ public class SystemNodeView extends AnchorPane {
     }
 
     public void switchAntiTrojan(boolean isActive) {
+        if (systemNode.getSystemType() != SystemType.ANTI_TROJAN) return;
         if (isActive) {
             antiTrojanTimer.start();
         } else {
@@ -240,9 +241,9 @@ public class SystemNodeView extends AnchorPane {
     }
 
     public void switchIndicator(boolean isReady, boolean isActive) {
-        if (isReady && !isActive) indicator.setFill(Color.web("#FF0000"));
-        else if (isReady) indicator.setFill(Color.web("#00FEFE"));
-        else indicator.setFill(Color.web("#222222"));
+        if (!isActive) indicator.setFill(Color.web("#FF0000"));
+        else indicator.setFill(Color.web("#00FEFE"));
+        // else indicator.setFill(Color.web("#222222"));
     }
 
     public List<PortView> getInputPortViews() {

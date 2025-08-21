@@ -392,6 +392,7 @@ public class GameController extends BaseController {
     private void packetFromSystemsToWires() {
         for (SystemNodeView nodeView : systemNodeViews) {
             SystemNode node = nodeView.getSystemNode();
+            if (!node.isActive()) continue;
             Packet packet = node.getPacketQueue().peek();
             if (packet != null && !packet.isReceived()) {
                 Port selectedOutputPort = findPort(node, packet);
@@ -469,91 +470,103 @@ public class GameController extends BaseController {
     private void checkArrivals() {
         ArrayList<Packet> arrived = new ArrayList<>();
         for (Packet packet : movingPackets) {
-            if (!packet.isReturning() && packet.getProgressOnWire() >= packet.getCurrentWire().getLength()) {
-                if (!packet.getCurrentWire().getDestinationPort().getParentSystemNode().isActive())
+            if (packet.getProgressOnWire() < packet.getCurrentWire().getLength() && packet.getProgressOnWire() > 0) continue;
+
+
+            if (!packet.isReturning()) {
+                SystemNode destination = packet.getCurrentWire().getDestinationPort().getParentSystemNode();
+                if (!destination.isActive()) {
                     packet.setReturning(true);
-                else if (packet.getShapeType() == ShapeType.BIT_PACKET && packet.getCurrentWire().getDestinationPort().getParentSystemNode().getSystemType() == SystemType.REFERENCE)
-                    packetLoss(packet);
-                else if (packet.getCurrentWire().getDestinationPort().getParentSystemNode().getQueueSize() < SystemNode.getQueueCapacity()) {
-                    arrived.add(packet);
-
-                    packet.getCurrentWire().getDestinationPort().getParentSystemNode().getPacketQueue().add(packet);
-
-                    packet.getCurrentWire().getDestinationPort().receivePacket(packet);
-
-                    SystemNodeView nodeView = nodeToView.get(packet.getCurrentWire().getDestinationPort().getParentSystemNode());
-                    PacketView packetView = packetToView.get(packet);
-                    packetPane.getChildren().remove(packetView);
-
-                    if (nodeView.getSystemNode().getSystemType() == SystemType.REFERENCE) {
-                        packet.setReceived(true);
-                    }
-
-                    nodeView.update();
-
-                    logger.info("Packet " + packet.getId() + " arrived at system " + nodeView.getSystemNode().getId() + " using port " + packet.getCurrentWire().getDestinationPort().getId() + ".");
-
-                    if (packet.hasIllegalSpeed()) handleDeactivation(nodeView.getSystemNode());
-
-                    packet.setPassedIncompatiblePort(packet.getCurrentWire().getDestinationPort().getShapeType() != packet.getShapeType());
-
-                    Wire passedWire = packet.getCurrentWire();
-
-                    packet.setOnWire(false);
-                    packet.getCurrentWire().setPacketOnWire(null);
-                    packet.setCurrentWire(null);
-                    packet.setProgressOnWire(0);
-                    hud.addCoins(packet.getPacketCoins());
-                    hudView.update();
-
-                    if (packet.getShapeType() == ShapeType.LARGE_ONE || packet.getShapeType() == ShapeType.LARGE_TWO) {
-                        passedWire.getDestinationPort().setRandomShapeType();
-
-                        passedWire.setPassedLargePackets(passedWire.getPassedLargePackets() + 1);
-                        if (passedWire.getPassedLargePackets() > Wire.getPssedLargePacketLimit())
-                            removeWire(wireToView.get(passedWire));
-                    }
-
-                    if (packet.getCurrentSystemNode().getSystemType() == SystemType.REFERENCE && !scrubbing) {
-                        handleWin();
-                    }
-
-                    packetToView.get(packet).update();
-                    handleArrivalBehavior(packet);
-
-                    nodeView.update();
-                    soundEffectManager.play("packet-arrival");
+                    packet.setCurrentSpeed(packet.getBaseSpeed());
+                    logger.info("Packet " + packet.getId() + " was set to return due to inactivity of System " + destination.getId() + ".");
+                    continue;
                 } else {
+                    if (packet.getShapeType().equals(ShapeType.BIT_PACKET) && destination.getSystemType().equals(SystemType.REFERENCE)) {
+                        packetLoss(packet);
+                        continue;
+                    } else if (destination.getPacketQueue().size() > SystemNode.getQueueCapacity()) {
+                        packetLoss(packet);
+                        continue;
+                    } else {
+                        logger.info("Packet " + packet.getId() + " arrived at system " + destination.getId() + " using port " + packet.getCurrentWire().getDestinationPort().getId() + ".");
+                        handlePacketArrival(packet, destination);
+                        arrived.add(packet);
+                    }
+                }
+            } else {
+                SystemNode destination = packet.getCurrentWire().getSourcePort().getParentSystemNode();
+                if (destination.getPacketQueue().size() > SystemNode.getQueueCapacity()) {
                     packetLoss(packet);
+                    continue;
+                } else {
+                    logger.info("Packet " + packet.getId() + " returned to system " + destination.getId() + " using port " + packet.getCurrentWire().getSourcePort().getId() + ".");
+                    handlePacketArrival(packet, destination);
+                    arrived.add(packet);
                 }
             }
 
-            if (packet.isReturning() && packet.getProgressOnWire() <= 0) {
-                arrived.add(packet);
-
-                packet.getCurrentWire().getSourcePort().getParentSystemNode().getPacketQueue().add(packet);
-
-                packet.getCurrentWire().getSourcePort().receivePacket(packet);
-
-                SystemNodeView nodeView = nodeToView.get(packet.getCurrentWire().getSourcePort().getParentSystemNode());
-                PacketView packetView = packetToView.get(packet);
-                packetPane.getChildren().remove(packetView);
-
-                logger.info("Packet " + packet.getId() + " returned to system " + nodeView.getSystemNode().getId() + " using port " + packet.getCurrentWire().getDestinationPort().getId() + ".");
-
-                packet.setOnWire(false);
-                packet.getCurrentWire().setPacketOnWire(null);
-                packet.setCurrentWire(null);
-                packet.setProgressOnWire(0);
-                packet.setReturning(false);
-
-                packetToView.get(packet).update();
-                handleArrivalBehavior(packet);
-                nodeView.update();
-                soundEffectManager.play("packet-arrival");
-            }
         }
         movingPackets.removeAll(arrived);
+
+    }
+
+    private void handlePacketArrival(Packet packet, SystemNode destination) {
+        Wire passedWire = packet.getCurrentWire();
+        Port destinationPort = packet.getCurrentWire().getDestinationPort();
+
+        SystemNodeView nodeView = nodeToView.get(destination);
+        PacketView packetView = packetToView.get(packet);
+
+        packetPane.getChildren().remove(packetView);
+
+        if (destination.getSystemType().equals(SystemType.REFERENCE) && !packet.isReturning()) {
+            packet.setReceived(true);
+        }
+
+
+
+        packet.setPassedIncompatiblePort(destinationPort.getShapeType() != packet.getShapeType());
+
+        destination.getPacketQueue().add(packet);
+        destination.receivePacket(packet);
+
+
+        if (packet.getShapeType() == ShapeType.LARGE_ONE || packet.getShapeType() == ShapeType.LARGE_TWO) {
+            passedWire.getDestinationPort().setRandomShapeType();
+            passedWire.setPassedLargePackets(passedWire.getPassedLargePackets() + 1);
+            if (passedWire.getPassedLargePackets() > Wire.getPssedLargePacketLimit()) {
+                removeWire(wireToView.get(passedWire));
+            }
+        }
+
+        if (destination.getSystemType() == SystemType.REFERENCE && !scrubbing) {
+            handleWin();
+        }
+
+        if (packet.hasIllegalSpeed()) {
+            handleDeactivation(destination);
+        }
+
+        packet.setOnWire(false);
+        packet.setCurrentWire(null);
+        packet.setCurrentSpeed(packet.getBaseSpeed());
+        packet.setProgressOnWire(0);
+        packet.setCurrentSystemNode(destination);
+
+        if (!packet.isReturning()) {
+            handleArrivalBehavior(packet, destination);
+        }
+        packet.setReturning(false);
+
+        passedWire.setPacketOnWire(null);
+
+        hud.addCoins(packet.getPacketCoins());
+        soundEffectManager.play("packet-arrival");
+
+        packetView.update();
+        nodeView.update();
+        wireToView.get(passedWire).update();
+        hudView.update();
     }
 
 
@@ -836,9 +849,9 @@ public class GameController extends BaseController {
         }
     }
 
-    private void handleArrivalBehavior(Packet packet) {
+    private void handleArrivalBehavior(Packet packet, SystemNode node) {
         ShapeType shapeType = packet.getShapeType();
-        switch (packet.getCurrentSystemNode().getSystemType()) {
+        switch (node.getSystemType()) {
             case SPY -> {
                 if (packet.isProtected()) return;
                 else if (shapeType == ShapeType.CONFIDENTIAL_ONE || shapeType == ShapeType.CONFIDENTIAL_TWO) {
@@ -936,7 +949,7 @@ public class GameController extends BaseController {
         for (WireView wireView : wireViews) {
             wireView.update();
         }
-        for  (PacketView packetView : packetViews) {
+        for (PacketView packetView : packetViews) {
             packetView.update();
         }
 
@@ -1012,9 +1025,10 @@ public class GameController extends BaseController {
             node.activate();
             nodeView.switchAntiTrojan(true);
             nodeView.switchIndicator(node.isReady(), node.isActive());
+            logger.info("System " + node.getId() + " reactivated.");
         });
         pauseTransition.play();
-        logger.info("System "  + node.getId() + " deactivated.");
+        logger.info("System " + node.getId() + " deactivated.");
     }
 
     private void handleDistributorNode(Packet packet) {
@@ -1123,8 +1137,6 @@ public class GameController extends BaseController {
                 shop.getItem(ItemType.SISYPHUS).setActive(false);
             });
         }
-
-
 
 
     }

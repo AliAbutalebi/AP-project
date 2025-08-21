@@ -92,11 +92,6 @@ public class Port {
         getConnectedWire().setPacketOnWire(packet);
     }
 
-    public void receivePacket(Packet packet) {
-        packet.setCurrentSystemNode(getParentSystemNode());
-        getConnectedWire().setPacketOnWire(null);
-    }
-
     public int getConnectedWireId() {
         return connectedWireId;
     }

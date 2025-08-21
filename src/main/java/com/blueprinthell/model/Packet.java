@@ -7,7 +7,7 @@ public class Packet {
 
     private static final double BASE_SPEED = 100;
     private static final double ACCELERATION = 200;
-    private static final double SPEED_LIMIT = 400;
+    private static final double SPEED_LIMIT = 200;
     private static final double IMPACT = 10;
     private int id;
     private boolean isProtected = false;
