@@ -71,6 +71,10 @@ public class MapManager {
         saveManager.save();
     }
 
+    public boolean isAutoSaving() {
+        return saveManager.isAlive();
+    }
+
     public void setAutoSave(boolean autoSave) {
         this.autoSave = autoSave;
     }

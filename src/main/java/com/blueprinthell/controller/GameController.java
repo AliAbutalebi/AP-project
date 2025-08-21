@@ -921,6 +921,8 @@ public class GameController extends BaseController {
     }
 
     private void resetGame() {
+        if (mapManager.isAutoSaving()) mapManager.stopAutoSave();
+
         for (SystemNodeView nodeView : systemNodeViews) {
             nodeView.getSystemNode().reset();
         }
@@ -929,19 +931,36 @@ public class GameController extends BaseController {
             wireView.getWire().reset();
         }
 
+        ArrayList<PacketView> bitPackets = new ArrayList<>();
+        ArrayList<PacketView> largePackets = new ArrayList<>();
         for (PacketView packetView : packetViews) {
             Packet packet = packetView.getPacket();
 
             if (packet.isOnWire()) packetPane.getChildren().remove(packetView);
+
+            if (packet.getShapeType().equals(ShapeType.BIT_PACKET)) {
+                if (!referenceSystemNode.getPacketQueue().contains(packet.getParentLargePacket())) {
+                    largePackets.add(erasedLargePackets.get(packet.getParentLargePacket()));
+                    packet.getParentLargePacket().setCurrentSystemNode(referenceSystemNode);
+                    referenceSystemNode.getPacketQueue().add(packet.getParentLargePacket());
+                }
+                bitPackets.add(packetView);
+                packetToView.remove(packetView.getPacket());
+                gameMap.getPackets().remove(packetView.getPacket());
+                continue;
+            }
 
             packet.reset();
 
             packet.setCurrentSystemNode(referenceSystemNode);
             referenceSystemNode.getPacketQueue().add(packet);
         }
+        packetViews.addAll(largePackets);
+        packetViews.removeAll(bitPackets);
 
         movingPackets.clear();
         potentialCollisions.clear();
+        erasedLargePackets.clear();
 
         for (SystemNodeView nodeView : systemNodeViews) {
             nodeView.update();
@@ -1087,13 +1106,11 @@ public class GameController extends BaseController {
 
         for (SystemNodeView nodeView : systemNodeViews) {
             nodeView.setOnMouseClicked(e -> {
-                System.out.println("clicked");
                 sisyphusNodeView = nodeView;
                 sisyphusNodeView.markSelected();
             });
 
             nodeView.setOnMouseDragged(e -> {
-                System.out.println("dragged");
 
                 nodeView.getSystemNode().setLocation(new Point2D(e.getSceneX(), e.getSceneY()));
                 nodeView.update();
@@ -1121,7 +1138,6 @@ public class GameController extends BaseController {
             });
 
             nodeView.setOnMouseReleased(e -> {
-                System.out.println("released");
                 nodeView.markNormal();
 
                 sisyphusNodeView = null;
