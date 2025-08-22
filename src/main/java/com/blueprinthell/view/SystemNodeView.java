@@ -241,9 +241,9 @@ public class SystemNodeView extends AnchorPane {
     }
 
     public void switchIndicator(boolean isReady, boolean isActive) {
-        if (!isActive) indicator.setFill(Color.web("#FF0000"));
-        else indicator.setFill(Color.web("#00FEFE"));
-        // else indicator.setFill(Color.web("#222222"));
+        if (isReady && isActive) indicator.setFill(Color.web("#00FEFE"));
+        else if (isReady && !isActive) indicator.setFill(Color.web("#FF0000"));
+        else indicator.setFill(Color.web("#222222"));
     }
 
     public List<PortView> getInputPortViews() {

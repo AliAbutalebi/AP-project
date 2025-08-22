@@ -40,7 +40,6 @@ public class TopBarView extends AnchorPane {
     private static final double BAR_CONTENT_HEIGHT = BAR_HEIGHT * 0.6;
     private static final double TEMPORAL_PROGRESS_WIDTH = BAR_WIDTH * 0.8;
     private static final double SLIDER_WIDTH = TEMPORAL_PROGRESS_WIDTH * 0.94;
-    // private static final double SLIDER_HEIGHT = BAR_CONTENT_HEIGHT * 0.625;
 
     private TopBarView() {
         setupBackground();

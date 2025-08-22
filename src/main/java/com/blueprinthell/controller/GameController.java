@@ -771,10 +771,10 @@ public class GameController extends BaseController {
 
     private void checkRunButton() {
         for (SystemNodeView nodeView : systemNodeViews) {
-//            if (!nodeView.getSystemNode().isReady()) {
-//                nodeToView.get(referenceSystemNode).getRunButton().setDisable(true);
-//                return;
-//            }
+            if (!nodeView.getSystemNode().isReady()) {
+                nodeToView.get(referenceSystemNode).getRunButton().setDisable(true);
+                return;
+            }
             for (WireView wireView : wireViews) {
                 if (wireView.intersects(nodeView.getBoundsInLocal())) {
                     nodeToView.get(referenceSystemNode).getRunButton().setDisable(true);
