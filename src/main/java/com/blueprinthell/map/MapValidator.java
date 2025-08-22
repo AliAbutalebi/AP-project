@@ -3,16 +3,20 @@ package com.blueprinthell.map;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Base64;
 
 public class MapValidator {
     private static final MapValidator instance = new MapValidator();
 
     private static final String MASTER_KEY = "HailArianHemmati";
-    private boolean active = false;
+    private boolean active = true;
 
     public static MapValidator getInstance() {
         return instance;
@@ -73,6 +77,38 @@ public class MapValidator {
 
     public boolean isActive() {
         return active;
+    }
+
+    public boolean isValidAutoSave(File[] files) {
+        try {
+            if (!files[1].exists() || files[1].length() == 0) {
+                return false;
+            }
+
+            String vanilla = Files.readString(files[0].toPath()).trim();
+            String autoSave = Files.readString(files[1].toPath()).trim();
+
+            if (autoSave.isEmpty()) return false;
+
+            else if (autoSave.equals(vanilla)) return true;
+
+            JsonElement json = JsonParser.parseString(autoSave);
+
+            if (json != null && json.isJsonObject()) {
+                JsonObject autoSaveJson = json.getAsJsonObject();
+                if (autoSaveJson.has("sessionKey") &&  autoSaveJson.has("data")) {
+                    JsonObject vanillaJson = JsonParser.parseString(vanilla).getAsJsonObject();
+                    return !decrypt(autoSaveJson).equals(decrypt(vanillaJson));
+                }
+                else return false;
+            }
+            else return false;
+
+        } catch (IOException | JsonSyntaxException e) {
+            return false;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

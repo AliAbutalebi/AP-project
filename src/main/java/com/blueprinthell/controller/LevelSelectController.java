@@ -22,7 +22,7 @@ public class LevelSelectController extends BaseController {
     private static final MapManager mapManager = MapManager.getInstance();
     private static final ScreenDimensions screenDimensions = ScreenDimensions.getInstance();
 
-    private static final double MAP_WIDTH = screenDimensions.getWidth() / 4;
+    private static final double MAP_WIDTH = screenDimensions.getWidth() / (mapManager.getMapCount() + 2);
     private static final double MAP_HEIGHT = screenDimensions.getHeight() / 2;
     private static final Color BACKGROUND_COLOR = Color.web("#E6E6E6");
     private static final Color BORDER_COLOR = Color.web("#B3B3B3");
@@ -60,7 +60,7 @@ public class LevelSelectController extends BaseController {
 
             Label mapNameLabel = new Label("MAP" + map.getLevel());
             mapNameLabel.getStyleClass().add("monograf-bold");
-            mapNameLabel.setStyle(String.format("-fx-font-size: %d;", (int) MAP_HEIGHT / 4));
+            mapNameLabel.setStyle(String.format("-fx-font-size: %d;", (int) MAP_HEIGHT / (mapManager.getMapCount() + 1)));
             mapContentPane.getChildren().add(mapNameLabel);
 
             Label systemNodeCount = new Label(map.getSystemNodes().size() + " System Nodes");
@@ -93,7 +93,7 @@ public class LevelSelectController extends BaseController {
 
         Button returnButton = new Button("RETURN TO MENU");
         returnButton.getStyleClass().add("monograf-bold");
-        returnButton.setPrefWidth(MAP_WIDTH * 0.8);
+        returnButton.setPrefWidth(MAP_WIDTH);
         returnPane.getChildren().add(returnButton);
         returnButton.setLayoutY(screenDimensions.getHeight() - 100);
         returnButton.setOnAction(e -> {

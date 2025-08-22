@@ -10,6 +10,7 @@ public class MapManager {
     private static final MapManager instance = new MapManager();
     private static final LoadManager loadManager = LoadManager.getInstance();
     private static final SaveManager saveManager = SaveManager.getInstance();
+    private static final MapValidator mapValidator = MapValidator.getInstance();
     private static File[] vanillaFiles;
     private static File[] autoSaveFiles;
 
@@ -96,7 +97,7 @@ public class MapManager {
     }
 
     public boolean hasAutoSave() {
-        return maps.get(currentLevel)[1] != null;
+        return mapValidator.isValidAutoSave(maps.get(currentLevel));
     }
 
     private File hasSameName(File file) {
