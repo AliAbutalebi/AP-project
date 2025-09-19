@@ -6,7 +6,7 @@ import javafx.scene.shape.Polygon;
 public class Packet {
 
     private static final double BASE_SPEED = 100;
-    private static final double ACCELERATION = 200;
+    private static final double BASE_ACCELERATION = 200;
     private static final double SPEED_LIMIT = 200;
     private static final double IMPACT = 10;
     private int id;
@@ -16,6 +16,7 @@ public class Packet {
     private boolean isTrojan = false;
     private boolean passedIncompatiblePort = false;
     private double currentSpeed = BASE_SPEED;
+    private double currentAcceleration = BASE_ACCELERATION;
     private int noise = 0;
     private double progressOnWire;
     private ShapeType shapeType;
@@ -129,8 +130,16 @@ public class Packet {
         this.currentSpeed = baseSpeed;
     }
 
-    public double getAcceleration() {
-        return ACCELERATION;
+    public double getBaseAcceleration() {
+        return BASE_ACCELERATION;
+    }
+
+    public void setCurrentAcceleration(double currentAcceleration) {
+        this.currentAcceleration = currentAcceleration;
+    }
+
+    public double getCurrentAcceleration() {
+        return currentAcceleration;
     }
 
     public boolean hasIllegalSpeed() {

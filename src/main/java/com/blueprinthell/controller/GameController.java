@@ -44,6 +44,8 @@ public class GameController extends BaseController {
     private ArrayList<SystemNode> spySystemNodes = new ArrayList<>();
     private ArrayList<SystemNode> antiTrojansSystemNodes = new ArrayList<>();
 
+    private WireView aergiaWireView;
+    private Point2D aergiaPoint;
     private SystemNodeView sisyphusNodeView;
 
     private final ArrayList<Packet> movingPackets = new ArrayList<>();
@@ -199,7 +201,7 @@ public class GameController extends BaseController {
             wireToView.put(wire, wireView);
         }
 
-        checkRunButton();
+        // checkRunButton();
     }
 
     private void startGameLoop(ActionEvent event) {
@@ -300,7 +302,7 @@ public class GameController extends BaseController {
         hud.setRemainingWireLength(hud.getRemainingWireLength() - targetPortView.getPort().getConnectedWire().getLength());
         hudView.update();
         checkActiveNode();
-        checkRunButton();
+        // checkRunButton();
         soundEffectManager.play("click");
         mapManager.save(gameMap);
     }
@@ -386,7 +388,7 @@ public class GameController extends BaseController {
             }
             nodeView.update();
         }
-        checkRunButton();
+        // checkRunButton();
     }
 
     private void packetFromSystemsToWires() {
@@ -447,6 +449,9 @@ public class GameController extends BaseController {
         double progress = packet.getProgressOnWire() / packet.getCurrentWire().getLength();
         Point2D newLocation = packet.getCurrentWire().interpolate(progress);
         packet.setLocation(newLocation);
+        if (wireToView.get(packet.getCurrentWire()).equals(aergiaWireView)) {
+            if (packet.getCurrentWire().packetPassedPoint(packet, aergiaPoint)) packet.setCurrentAcceleration(0);
+        }
         packetToView.get(packet).update();
     }
 
@@ -458,7 +463,7 @@ public class GameController extends BaseController {
             deltaDistance = packet.getBaseSpeed() / 2 * deltaTime;
         } else if (packet.getShapeType() == ShapeType.TRIANGLE) {
             deltaDistance = packet.getCurrentSpeed() * deltaTime;
-            packet.setCurrentSpeed(packet.getCurrentSpeed() + packet.getAcceleration() * deltaTime);
+            packet.setCurrentSpeed(packet.getCurrentSpeed() + packet.getCurrentAcceleration() * deltaTime);
         } else {
             deltaDistance = packet.getBaseSpeed() / 2 * deltaTime;
             //TODO: add condition for new packet types.
@@ -469,23 +474,24 @@ public class GameController extends BaseController {
 
     private void checkArrivals() {
         ArrayList<Packet> arrived = new ArrayList<>();
+        ArrayList<Packet> lostPackets = new ArrayList<>();
         for (Packet packet : movingPackets) {
             if (packet.getProgressOnWire() < packet.getCurrentWire().getLength() && packet.getProgressOnWire() > 0) continue;
-
 
             if (!packet.isReturning()) {
                 SystemNode destination = packet.getCurrentWire().getDestinationPort().getParentSystemNode();
                 if (!destination.isActive()) {
                     packet.setReturning(true);
                     packet.setCurrentSpeed(packet.getBaseSpeed());
+                    packet.setCurrentAcceleration(packet.getBaseAcceleration());
                     logger.info("Packet " + packet.getId() + " was set to return due to inactivity of System " + destination.getId() + ".");
                     continue;
                 } else {
                     if (packet.getShapeType().equals(ShapeType.BIT_PACKET) && destination.getSystemType().equals(SystemType.REFERENCE)) {
-                        packetLoss(packet);
+                        lostPackets.add(packet);
                         continue;
                     } else if (destination.getPacketQueue().size() > SystemNode.getQueueCapacity()) {
-                        packetLoss(packet);
+                        lostPackets.add(packet);
                         continue;
                     } else {
                         logger.info("Packet " + packet.getId() + " arrived at system " + destination.getId() + " using port " + packet.getCurrentWire().getDestinationPort().getId() + ".");
@@ -496,7 +502,7 @@ public class GameController extends BaseController {
             } else {
                 SystemNode destination = packet.getCurrentWire().getSourcePort().getParentSystemNode();
                 if (destination.getPacketQueue().size() > SystemNode.getQueueCapacity()) {
-                    packetLoss(packet);
+                    lostPackets.add(packet);
                     continue;
                 } else {
                     logger.info("Packet " + packet.getId() + " returned to system " + destination.getId() + " using port " + packet.getCurrentWire().getSourcePort().getId() + ".");
@@ -507,7 +513,9 @@ public class GameController extends BaseController {
 
         }
         movingPackets.removeAll(arrived);
-
+        for (Packet packet : lostPackets) {
+            packetLoss(packet);
+        }
     }
 
     private void handlePacketArrival(Packet packet, SystemNode destination) {
@@ -568,7 +576,6 @@ public class GameController extends BaseController {
         wireToView.get(passedWire).update();
         hudView.update();
     }
-
 
     private void setupHUD() {
         hud = HUD.getInstance();
@@ -823,13 +830,16 @@ public class GameController extends BaseController {
         pause();
         shopView.update();
         rootPane.getChildren().add(shopView);
+        logger.info("Opened Shop.");
     }
 
     private void returnFromShopView() {
         rootPane.getChildren().remove(shopView);
         hudView.update();
         if (shop.isActive(ItemType.SISYPHUS)) handleSisyphus();
+        else if (shop.isActive(ItemType.AERGIA)) handleAergia();
         else resume();
+        logger.info("Returned from Shop.");
     }
 
     private void pause() {
@@ -1102,6 +1112,30 @@ public class GameController extends BaseController {
         }
     }
 
+    private void handleAergia() {
+
+        systemNodePane.setOnMouseReleased(event -> {
+            Point2D aergiaPoint = new Point2D(event.getX(), event.getY());
+            for (WireView wireView : wireViews) {
+                if (wireView.contains(aergiaPoint)) {
+                    aergiaWireView = wireView;
+                    this.aergiaPoint =  aergiaPoint;
+                    logger.info("Scroll of Aergia added to wire " + wireView.getWire().getId() + ".");
+                    PauseTransition pause = new PauseTransition(Duration.seconds(ItemType.AERGIA.getDuration()));
+                    pause.setOnFinished(e -> {
+                        aergiaWireView = null;
+                    });
+                    pause.play();
+                    resume();
+                    break;
+                }
+                else {
+                    newMessage("Point not found.", 3);
+                }
+            }
+        });
+    }
+
     private void handleSisyphus() {
 
         for (SystemNodeView nodeView : systemNodeViews) {
@@ -1153,8 +1187,6 @@ public class GameController extends BaseController {
                 shop.getItem(ItemType.SISYPHUS).setActive(false);
             });
         }
-
-
     }
 
 

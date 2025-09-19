@@ -158,4 +158,10 @@ public class Wire {
     public void reset() {
         setPassedLargePackets(0);
     }
+
+    public boolean packetPassedPoint(Packet packet, Point2D point) {
+        double packetProgress = startLocation.distance(packet.getLocation());
+        double pointProgress = startLocation.distance(point);
+        return packetProgress > pointProgress;
+    }
 }

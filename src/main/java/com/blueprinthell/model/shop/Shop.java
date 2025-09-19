@@ -1,14 +1,16 @@
 package com.blueprinthell.model.shop;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.blueprinthell.model.Wire;
+
+import javafx.geometry.Point2D;
+import java.util.*;
 
 public class Shop {
     private static final Shop instance = new Shop();
 
     private final ArrayList<ItemType> itemTypes = new ArrayList<>(Arrays.asList(ItemType.values()));
     private final ArrayList<ShopItem> activeItems = new ArrayList<>();
+
 
     private Shop() {
 

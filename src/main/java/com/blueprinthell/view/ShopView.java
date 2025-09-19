@@ -183,6 +183,7 @@ public class ShopView extends StackPane {
             itemActivateButton.setOnAction(event -> {
                 shop.getActiveItems().add(new ShopItem(item));
                 soundEffectManager.play("click");
+                hud.removeCoins(item.getPrice());
                 GameController.newMessage(item.getName() + " Activated.", 3);
                 update();
                 logger.info(item.getName() + " Activated.");
