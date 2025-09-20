@@ -46,6 +46,8 @@ public class GameController extends BaseController {
 
     private WireView aergiaWireView;
     private Point2D aergiaPoint;
+    private WireView eliphasWireView;
+    private Point2D eliphasPoint;
     private SystemNodeView sisyphusNodeView;
 
     private final ArrayList<Packet> movingPackets = new ArrayList<>();
@@ -450,7 +452,16 @@ public class GameController extends BaseController {
         Point2D newLocation = packet.getCurrentWire().interpolate(progress);
         packet.setLocation(newLocation);
         if (wireToView.get(packet.getCurrentWire()).equals(aergiaWireView)) {
-            if (packet.getCurrentWire().packetPassedPoint(packet, aergiaPoint)) packet.setCurrentAcceleration(0);
+            if (packet.getCurrentWire().packetPassedPoint(packet, aergiaPoint)) {
+                packet.setCurrentAcceleration(0);
+                logger.info("Scroll of Aergia was applied to packet " + packet.getId() + ".");
+            }
+        }
+        if (wireToView.get(packet.getCurrentWire()).equals(eliphasWireView)) {
+            if (packet.getCurrentWire().packetPassedPoint(packet, eliphasPoint)) {
+                packet.setDeviation(new Point2D(0, 0));
+                logger.info("Scroll of Eliphas was applied to packet " + packet.getId() + ".");
+            }
         }
         packetToView.get(packet).update();
     }
@@ -476,7 +487,8 @@ public class GameController extends BaseController {
         ArrayList<Packet> arrived = new ArrayList<>();
         ArrayList<Packet> lostPackets = new ArrayList<>();
         for (Packet packet : movingPackets) {
-            if (packet.getProgressOnWire() < packet.getCurrentWire().getLength() && packet.getProgressOnWire() > 0) continue;
+            if (packet.getProgressOnWire() < packet.getCurrentWire().getLength() && packet.getProgressOnWire() > 0)
+                continue;
 
             if (!packet.isReturning()) {
                 SystemNode destination = packet.getCurrentWire().getDestinationPort().getParentSystemNode();
@@ -530,7 +542,6 @@ public class GameController extends BaseController {
         if (destination.getSystemType().equals(SystemType.REFERENCE) && !packet.isReturning()) {
             packet.setReceived(true);
         }
-
 
 
         packet.setPassedIncompatiblePort(destinationPort.getShapeType() != packet.getShapeType());
@@ -839,8 +850,8 @@ public class GameController extends BaseController {
         if (shop.waitingForSelection()) {
             if (shop.isActive(ItemType.AERGIA)) handleAergia();
             else if (shop.isActive((ItemType.SISYPHUS))) handleSisyphus();
-        }
-        else resume();
+            else if (shop.isActive(ItemType.ELIPHAS)) handleEliphas();
+        } else resume();
         logger.info("Returned from Shop.");
     }
 
@@ -1115,13 +1126,12 @@ public class GameController extends BaseController {
     }
 
     private void handleAergia() {
-
         systemNodePane.setOnMouseReleased(event -> {
             Point2D aergiaPoint = new Point2D(event.getX(), event.getY());
             for (WireView wireView : wireViews) {
                 if (wireView.contains(aergiaPoint)) {
                     aergiaWireView = wireView;
-                    this.aergiaPoint =  aergiaPoint;
+                    this.aergiaPoint = aergiaPoint;
                     logger.info("Scroll of Aergia added to wire " + wireView.getWire().getId() + ".");
                     PauseTransition pause = new PauseTransition(Duration.seconds(ItemType.AERGIA.getDuration()));
                     pause.setOnFinished(e -> {
@@ -1132,8 +1142,7 @@ public class GameController extends BaseController {
                     systemNodePane.setOnMouseReleased(null);
                     resume();
                     break;
-                }
-                else {
+                } else {
                     newMessage("Point not found.", 3);
                 }
             }
@@ -1193,6 +1202,29 @@ public class GameController extends BaseController {
         }
     }
 
+    private void handleEliphas() {
+        systemNodePane.setOnMouseReleased(event -> {
+            Point2D eliphasPoint = new Point2D(event.getX(), event.getY());
+            for (WireView wireView : wireViews) {
+                if (wireView.contains(eliphasPoint)) {
+                    eliphasWireView = wireView;
+                    this.eliphasPoint = eliphasPoint;
+                    logger.info("Scroll of Eliphas added to wire " + wireView.getWire().getId() + ".");
+                    PauseTransition pause = new PauseTransition(Duration.seconds(ItemType.ELIPHAS.getDuration()));
+                    pause.setOnFinished(e -> {
+                        eliphasWireView = null;
+                    });
+                    pause.play();
+                    shop.setWaitForSelection(false);
+                    systemNodePane.setOnMouseReleased(null);
+                    resume();
+                    break;
+                } else {
+                    newMessage("Point not found.", 3);
+                }
+            }
+        });
+    }
 
 }
 

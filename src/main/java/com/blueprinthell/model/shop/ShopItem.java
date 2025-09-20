@@ -23,17 +23,14 @@ public class ShopItem {
         if (active) {
             if (type.getDuration() == 0) return;
             remainingDuration -= deltaTime;
-            System.out.println("remainingDuration: " + remainingDuration);
             if (remainingDuration <= 0) {
                 active = false;
                 cooldown = true;
-                System.out.println("item went to cooldown");
             }
         }
         else if (cooldown) {
             if (type.getCooldown() == 0) return;
             remainingCooldown -= deltaTime;
-            System.out.println("remainingCooldown: " + remainingCooldown);
             if (remainingCooldown <= 0) {
                 cooldown = false;
             }

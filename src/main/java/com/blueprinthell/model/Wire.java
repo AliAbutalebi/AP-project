@@ -161,7 +161,8 @@ public class Wire {
 
     public boolean packetPassedPoint(Packet packet, Point2D point) {
         double packetProgress = startLocation.distance(packet.getLocation());
+        double packetLastProgress = startLocation.distance(packet.getLastLocation());
         double pointProgress = startLocation.distance(point);
-        return packetProgress > pointProgress;
+        return packetProgress > pointProgress && packetLastProgress < pointProgress;
     }
 }

@@ -26,6 +26,7 @@ public class Packet {
     private boolean isAlive = true;
     private Point2D deviation = new Point2D(0, 0);
     private Point2D location = new Point2D(0, 0);
+    private Point2D lastLocation = new Point2D(0, 0);
     private SystemNode currentSystemNode;
     private int currentSystemNodeId;
     private Packet parentLargePacket;
@@ -110,11 +111,16 @@ public class Packet {
     }
 
     public void setLocation(Point2D location) {
+        lastLocation = this.location;
         this.location = location;
     }
 
     public Point2D getDeviatedLocation() {
         return new Point2D(location.getX() + deviation.getX(), location.getY() + deviation.getY());
+    }
+
+    public Point2D getLastLocation() {
+        return lastLocation;
     }
 
     public double getBaseSpeed() {
