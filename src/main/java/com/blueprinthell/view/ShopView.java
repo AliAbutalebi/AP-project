@@ -167,21 +167,22 @@ public class ShopView extends StackPane {
             box.getChildren().add(itemActivateButton);
             itemActivateButton.getStyleClass().add("monograf-bold");
             itemActivateButton.setStyle(String.format("-fx-font-size: %d;", (int) BUTTON_HEIGHT / 3));
-            if (shop.canActivate(item)) {
+            if (shop.cantActivate(item)) {
                 itemActivateButton.setDisable(true);
                 itemActivateButton.setText("ACTIVATED");
             }
-            else if (shop.isCoolingDown(item)) {
+            if (shop.isCoolingDown(item)) {
                 itemActivateButton.setDisable(true);
                 itemActivateButton.setText("COOLING DOWN");
             }
-            else if (hud.getCoins() < item.getPrice()) {
+            if (hud.getCoins() < item.getPrice()) {
                 itemActivateButton.setDisable(true);
                 itemActivateButton.setText("INSUFFICIENT COINS");
                 itemActivateButton.setStyle(String.format("-fx-font-size: %d;", (int) BUTTON_HEIGHT / 5));
             }
             itemActivateButton.setOnAction(event -> {
-                shop.getActiveItems().add(new ShopItem(item));
+                shop.addItem(item);
+                shop.checkForSelection(item);
                 soundEffectManager.play("click");
                 hud.removeCoins(item.getPrice());
                 GameController.newMessage(item.getName() + " Activated.", 3);

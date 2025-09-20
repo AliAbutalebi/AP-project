@@ -490,7 +490,7 @@ public class GameController extends BaseController {
                     if (packet.getShapeType().equals(ShapeType.BIT_PACKET) && destination.getSystemType().equals(SystemType.REFERENCE)) {
                         lostPackets.add(packet);
                         continue;
-                    } else if (destination.getPacketQueue().size() > SystemNode.getQueueCapacity()) {
+                    } else if (destination.getQueueSize() > SystemNode.getQueueCapacity()) {
                         lostPackets.add(packet);
                         continue;
                     } else {
@@ -836,8 +836,10 @@ public class GameController extends BaseController {
     private void returnFromShopView() {
         rootPane.getChildren().remove(shopView);
         hudView.update();
-        if (shop.isActive(ItemType.SISYPHUS)) handleSisyphus();
-        else if (shop.isActive(ItemType.AERGIA)) handleAergia();
+        if (shop.waitingForSelection()) {
+            if (shop.isActive(ItemType.AERGIA)) handleAergia();
+            else if (shop.isActive((ItemType.SISYPHUS))) handleSisyphus();
+        }
         else resume();
         logger.info("Returned from Shop.");
     }
@@ -1126,6 +1128,8 @@ public class GameController extends BaseController {
                         aergiaWireView = null;
                     });
                     pause.play();
+                    shop.setWaitForSelection(false);
+                    systemNodePane.setOnMouseReleased(null);
                     resume();
                     break;
                 }
@@ -1181,7 +1185,7 @@ public class GameController extends BaseController {
                     nodeView2.setOnMouseDragged(null);
                     nodeView2.setOnMouseDragReleased(null);
                 }
-
+                shop.setWaitForSelection(false);
                 resume();
 
                 shop.getItem(ItemType.SISYPHUS).setActive(false);

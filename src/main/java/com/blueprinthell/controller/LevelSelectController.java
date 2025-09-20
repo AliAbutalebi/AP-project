@@ -80,6 +80,10 @@ public class LevelSelectController extends BaseController {
             int finalI = i;
             selectMapButton.setOnAction(e -> {
                 mapManager.setLevel(finalI + 1);
+                try {
+                    super.switchScene(ScenePath.MAIN_MENU.getResourceURL(), e);
+                } catch (Exception ignored) {
+                }
             });
 
         }

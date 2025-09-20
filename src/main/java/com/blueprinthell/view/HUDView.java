@@ -93,7 +93,9 @@ public class HUDView extends AnchorPane {
         activeItemsPane.setSpacing(20);
 
         for (ShopItem item : shop.getActiveItems()) {
-            activeItemsPane.getChildren().add(getItemIcon(item));
+            ImageView itemIcon = getItemIcon(item);
+            if (item.isCooldown()) itemIcon.setOpacity(0.5);
+            activeItemsPane.getChildren().add(itemIcon);
         }
     }
 

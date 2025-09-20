@@ -297,6 +297,7 @@ public class Packet {
             setProgressOnWire(0);
             getCurrentWire().setPacketOnWire(null);
             setCurrentWire(null);
+            setReceived(false);
         }
 
         setNoise(0);

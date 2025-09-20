@@ -13,24 +13,28 @@ public class ShopItem {
     }
 
     public void activate() {
-        if (remainingCooldown == 0 && !active) {
             active = true;
-            remainingDuration = type.getDuration() * 1000000000L;
-            remainingCooldown = type.getCooldown() * 1000000000L;
-        }
+            remainingDuration = type.getDuration();
+            remainingCooldown = type.getCooldown();
+
     }
 
     public void tick(double deltaTime) {
-        if (type.getDuration() != 0) {
-            if (active) {
-                remainingDuration -= deltaTime;
-                if (remainingDuration <= 0) {
-                    active = false;
-                    cooldown = true;
-                }
-            } else if (remainingCooldown > 0) {
-                remainingCooldown -= deltaTime;
-            } else if (remainingCooldown <= 0) {
+        if (active) {
+            if (type.getDuration() == 0) return;
+            remainingDuration -= deltaTime;
+            System.out.println("remainingDuration: " + remainingDuration);
+            if (remainingDuration <= 0) {
+                active = false;
+                cooldown = true;
+                System.out.println("item went to cooldown");
+            }
+        }
+        else if (cooldown) {
+            if (type.getCooldown() == 0) return;
+            remainingCooldown -= deltaTime;
+            System.out.println("remainingCooldown: " + remainingCooldown);
+            if (remainingCooldown <= 0) {
                 cooldown = false;
             }
         }

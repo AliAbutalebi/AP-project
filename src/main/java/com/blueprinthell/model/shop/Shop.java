@@ -10,6 +10,7 @@ public class Shop {
 
     private final ArrayList<ItemType> itemTypes = new ArrayList<>(Arrays.asList(ItemType.values()));
     private final ArrayList<ShopItem> activeItems = new ArrayList<>();
+    private boolean waitForSelection = false;
 
 
     private Shop() {
@@ -33,10 +34,13 @@ public class Shop {
         return false;
     }
 
-    public boolean canActivate(ItemType type) {
+    public boolean cantActivate(ItemType type) {
         switch (type) {
-            case OATAR, OAIRYAMAN, OANAHITA, AERGIA -> {
+            case OATAR, OAIRYAMAN, AERGIA -> {
                 return isActive(type);
+            }
+            case OANAHITA -> {
+                return false;
             }
         }
         return false;
@@ -69,5 +73,25 @@ public class Shop {
             }
         }
         activeItems.removeAll(outdatedItems);
+    }
+
+    public boolean waitingForSelection() {
+        return waitForSelection;
+    }
+
+    public void setWaitForSelection(boolean waitForSelection) {
+        this.waitForSelection = waitForSelection;
+    }
+
+    public void checkForSelection(ItemType item) {
+        if (item.equals(ItemType.AERGIA) || item.equals(ItemType.SISYPHUS) || item.equals(ItemType.ELIPHAS)) {
+            waitForSelection = true;
+        }
+    }
+
+    public void addItem(ItemType item) {
+        ShopItem itemToAdd = new ShopItem(item);
+        itemToAdd.activate();
+        activeItems.add(itemToAdd);
     }
 }
