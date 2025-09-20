@@ -145,7 +145,6 @@ public class Packet {
     }
 
     public double getCurrentAcceleration() {
-        if (shapeType.equals(ShapeType.HEXAGON)) return -currentAcceleration;
         return currentAcceleration;
     }
 

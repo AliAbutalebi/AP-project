@@ -462,7 +462,9 @@ public class GameController extends BaseController {
             return;
         }
 
-        calculateNewDistance(packet, deltaTime, isReturn);
+        double deltaDistance = calculateDeltaDistance(packet, deltaTime, isReturn);
+        packet.setProgressOnWire(packet.getProgressOnWire() + deltaDistance);
+
         double progress = packet.getProgressOnWire() / packet.getCurrentWire().getLength();
         Point2D newLocation = packet.getCurrentWire().interpolate(progress);
         packet.setLocation(newLocation);
@@ -478,24 +480,77 @@ public class GameController extends BaseController {
                 logger.info("Scroll of Eliphas was applied to packet " + packet.getId() + ".");
             }
         }
+
+        if (packet.getShapeType().equals(ShapeType.CONFIDENTIAL_TWO)) {
+            packet.getDeviation().add(new Point2D(deltaDistance * 0.01, deltaDistance * 0.01));
+        }
         packetToView.get(packet).update();
     }
 
-    private void calculateNewDistance(Packet packet, double deltaTime, boolean isReturn) {
+    private double calculateDeltaDistance(Packet packet, double deltaTime, boolean isReturn) {
         double deltaDistance = 0;
-        if (packet.getShapeType() == packet.getCurrentWire().getSourcePort().getShapeType()) {
-            deltaDistance = packet.getBaseSpeed() * deltaTime;
-        } else if (packet.getShapeType() == ShapeType.SQUARE) {
-            deltaDistance = packet.getBaseSpeed() / 2 * deltaTime;
-        } else if (packet.getShapeType() == ShapeType.TRIANGLE) {
-            deltaDistance = packet.getCurrentSpeed() * deltaTime;
-            packet.setCurrentSpeed(packet.getCurrentSpeed() + packet.getCurrentAcceleration() * deltaTime);
-        } else {
-            deltaDistance = packet.getBaseSpeed() / 2 * deltaTime;
-            //TODO: add condition for new packet types.
+        double currentSpeed = 0;
+        double currentAcceleration = 0;
+        Wire currentWire = packet.getCurrentWire();
+        Port sourcePort = currentWire.getSourcePort();
+        Port destinationPort = currentWire.getDestinationPort();
+
+        switch (packet.getShapeType()) {
+            case SQUARE -> {
+                if (sourcePort.getShapeType().equals(ShapeType.SQUARE)) {
+                    currentSpeed = packet.getBaseSpeed();
+                    currentAcceleration = 0;
+                }
+                else {
+                    currentSpeed = packet.getBaseSpeed() / 2;
+                    currentAcceleration = 0;
+                }
+            }
+            case TRIANGLE -> {
+                if (sourcePort.getShapeType().equals(ShapeType.TRIANGLE)) {
+                    currentSpeed = packet.getBaseSpeed();
+                    currentAcceleration = 0;
+                }
+                else {
+                    currentSpeed = packet.getCurrentSpeed();
+                    currentAcceleration = packet.getBaseAcceleration();
+                }
+            }
+            case HEXAGON -> {
+                if (sourcePort.getShapeType().equals(ShapeType.HEXAGON)) {
+                    currentSpeed = packet.getCurrentSpeed();
+                    currentAcceleration = packet.getBaseAcceleration();
+                }
+                else {
+                    currentSpeed = packet.getCurrentSpeed();
+                    currentAcceleration = -packet.getBaseAcceleration();
+                }
+            }
+            case CONFIDENTIAL_ONE, CONFIDENTIAL_TWO -> {
+                currentSpeed = packet.getBaseSpeed();
+                currentAcceleration = 0;
+            }
+            case LARGE_ONE -> {
+                if (currentWire.getControlPoints().isEmpty()) {
+                    currentSpeed = packet.getBaseSpeed();
+                    currentAcceleration = 0;
+                }
+                else {
+                    currentSpeed = packet.getCurrentSpeed();
+                    currentAcceleration = packet.getBaseAcceleration();
+                }
+            }
+            case LARGE_TWO -> {
+                currentSpeed = packet.getBaseSpeed();
+                currentAcceleration = 0;
+            }
         }
+
+        deltaDistance = currentAcceleration / 2 * Math.pow(deltaTime, 2) + currentSpeed * deltaDistance;
+        packet.setCurrentSpeed(packet.getCurrentSpeed() + currentAcceleration * deltaTime);
+
         if (isReturn) deltaDistance *= -1;
-        packet.setProgressOnWire(packet.getProgressOnWire() + deltaDistance);
+        return deltaDistance;
     }
 
     private void checkArrivals() {
