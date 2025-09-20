@@ -447,6 +447,21 @@ public class GameController extends BaseController {
     }
 
     private void movePacketOnWire(Packet packet, double deltaTime, boolean isReturn) {
+        if (packet.getShapeType().equals(ShapeType.CONFIDENTIAL_ONE)) {
+                Wire currentWire = packet.getCurrentWire();
+                if (isReturn) {
+                    if (currentWire.getSourcePort().getParentSystemNode().getQueueSize() != 0) {
+                        return;
+                    }
+                }
+                else {
+                    if (currentWire.getDestinationPort().getParentSystemNode().getQueueSize() != 0) {
+                        return;
+                    }
+                }
+            return;
+        }
+
         calculateNewDistance(packet, deltaTime, isReturn);
         double progress = packet.getProgressOnWire() / packet.getCurrentWire().getLength();
         Point2D newLocation = packet.getCurrentWire().interpolate(progress);
@@ -658,9 +673,11 @@ public class GameController extends BaseController {
 
                 entry.getKey().applyCollision();
                 packetToView.get(entry.getKey()).applyCollision();
+                if (packet1.getShapeType().equals(ShapeType.HEXAGON)) packet1.setReturning(true);
 
                 entry.getValue().applyCollision();
                 packetToView.get(entry.getValue()).applyCollision();
+                if (packet2.getShapeType().equals(ShapeType.HEXAGON)) packet2.setReturning(true);
 
                 soundEffectManager.play("packet-collision");
 
