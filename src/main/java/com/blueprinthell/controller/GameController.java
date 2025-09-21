@@ -973,6 +973,12 @@ public class GameController extends BaseController {
             case MERGER -> {
                 if (packet.getShapeType() == ShapeType.BIT_PACKET) handleMergerNode(packet);
             }
+            case VPN -> {
+                if (packet.getShapeType().equals(ShapeType.CONFIDENTIAL_ONE)) {
+                    packet.setShapeType(ShapeType.CONFIDENTIAL_TWO);
+                    packetToView.get(packet).update();
+                }
+            }
         }
     }
 
