@@ -136,8 +136,8 @@ public class GameController extends BaseController {
                                 gameLoop.stop();
                             }
                         } else {
-                            shop.tick(deltaTime);
                             update(deltaTime);
+                            shop.tick(deltaTime);
 
                             if (topBarView.getTemporalProgressSlider().getValue() < topBarView.getTemporalProgressSlider().getMax()) {
                                 topBarView.getTemporalProgressSlider().setValue(topBarView.getTemporalProgressSlider().getValue() + deltaTime);
@@ -231,6 +231,7 @@ public class GameController extends BaseController {
         handleAntiTrojan();
 
         if (shop.isActive(ItemType.OANAHITA)) {
+            System.out.println("OANAHITA is active!");
             for (PacketView packetView : packetViews) {
                 packetView.getPacket().setNoise(0);
                 packetView.update();
@@ -545,8 +546,7 @@ public class GameController extends BaseController {
                 currentAcceleration = 0;
             }
         }
-
-        deltaDistance = currentAcceleration / 2 * Math.pow(deltaTime, 2) + currentSpeed * deltaDistance;
+        deltaDistance = currentSpeed * deltaTime;
         packet.setCurrentSpeed(packet.getCurrentSpeed() + currentAcceleration * deltaTime);
 
         if (isReturn) deltaDistance *= -1;
@@ -935,13 +935,6 @@ public class GameController extends BaseController {
     private void resume() {
         pause = false;
         logger.info("Resumed.");
-    }
-
-    public static void applyOAnahita() {
-        for (PacketView packetView : packetViews) {
-            packetView.getPacket().setNoise(0);
-            packetView.update();
-        }
     }
 
     private void handleArrivalBehavior(Packet packet, SystemNode node) {
