@@ -787,10 +787,16 @@ public class GameController extends BaseController {
     private void packetLoss(Packet packet) {
         packet.setAlive(false);
 
-        packet.getCurrentWire().setPacketOnWire(null);
-
-        packetPane.getChildren().remove(packetToView.get(packet));
-        movingPackets.remove(packet);
+        if (packet.isOnWire()) {
+            packet.getCurrentWire().setPacketOnWire(null);
+            packetPane.getChildren().remove(packetToView.get(packet));
+            movingPackets.remove(packet);
+        }
+        else {
+            packet.getCurrentSystemNode().getPacketQueue().remove(packet);
+            nodeToView.get(packet.getCurrentSystemNode()).update();
+            packet.setCurrentSystemNode(null);
+        }
 
         hud.setLostPackets(hud.getLostPackets() + 1);
         hudView.update();
@@ -939,6 +945,14 @@ public class GameController extends BaseController {
 
     private void handleArrivalBehavior(Packet packet, SystemNode node) {
         ShapeType shapeType = packet.getShapeType();
+        if (shapeType.equals(ShapeType.LARGE_ONE) || shapeType.equals(ShapeType.LARGE_TWO)) {
+            ArrayList<Packet> toRemove = new ArrayList<>();
+            for (Packet queuePacket : node.getPacketQueue()) {
+                if (queuePacket.equals(packet)) continue;
+                toRemove.add(queuePacket);
+            }
+            node.getPacketQueue().removeAll(toRemove);
+        }
         switch (node.getSystemType()) {
             case SPY -> {
                 if (packet.isProtected()) return;
