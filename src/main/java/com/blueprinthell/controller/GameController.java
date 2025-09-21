@@ -411,6 +411,10 @@ public class GameController extends BaseController {
                     packet.setProgressOnWire(0);
                     packet.setCurrentSpeed(packet.getBaseSpeed());
 
+                    if (packet.isProtected()) {
+                        packet.setProtectedShapeType();
+                    }
+
                     nodeToView.get(packet.getCurrentWire().getSourcePort().getParentSystemNode()).update();
 
                     selectedOutputPort.getConnectedWire().setPacketOnWire(packet);
@@ -496,7 +500,7 @@ public class GameController extends BaseController {
         Port sourcePort = currentWire.getSourcePort();
         Port destinationPort = currentWire.getDestinationPort();
 
-        switch (packet.getShapeType()) {
+        switch (packet.getProtectedShapeType()) {
             case SQUARE -> {
                 if (sourcePort.getShapeType().equals(ShapeType.SQUARE)) {
                     currentSpeed = packet.getBaseSpeed();

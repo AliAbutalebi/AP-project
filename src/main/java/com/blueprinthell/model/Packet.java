@@ -3,6 +3,8 @@ package com.blueprinthell.model;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Polygon;
 
+import java.util.Random;
+
 public class Packet {
 
     private static final double BASE_SPEED = 100;
@@ -20,6 +22,7 @@ public class Packet {
     private int noise = 0;
     private double progressOnWire;
     private ShapeType shapeType;
+    private ShapeType protectedShapeType;
     private boolean onWire;
     private Wire currentWire;
     private int currentWireId;
@@ -315,6 +318,16 @@ public class Packet {
         setAlive(true);
         setColliding(false);
         setCurrentSpeed(getBaseSpeed());
+    }
+
+    public ShapeType getProtectedShapeType() {
+        if (isProtected) return protectedShapeType;
+        return shapeType;
+    }
+
+    public void setProtectedShapeType() {
+        Random random = new Random();
+        protectedShapeType = ShapeType.values()[random.nextInt(ShapeType.values().length)];
     }
 }
 
