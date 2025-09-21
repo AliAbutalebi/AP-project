@@ -13,51 +13,53 @@ public class ShopItem {
     }
 
     public void activate() {
-            active = true;
-            remainingDuration = type.getDuration();
-            remainingCooldown = type.getCooldown();
+        active = true;
+        remainingDuration = type.getDuration();
+        remainingCooldown = type.getCooldown();
 
     }
 
     public void tick(double deltaTime) {
         if (active) {
-            if (type.getDuration() == 0) return;
-            remainingDuration -= deltaTime;
-            if (remainingDuration <= 0) {
+            if (type.getDuration() == 0) {
                 active = false;
                 cooldown = true;
             }
-        }
-        else if (cooldown) {
-            if (type.getCooldown() == 0) return;
-            remainingCooldown -= deltaTime;
-            if (remainingCooldown <= 0) {
-                cooldown = false;
+                remainingDuration -= deltaTime;
+                if (remainingDuration <= 0) {
+                    active = false;
+                    cooldown = true;
+                }
+            } else if (cooldown) {
+                if (type.getCooldown() == 0) cooldown = false;
+                remainingCooldown -= deltaTime;
+                if (remainingCooldown <= 0) {
+                    cooldown = false;
+                }
             }
         }
-    }
 
-    public ItemType getType() {
-        return type;
-    }
+        public ItemType getType () {
+            return type;
+        }
 
-    public boolean isActive() {
-        return active;
-    }
+        public boolean isActive () {
+            return active;
+        }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+        public void setActive ( boolean active){
+            this.active = active;
+        }
 
-    public boolean isCooldown() {
-        return cooldown;
-    }
+        public boolean isCooldown () {
+            return cooldown;
+        }
 
-    public double getRemainingDuration() {
-        return remainingDuration;
-    }
+        public double getRemainingDuration () {
+            return remainingDuration;
+        }
 
-    public double getRemainingCooldown() {
-        return remainingCooldown;
+        public double getRemainingCooldown () {
+            return remainingCooldown;
+        }
     }
-}
