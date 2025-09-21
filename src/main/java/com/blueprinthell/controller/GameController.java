@@ -1164,6 +1164,8 @@ public class GameController extends BaseController {
 
     private void handleDistributorNode(Packet packet) {
         SystemNode node = packet.getCurrentSystemNode();
+        Random random = new Random();
+        Color color = Color.hsb(random.nextFloat(360), 1, 0.8);
         for (int i = 0; i < packet.getSize(); i++) {
             Packet bitPacket = new Packet();
             bitPacket.setShapeType(ShapeType.BIT_PACKET);
@@ -1175,6 +1177,7 @@ public class GameController extends BaseController {
             node.getPacketQueue().add(bitPacket);
 
             PacketView packetView = new PacketView(bitPacket);
+            packetView.setFill(color);
             packetViews.add(packetView);
             packetToView.put(bitPacket, packetView);
             gameMap.getPackets().add(bitPacket);
