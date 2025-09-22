@@ -8,6 +8,7 @@ import javafx.scene.shape.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class WireView extends Group {
 
@@ -38,25 +39,12 @@ public class WireView extends Group {
             case 3 -> draw3CPWire();
         }
 
+        drawControlPoints();
+
+        wireShape.setFill(null);
         wireShape.setOpacity(1 - ((double) wire.getPassedLargePackets() / (Wire.getPssedLargePacketLimit() + 1)));
 
-        for (int i = 0; i < wire.getControlPoints().size(); i++) {
-            ArrayList<Point2D> controlPoints = wire.getControlPoints();
-            Circle circle = new Circle();
-            circle.setCenterX(controlPoints.get(i).getX());
-            circle.setCenterY(controlPoints.get(i).getY());
-            circle.setRadius(DEFAULT_STROKE_WIDTH * 2);
-            circle.setFill(Color.WHITE);
-            controlPointFromView.put(circle, controlPoints.get(i));
-        }
-
-        if (wire.getSourcePort() != null) {
-            switch (wire.getShapeType()) {
-                case SQUARE -> markSquare();
-                case TRIANGLE -> markTriangle();
-                case HEXAGON -> markHexagon();
-            }
-        }
+        setColor();
 
         wireShape.setStrokeWidth(DEFAULT_STROKE_WIDTH);
     }
@@ -67,6 +55,42 @@ public class WireView extends Group {
         drawWire();
         getChildren().add(0, wireShape);
         wire.setLength(getLength());
+    }
+
+    public void updateControlPoints() {
+        ArrayList<Point2D> points = new ArrayList<>(controlPointFromView.keySet().stream()
+                .map(cp -> new Point2D(cp.getCenterX(), cp.getCenterY()))
+                .toList());
+
+        if (wireShape instanceof QuadCurve quad && points.size() == 1) {
+            quad.setControlX(points.get(0).getX());
+            quad.setControlY(points.get(0).getY());
+
+        } else if (wireShape instanceof CubicCurve cubic && points.size() == 2) {
+            cubic.setControlX1(points.get(0).getX());
+            cubic.setControlY1(points.get(0).getY());
+            cubic.setControlX2(points.get(1).getX());
+            cubic.setControlY2(points.get(1).getY());
+
+        } else if (wireShape instanceof Path path && points.size() == 3) {
+            path.getElements().clear();
+            path.getElements().add(new MoveTo(wire.getStartLocation().getX(), wire.getStartLocation().getY()));
+
+            double midX = (points.get(1).getX() + points.get(2).getX()) / 2;
+            double midY = (points.get(1).getY() + points.get(2).getY()) / 2;
+
+            path.getElements().add(new CubicCurveTo(
+                    points.get(0).getX(), points.get(0).getY(),
+                    points.get(1).getX(), points.get(1).getY(),
+                    midX, midY
+            ));
+
+            path.getElements().add(new CubicCurveTo(
+                    2 * midX - points.get(1).getX(), 2 * midY - points.get(1).getY(),
+                    points.get(2).getX(), points.get(2).getY(),
+                    wire.getEndLocation().getX(), wire.getEndLocation().getY()
+            ));
+        }
     }
 
     private void draw0CPWire() {
@@ -129,6 +153,29 @@ public class WireView extends Group {
         ));
 
         wireShape = path;
+    }
+
+    public void drawControlPoints() {
+        for (int i = 0; i < wire.getControlPoints().size(); i++) {
+            ArrayList<Point2D> controlPoints = wire.getControlPoints();
+            Circle circle = new Circle();
+            circle.setCenterX(controlPoints.get(i).getX());
+            circle.setCenterY(controlPoints.get(i).getY());
+            circle.setRadius(DEFAULT_STROKE_WIDTH * 2);
+            circle.setFill(Color.WHITE);
+            controlPointFromView.put(circle, controlPoints.get(i));
+            getChildren().add(circle);
+        }
+    }
+
+    public void setColor() {
+        if (wire.getSourcePort() != null) {
+            switch (wire.getShapeType()) {
+                case SQUARE -> markSquare();
+                case TRIANGLE -> markTriangle();
+                case HEXAGON -> markHexagon();
+            }
+        }
     }
 
 
@@ -242,6 +289,10 @@ public class WireView extends Group {
             prev = curr;
         }
         return length;
+    }
+
+    public void softUpdate() {
+        wireShape.setOpacity(1 - ((double) wire.getPassedLargePackets() / (Wire.getPssedLargePacketLimit() + 1)));
     }
 
 }

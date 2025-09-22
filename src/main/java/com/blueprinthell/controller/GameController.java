@@ -20,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
 import org.kordamp.ikonli.fontawesome6.FontAwesomeSolid;
@@ -93,7 +94,7 @@ public class GameController extends BaseController {
 
     private AnimationTimer gameLoop;
     private long lastUpdateTime = 0;
-    private boolean pause;
+    private boolean pause = true;
 
 
     @FXML
@@ -109,7 +110,8 @@ public class GameController extends BaseController {
         setupMessagesPane();
         setupTopBarView();
         setupShopButtons();
-        resume();
+        handleControlPointAddition();
+        handleControlPointMovement();
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -453,17 +455,16 @@ public class GameController extends BaseController {
 
     private void movePacketOnWire(Packet packet, double deltaTime, boolean isReturn) {
         if (packet.getShapeType().equals(ShapeType.CONFIDENTIAL_ONE)) {
-                Wire currentWire = packet.getCurrentWire();
-                if (isReturn) {
-                    if (currentWire.getSourcePort().getParentSystemNode().getQueueSize() != 0) {
-                        return;
-                    }
+            Wire currentWire = packet.getCurrentWire();
+            if (isReturn) {
+                if (currentWire.getSourcePort().getParentSystemNode().getQueueSize() != 0) {
+                    return;
                 }
-                else {
-                    if (currentWire.getDestinationPort().getParentSystemNode().getQueueSize() != 0) {
-                        return;
-                    }
+            } else {
+                if (currentWire.getDestinationPort().getParentSystemNode().getQueueSize() != 0) {
+                    return;
                 }
+            }
             return;
         }
 
@@ -505,8 +506,7 @@ public class GameController extends BaseController {
                 if (sourcePort.getShapeType().equals(ShapeType.SQUARE)) {
                     currentSpeed = packet.getBaseSpeed();
                     currentAcceleration = 0;
-                }
-                else {
+                } else {
                     currentSpeed = packet.getBaseSpeed() / 2;
                     currentAcceleration = 0;
                 }
@@ -515,8 +515,7 @@ public class GameController extends BaseController {
                 if (sourcePort.getShapeType().equals(ShapeType.TRIANGLE)) {
                     currentSpeed = packet.getBaseSpeed();
                     currentAcceleration = 0;
-                }
-                else {
+                } else {
                     currentSpeed = packet.getCurrentSpeed();
                     currentAcceleration = packet.getBaseAcceleration();
                 }
@@ -525,8 +524,7 @@ public class GameController extends BaseController {
                 if (sourcePort.getShapeType().equals(ShapeType.HEXAGON)) {
                     currentSpeed = packet.getCurrentSpeed();
                     currentAcceleration = packet.getBaseAcceleration();
-                }
-                else {
+                } else {
                     currentSpeed = packet.getCurrentSpeed();
                     currentAcceleration = -packet.getBaseAcceleration();
                 }
@@ -539,8 +537,7 @@ public class GameController extends BaseController {
                 if (currentWire.getControlPoints().isEmpty()) {
                     currentSpeed = packet.getBaseSpeed();
                     currentAcceleration = 0;
-                }
-                else {
+                } else {
                     currentSpeed = packet.getCurrentSpeed();
                     currentAcceleration = packet.getBaseAcceleration();
                 }
@@ -658,7 +655,7 @@ public class GameController extends BaseController {
 
         packetView.update();
         nodeView.update();
-        wireToView.get(passedWire).update();
+        wireToView.get(passedWire).softUpdate();
         hudView.update();
     }
 
@@ -795,8 +792,7 @@ public class GameController extends BaseController {
             packet.getCurrentWire().setPacketOnWire(null);
             packetPane.getChildren().remove(packetToView.get(packet));
             movingPackets.remove(packet);
-        }
-        else {
+        } else {
             packet.getCurrentSystemNode().getPacketQueue().remove(packet);
             nodeToView.get(packet.getCurrentSystemNode()).update();
             packet.setCurrentSystemNode(null);
@@ -1078,7 +1074,7 @@ public class GameController extends BaseController {
             nodeView.update();
         }
         for (WireView wireView : wireViews) {
-            wireView.update();
+            wireView.softUpdate();
         }
         for (PacketView packetView : packetViews) {
             packetView.update();
@@ -1318,5 +1314,86 @@ public class GameController extends BaseController {
         });
     }
 
+    private void handleControlPointAddition() {
+        systemNodePane.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2 && pause && !shop.waitingForSelection()) {
+                Point2D point = new Point2D(event.getX(), event.getY());
+                for (WireView wireView : wireViews) {
+                    if (wireView.contains(point)) {
+                        wireView.getWire().addControlPoint();
+                        wireView.update();
+                        hud.removeCoins(1);
+                        logger.info("Control point was added to wire " + wireView.getWire().getId() + ".");
+                        break;
+                    } else {
+                        System.out.println("Wire not found");
+                    }
+                }
+            }
+        });
+    }
+
+    private void handleControlPointMovement() {
+        final double[] lastX = {0};
+        final double[] lastY = {0};
+        final Circle[] activeControlPoint = {null};
+        final WireView[] activeWireView = {null};
+
+        systemNodePane.setOnMousePressed(event -> {
+            lastX[0] = event.getX();
+            lastY[0] = event.getY();
+
+            Point2D scenePoint = new Point2D(event.getSceneX(), event.getSceneY());
+
+            for (WireView wireView : wireViews) {
+                for (Circle cp : wireView.getControlPointFromView().keySet()) {
+                    Point2D localPoint = cp.sceneToLocal(scenePoint);
+                    if (cp.contains(localPoint)) {
+                        activeControlPoint[0] = cp;
+                        activeWireView[0] = wireView;
+                        return;
+                    }
+                }
+            }
+        });
+
+        systemNodePane.setOnMouseDragged(event -> {
+            if (pause && !shop.waitingForSelection()) {
+                if (activeControlPoint[0] != null && activeWireView[0] != null) {
+                    double deltaX = event.getX() - lastX[0];
+                    double deltaY = event.getY() - lastY[0];
+
+                    Circle cp = activeControlPoint[0];
+                    WireView wireView = activeWireView[0];
+
+                    cp.setCenterX(cp.getCenterX() + deltaX);
+                    cp.setCenterY(cp.getCenterY() + deltaY);
+
+                    Point2D oldPoint = wireView.getControlPointFromView().get(cp);
+                    Point2D newPoint = oldPoint.add(deltaX, deltaY);
+
+                    for (int i = 0; i < wireView.getWire().getControlPoints().size(); i++) {
+                        Point2D point = wireView.getWire().getControlPoints().get(i);
+                        if (point.getX() == oldPoint.getX() && point.getY() == oldPoint.getY()) {
+                            wireView.getWire().getControlPoints().set(i, newPoint);
+                            break;
+                        }
+                    }
+
+                    wireView.getControlPointFromView().put(cp, newPoint);
+                    wireView.updateControlPoints();
+
+                    lastX[0] = event.getX();
+                    lastY[0] = event.getY();
+                }
+            }
+        });
+
+        systemNodePane.setOnMouseReleased(event -> {
+            activeControlPoint[0] = null;
+            activeWireView[0] = null;
+            mapManager.save(gameMap);
+        });
+    }
 }
 
