@@ -20,7 +20,8 @@ public class Wire {
     private ArrayList<Point2D> controlPoints = new ArrayList<>();
     private int passedLargePackets = 0;
 
-    public Wire() {}
+    public Wire() {
+    }
 
     public Wire(Point2D startLocation, Point2D endLocation) {
         this.startLocation = startLocation;
@@ -28,7 +29,9 @@ public class Wire {
         id = lastId++;
     }
 
-    public static int getPssedLargePacketLimit() {return PASSED_LARGE_PACKET_LIMIT;}
+    public static int getPssedLargePacketLimit() {
+        return PASSED_LARGE_PACKET_LIMIT;
+    }
 
     public int getId() {
         return id;
@@ -58,7 +61,9 @@ public class Wire {
         return startLocation.distance(endLocation);
     }
 
-    public void setLength(double length) {this.length = length;}
+    public void setLength(double length) {
+        this.length = length;
+    }
 
     public void setPacketOnWire(Packet packetOnWire) {
         this.packetOnWire = packetOnWire;
@@ -116,53 +121,102 @@ public class Wire {
         return controlPoints;
     }
 
-    public Point2D interpolate(double percent) {
-        double newX = getStartLocation().getX() + (getEndLocation().getX() - getStartLocation().getX()) * percent;
-        double newY = getStartLocation().getY() + (getEndLocation().getY() - getStartLocation().getY()) * percent;
+    public Point2D interpolate(double progress) {
+        progress = clamp(progress, 0, 1);
 
-        return new Point2D(newX, newY);
+        switch (controlPoints.size()) {
+            case 0 -> {
+                return lerp(startLocation, endLocation, progress);
+            }
+            case 1 -> {
+                Point2D p1 = controlPoints.get(0);
+                return quadBezier(startLocation, p1, endLocation, progress);
+            }
+            case 2 -> {
+                Point2D p1 = controlPoints.get(0), p2 = controlPoints.get(1);
+                return cubicBezier(startLocation, p1, p2, endLocation, progress);
+            }
+            default -> {
+                double midX = (controlPoints.get(1).getX() + controlPoints.get(2).getX()) / 2;
+                double midY = (controlPoints.get(1).getY() + controlPoints.get(2).getY()) / 2;
+                Point2D mid = new Point2D(midX, midY);
+
+                if (progress < 0.5) {
+                    double t = progress * 2;
+                    return cubicBezier(startLocation, controlPoints.get(0), controlPoints.get(1), mid, t);
+                } else {
+                    double t = (progress - 0.5) * 2;
+                    Point2D mirror = new Point2D(2 * midX - controlPoints.get(1).getX(), 2 * midY - controlPoints.get(1).getY());
+                    return cubicBezier(mid, mirror, controlPoints.get(2), endLocation, t);
+                }
+            }
+        }
     }
 
-    public int getPassedLargePackets() {
-        return passedLargePackets;
-    }
 
-    public void setPassedLargePackets(int passedLargePackets) {
-        this.passedLargePackets = passedLargePackets;
-    }
+private static Point2D lerp(Point2D a, Point2D b, double t) {
+    return new Point2D(a.getX() + (b.getX() - a.getX()) * t,
+            a.getY() + (b.getY() - a.getY()) * t);
+}
 
-    public int getSourcePortId() {
-        return sourcePortId;
-    }
+private static Point2D quadBezier(Point2D startLocation, Point2D p1, Point2D p2, double t) {
+    double u = 1 - t;
+    double x = u * u * startLocation.getX() + 2 * u * t * p1.getX() + t * t * p2.getX();
+    double y = u * u * startLocation.getY() + 2 * u * t * p1.getY() + t * t * p2.getY();
+    return new Point2D(x, y);
+}
 
-    public void setSourcePortId(int sourcePortId) {
-        this.sourcePortId = sourcePortId;
-    }
+private static Point2D cubicBezier(Point2D startLocation, Point2D p1, Point2D p2, Point2D p3, double t) {
+    double u = 1 - t;
+    double x = u * u * u * startLocation.getX() + 3 * u * u * t * p1.getX() + 3 * u * t * t * p2.getX() + t * t * t * p3.getX();
+    double y = u * u * u * startLocation.getY() + 3 * u * u * t * p1.getY() + 3 * u * t * t * p2.getY() + t * t * t * p3.getY();
+    return new Point2D(x, y);
+}
 
-    public int getDestinationPortId() {
-        return destinationPortId;
-    }
+private static double clamp(double v, double min, double max) {
+    return v < min ? min : (v > max ? max : v);
+}
 
-    public void setDestinationPortId(int destinationPortId) {
-        this.destinationPortId = destinationPortId;
-    }
+public int getPassedLargePackets() {
+    return passedLargePackets;
+}
 
-    public int getPacketOnWireId() {
-        return packetOnWireId;
-    }
+public void setPassedLargePackets(int passedLargePackets) {
+    this.passedLargePackets = passedLargePackets;
+}
 
-    public void setPacketOnWireId(int packetOnWireId) {
-        this.packetOnWireId = packetOnWireId;
-    }
+public int getSourcePortId() {
+    return sourcePortId;
+}
 
-    public void reset() {
-        setPassedLargePackets(0);
-    }
+public void setSourcePortId(int sourcePortId) {
+    this.sourcePortId = sourcePortId;
+}
 
-    public boolean packetPassedPoint(Packet packet, Point2D point) {
-        double packetProgress = startLocation.distance(packet.getLocation());
-        double packetLastProgress = startLocation.distance(packet.getLastLocation());
-        double pointProgress = startLocation.distance(point);
-        return packetProgress > pointProgress && packetLastProgress < pointProgress;
-    }
+public int getDestinationPortId() {
+    return destinationPortId;
+}
+
+public void setDestinationPortId(int destinationPortId) {
+    this.destinationPortId = destinationPortId;
+}
+
+public int getPacketOnWireId() {
+    return packetOnWireId;
+}
+
+public void setPacketOnWireId(int packetOnWireId) {
+    this.packetOnWireId = packetOnWireId;
+}
+
+public void reset() {
+    setPassedLargePackets(0);
+}
+
+public boolean packetPassedPoint(Packet packet, Point2D point) {
+    double packetProgress = startLocation.distance(packet.getLocation());
+    double packetLastProgress = startLocation.distance(packet.getLastLocation());
+    double pointProgress = startLocation.distance(point);
+    return packetProgress > pointProgress && packetLastProgress < pointProgress;
+}
 }
