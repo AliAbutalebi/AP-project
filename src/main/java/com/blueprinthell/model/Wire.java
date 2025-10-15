@@ -1,11 +1,14 @@
 package com.blueprinthell.model;
 
+import com.blueprinthell.view.WireView;
 import javafx.geometry.Point2D;
 
 import java.util.ArrayList;
 
 public class Wire {
     private static final int PASSED_LARGE_PACKET_LIMIT = 3;
+    private static final int CONTROL_POINT_LIMIT = 3;
+    private ArrayList<WireView> wireViews;
     private int id;
     private static int lastId = 0;
     private Port sourcePort;
@@ -114,6 +117,10 @@ public class Wire {
         double x = startLocation.getX() + lengthX / (n + 1) * i;
         double y = startLocation.getY() + lengthY / (n + 1) * i;
         return new Point2D(x, y);
+    }
+
+    public boolean canAddControlPoint() {
+        return controlPoints.size() < CONTROL_POINT_LIMIT;
     }
 
 
