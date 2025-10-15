@@ -205,7 +205,7 @@ public class GameController extends BaseController {
             wireToView.put(wire, wireView);
         }
 
-        // checkRunButton();
+        checkRunButton();
     }
 
     private void startGameLoop(ActionEvent event) {
@@ -307,7 +307,7 @@ public class GameController extends BaseController {
         hud.setRemainingWireLength(hud.getRemainingWireLength() - targetPortView.getPort().getConnectedWire().getLength());
         hudView.update();
         checkActiveNode();
-        // checkRunButton();
+        checkRunButton();
         soundEffectManager.play("click");
         mapManager.save(gameMap);
     }
@@ -393,7 +393,7 @@ public class GameController extends BaseController {
             }
             nodeView.update();
         }
-        // checkRunButton();
+        checkRunButton();
     }
 
     private void packetFromSystemsToWires() {
@@ -1319,14 +1319,12 @@ public class GameController extends BaseController {
             if (event.getClickCount() == 2 && pause && !shop.waitingForSelection()) {
                 Point2D point = new Point2D(event.getX(), event.getY());
                 for (WireView wireView : wireViews) {
-                    if (wireView.contains(point)) {
+                    if (wireView.contains(point) && wireView.getWire().canAddControlPoint()) {
                         wireView.getWire().addControlPoint();
                         wireView.update();
                         hud.removeCoins(1);
                         logger.info("Control point was added to wire " + wireView.getWire().getId() + ".");
                         break;
-                    } else {
-                        System.out.println("Wire not found");
                     }
                 }
             }
